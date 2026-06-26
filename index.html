@@ -1046,6 +1046,55 @@ textarea.qex-editor::placeholder { color: #4A6880; }
   color: #8a9aaa;
   font-family: 'Roboto Mono', monospace;
 }
+
+/* ── VIDEO PLAYER ── */
+.lesson-video-wrap {
+  margin-bottom: 24px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--navy);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--navy-border, #2a2d34);
+}
+.lesson-video-wrap video {
+  width: 100%;
+  display: block;
+  max-height: 480px;
+  background: #000;
+}
+.lesson-video-header {
+  padding: 12px 16px;
+  background: var(--navy-mid, #112240);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.lesson-video-icon {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: linear-gradient(135deg, #2A6EBB, #4A9FD4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; flex-shrink: 0;
+}
+.lesson-video-title {
+  font-size: 12.5px; font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  font-family: var(--sans);
+}
+.lesson-video-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 1px;
+  font-family: var(--mono);
+}
+.lesson-video-footer {
+  padding: 8px 16px;
+  background: var(--navy-mid, #112240);
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  font-family: var(--mono);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
 </style>
 </head>
 <body>
@@ -1281,7 +1330,21 @@ const TRACK_GROUPS=[
 ];
 const SNAV=[{el:"snav-t1",ids:[1,2,3,4,5,6]},{el:"snav-t2",ids:[7,8]},{el:"snav-t3",ids:[9,10,11,12,13]},{el:"snav-cert",ids:[14]}];
 const LESSONS={
-1:`<h2>What Is JScript.NET?</h2>
+1:`<div class="lesson-video-wrap">
+  <div class="lesson-video-header">
+    <div class="lesson-video-icon">▶</div>
+    <div>
+      <div class="lesson-video-title">Module 1 — Intro to JScript.NET &amp; the .NET Platform</div>
+      <div class="lesson-video-sub">Watch before reading · Use captions if needed</div>
+    </div>
+  </div>
+  <video controls preload="metadata" poster="">
+    <source src="videos/module1_intro.mp4" type="video/mp4">
+    <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="videos/module1_intro.mp4" style="color:#4A9FD4">Download the video</a>.</p>
+  </video>
+  <div class="lesson-video-footer">module1_intro.mp4 · Place in a /videos/ folder alongside index.html · <a href="videos/module1_intro.mp4" download style="color:#4A9FD4">Download</a></div>
+</div>
+<h2>What Is JScript.NET?</h2>
 <p>JScript.NET is Microsoft's server-side scripting language built on the <span class="ic">.NET Common Language Runtime (CLR)</span>. It is <strong>not</strong> the same as JavaScript you write in a browser — there is no DOM, no <span class="ic">window</span>, no <span class="ic">document</span>. It runs entirely on the server inside BenSelect.</p>
 <div class="warn-box">⚠ Critical distinction: When Selerix says "JScript" they mean JScript.NET running server-side on .NET — not browser JavaScript. Code that works in a browser will often fail here.</div>
 <h2>The .NET Platform — Three Concepts You Need</h2>
