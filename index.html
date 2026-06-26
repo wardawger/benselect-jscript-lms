@@ -169,8 +169,10 @@ body {
 .stat-icon {
   width: 36px; height: 36px; border-radius: 8px;
   background: var(--blue-pale); display: flex; align-items: center;
-  justify-content: center; margin-bottom: 12px; font-size: 16px;
+  justify-content: center; margin-bottom: 12px;
+  color: var(--blue);
 }
+.stat-icon svg { width: 20px; height: 20px; display: block; }
 .stat-value { font-size: 28px; font-weight: 700; color: var(--navy); letter-spacing: -0.03em; line-height: 1; }
 .stat-label { font-size: 11px; color: var(--text-light); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
 .stat-sub { font-size: 12px; color: var(--text-mid); margin-top: 6px; }
@@ -190,8 +192,9 @@ body {
 .card-hdr-icon {
   width: 28px; height: 28px; border-radius: 6px;
   background: var(--blue-pale); display: flex; align-items: center;
-  justify-content: center; font-size: 13px;
+  justify-content: center; color: var(--blue); flex-shrink: 0;
 }
+.card-hdr-icon svg { width: 18px; height: 18px; display: block; }
 .two-col { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; align-items: start; }
 
 /* ── MODULE GRID ── */
@@ -413,9 +416,11 @@ textarea.code-ans::placeholder { color: #4A6880; }
   width: 64px; height: 64px; border-radius: 50%;
   background: linear-gradient(135deg, var(--blue), var(--accent));
   display: flex; align-items: center; justify-content: center;
-  font-size: 26px; margin: 0 auto 14px;
+  margin: 0 auto 14px;
   box-shadow: 0 4px 16px rgba(74,159,212,0.4);
+  color: white;
 }
+.cert-seal svg { width: 28px; height: 28px; display: block; }
 .cert-title { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
 .cert-sub { font-size: 12px; color: var(--text-pale); margin-bottom: 16px; line-height: 1.6; }
 
@@ -521,8 +526,10 @@ textarea.code-ans::placeholder { color: #4A6880; }
 .glossary-search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(74,159,212,0.1); }
 .glossary-search-icon {
   position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-  color: var(--text-light); font-size: 16px; pointer-events: none;
+  color: var(--text-light); pointer-events: none;
+  display: flex; align-items: center;
 }
+.glossary-search-icon svg { width: 18px; height: 18px; display: block; }
 .glossary-filters {
   display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;
 }
@@ -664,6 +671,7 @@ textarea.challenge-editor::placeholder { color: #4A6880; }
   padding: 5px 12px; border-radius: 20px; margin-bottom: 10px;
   transition: all 0.15s; font-family: var(--sans); font-weight: 500;
 }
+.hints-toggle svg { width: 14px; height: 14px; flex-shrink: 0; }
 .hints-toggle:hover { background: #D8ECFA; }
 .hints-box {
   background: var(--off-white); border: 1px solid #E0EAF5;
@@ -853,6 +861,8 @@ textarea.challenge-editor::placeholder { color: #4A6880; }
   padding: 9px 16px; font-size: 13px; color: var(--text-mid);
   cursor: pointer; transition: background 0.12s;
 }
+.ud-item svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--text-light); }
+.ud-item.ud-danger svg { color: var(--danger); }
 .ud-item:hover { background: var(--off-white); color: var(--navy); }
 .ud-item.ud-danger { color: var(--danger); }
 .ud-item.ud-danger:hover { background: var(--danger-bg); }
@@ -1103,8 +1113,9 @@ textarea.qex-editor::placeholder { color: #4A6880; }
   width: 28px; height: 28px; border-radius: 6px;
   background: linear-gradient(135deg, #2A6EBB, #4A9FD4);
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; flex-shrink: 0;
+  flex-shrink: 0; color: white;
 }
+.lesson-video-icon svg { width: 16px; height: 16px; display: block; }
 .lesson-video-title {
   font-size: 12.5px; font-weight: 600;
   color: rgba(255,255,255,0.9);
@@ -1380,17 +1391,17 @@ textarea.qex-editor::placeholder { color: #4A6880; }
     <div>
       <div id="dash-continue"></div>
       <div class="card">
-        <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon">📋</div>Module overview</div><button class="btn btn-sm" onclick="showPage('modules')">View all →</button></div>
+        <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="1.25"/><rect x="10" y="2" width="6" height="6" rx="1.25"/><rect x="2" y="10" width="6" height="6" rx="1.25"/><rect x="10" y="10" width="6" height="6" rx="1.25"/></svg></div>Module overview</div><button class="btn btn-sm" onclick="showPage('modules')">View all →</button></div>
         <div id="dash-overview"></div>
       </div>
     </div>
     <div>
       <div class="card">
-        <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon">🏅</div>Recent scores</div></div>
+        <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><polyline points="6,9 8,11 12,6.5"/></svg></div>Recent scores</div></div>
         <div id="dash-scores"></div>
       </div>
       <div class="card">
-        <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon">ℹ️</div>Course info</div></div>
+        <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="6.5"/><line x1="9" y1="8" x2="9" y2="12.5"/><circle cx="9" cy="5.5" r="0.75" fill="currentColor" stroke="none"/></svg></div>Course info</div></div>
         <div style="font-size:12.5px;color:var(--text-mid);line-height:1.8">
           <p>14 modules across 3 tracks. Lessons authored with live BenSelect documentation and production scripts.</p>
           <div class="divider"></div>
@@ -1421,7 +1432,7 @@ textarea.qex-editor::placeholder { color: #4A6880; }
     <p>Detailed score history and completion status for all 14 modules.</p>
   </div>
   <div class="card">
-    <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon">📊</div>Score history</div></div>
+    <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="11" width="3.5" height="5" rx="0.75"/><rect x="7.25" y="7.5" width="3.5" height="8.5" rx="0.75"/><rect x="12.5" y="4" width="3.5" height="12" rx="0.75"/></svg></div>Score history</div></div>
     <div id="prog-table"></div>
   </div>
 </div>
@@ -1434,7 +1445,7 @@ textarea.qex-editor::placeholder { color: #4A6880; }
     <p>Search BenSelect terminology, JScript.NET definitions, Event object properties, and key scripting patterns.</p>
   </div>
   <div class="glossary-search-wrap">
-    <span class="glossary-search-icon">🔍</span>
+    <span class="glossary-search-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="5.5"/><line x1="12.5" y1="12.5" x2="16" y2="16"/></svg></span>
     <input type="text" class="glossary-search" id="gloss-search" placeholder="Search terms, definitions, code examples…" oninput="filterGlossary()">
   </div>
   <div class="glossary-filters" id="gloss-filters"></div>
@@ -1479,21 +1490,21 @@ const SNAV=[{el:"snav-t1",ids:[1,2,3,4,5,6]},{el:"snav-t2",ids:[7,8]},{el:"snav-
 const LESSONS={
 1:`<div class="lesson-video-wrap">
   <div class="lesson-video-header">
-    <div class="lesson-video-icon">▶</div>
+    <div class="lesson-video-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><polygon points="6.5,5.5 11.5,8 6.5,10.5" fill="currentColor" stroke="none"/></svg></div>
     <div>
       <div class="lesson-video-title">Module 1 — Intro to JScript.NET &amp; the .NET Platform</div>
-      <div class="lesson-video-sub">Watch before reading!</div>
+      <div class="lesson-video-sub">Watch before reading · Use captions if needed</div>
     </div>
   </div>
   <video controls preload="metadata" poster="">
     <source src="videos/module1_intro.mp4" type="video/mp4">
     <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="videos/module1_intro.mp4" style="color:#4A9FD4">Download the video</a>.</p>
   </video>
-  <div class="lesson-video-footer"><a href="videos/module1_intro.mp4" download style="color:#4A9FD4">Download</a></div>
+  <div class="lesson-video-footer">module1_intro.mp4 · Place in a /videos/ folder alongside index.html · <a href="videos/module1_intro.mp4" download style="color:#4A9FD4">Download</a></div>
 </div>
 <h2>What Is JScript.NET?</h2>
 <p>JScript.NET is Microsoft's server-side scripting language built on the <span class="ic">.NET Common Language Runtime (CLR)</span>. It is <strong>not</strong> the same as JavaScript you write in a browser — there is no DOM, no <span class="ic">window</span>, no <span class="ic">document</span>. It runs entirely on the server inside BenSelect.</p>
-<div class="warn-box">⚠ Critical distinction: When Selerix says "JScript" they mean JScript.NET running server-side on .NET — not browser JavaScript. Code that works in a browser will often fail here.</div>
+<div class="warn-box"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L14.5 13.5H1.5L8 2Z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="11.75" r="0.75" fill="currentColor" stroke="none"/></svg> Critical distinction: When Selerix says "JScript" they mean JScript.NET running server-side on .NET — not browser JavaScript. Code that works in a browser will often fail here.</div>
 <h2>The .NET Platform — Three Concepts You Need</h2>
 <ul>
 <li><strong>CLR (Common Language Runtime)</strong> — the engine that runs .NET code. All .NET languages compile to the same intermediate language and run on the CLR. This gives you access to .NET libraries like System.DateTime.</li>
@@ -1534,20 +1545,20 @@ Event.Debug("Hello, " + empName + "!");</div>
   <div class="outcome-label">Expected outcome</div>
   <div class="outcome-text">Employees with Prior Decline = 1 see the "Prior Decline" rate table (typically higher rates or restricted benefits). Employees with Prior Decline = 0 or empty see "default" rates. The enrollment UI does not change visually — only the rates differ. No error occurs if the custom field does not exist; CustomFields returns null for missing fields, and null == 1 is false, so the else branch runs safely.</div>
 </div>
-<div class="info-box">📌 Key takeaway: The Event object is your gateway to everything. All BenSelect data flows through it. Event.Debug() is your only visibility tool during testing.</div>`,
+<div class="info-box"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="7" x2="8" y2="11.5"/><circle cx="8" cy="5" r="0.75" fill="currentColor" stroke="none"/></svg> Key takeaway: The Event object is your gateway to everything. All BenSelect data flows through it. Event.Debug() is your only visibility tool during testing.</div>`,
 2:`<div class="lesson-video-wrap">
   <div class="lesson-video-header">
-    <div class="lesson-video-icon">▶</div>
+    <div class="lesson-video-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><polygon points="6.5,5.5 11.5,8 6.5,10.5" fill="currentColor" stroke="none"/></svg></div>
     <div>
-      <div class="lesson-video-title">Module 2 — Language Fundamentals & Type System</div>
-      <div class="lesson-video-sub">Watch before reading!</div>
+      <div class="lesson-video-title">Module 2 — Language Fundamentals &amp; Type System</div>
+      <div class="lesson-video-sub">Watch before reading · Use captions if needed</div>
     </div>
   </div>
-  <video controls preload="metadata" poster="">
+  <video controls preload="metadata">
     <source src="videos/module2_fundamentals.mp4" type="video/mp4">
     <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="videos/module2_fundamentals.mp4" style="color:#4A9FD4">Download the video</a>.</p>
   </video>
-  <div class="lesson-video-footer"><a href="videos/module2_fundamentals.mp4" download style="color:#4A9FD4">Download</a></div>
+  <div class="lesson-video-footer">module2_fundamentals.mp4 · Place in /videos/ folder alongside index.html</div>
 </div>
 <h2>Variables: var vs const</h2>
 <p>JScript.NET uses <span class="ic">var</span> for mutable variables and <span class="ic">const</span> for immutable configuration values. Constants should be named UPPER_SNAKE_CASE and placed at the top of the script for easy editing.</p>
@@ -1565,7 +1576,7 @@ Event.Debug("Hello, " + empName + "!");</div>
   <div class="outcome-text">CUTOFF_DAY is a named, immutable 15. termDate starts as null until assigned later in the script. Null checks work reliably because null != null is false while null != 5 is true — consistent behavior.</div>
 </div>
 <h2>The Boolean Gotcha — The Most Important Rule in BenSelect Scripting</h2>
-<div class="warn-box">⚠ Boolean custom fields in BenSelect return the NUMBERS 1 and 0 — NOT true and false. The script comments explicitly state: "this does not work with if checks the way it should — you must do if(var == 1) not if(var)."</div>
+<div class="warn-box"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L14.5 13.5H1.5L8 2Z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="11.75" r="0.75" fill="currentColor" stroke="none"/></svg> Boolean custom fields in BenSelect return the NUMBERS 1 and 0 — NOT true and false. The script comments explicitly state: "this does not work with if checks the way it should — you must do if(var == 1) not if(var)."</div>
 <div class="code-block"><span class="cm">// WRONG — silent bug risk</span>
 <span class="kw">var</span> flag = Event.Employee.CustomFields["My Flag"];
 <span class="kw">if</span>(flag){ ... }
@@ -1617,7 +1628,21 @@ Event.Debug("Hello, " + empName + "!");</div>
   <div class="outcome-label">Expected outcome</div>
   <div class="outcome-text">currentPlanYearStartDate is always populated. Skip this null check and access Event.PlanYear.PlanYearStartDate directly in the first plan year, and BenSelect throws a null reference exception — the enrollment may crash or produce wrong results for every new hire enrolled that first year.</div>
 </div>`,
-3:`<h2>Why Functions Matter in BenSelect</h2>
+3:`<div class="lesson-video-wrap">
+  <div class="lesson-video-header">
+    <div class="lesson-video-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><polygon points="6.5,5.5 11.5,8 6.5,10.5" fill="currentColor" stroke="none"/></svg></div>
+    <div>
+      <div class="lesson-video-title">Module 3 — Functions &amp; Code Organization</div>
+      <div class="lesson-video-sub">Watch before reading · Use captions if needed</div>
+    </div>
+  </div>
+  <video controls preload="metadata">
+    <source src="videos/module3_functions.mp4" type="video/mp4">
+    <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="videos/module3_functions.mp4" style="color:#4A9FD4">Download the video</a>.</p>
+  </video>
+  <div class="lesson-video-footer">module3_functions.mp4 · Place in /videos/ folder alongside index.html</div>
+</div>
+<h2>Why Functions Matter in BenSelect</h2>
 <p>BenSelect scripts are single files with no imports. As scripts grow complex (the AUL STD/LTD script is 250+ lines), functions are the only organizational tool. The Term Life GI Script has 5 distinct helper functions — study it as the gold standard for BenSelect function architecture.</p>
 <h2>Getter Functions — Calculate and Return</h2>
 <div class="code-block"><span class="kw">function</span> getCurrentPlanYearStartDate(){
@@ -2305,25 +2330,25 @@ function renderDashboard(){
 
   $('dash-stats').innerHTML=`
     <div class="stat-card">
-      <div class="stat-icon">📚</div>
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5"/><polyline points="6.5,10 9,12.5 13.5,7.5"/></svg></div>
       <div class="stat-value">${done}</div>
       <div class="stat-label">Completed</div>
       <div class="stat-sub">of 14 modules</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">🔓</div>
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="6.5" height="6.5" rx="1.5"/><rect x="11" y="2.5" width="6.5" height="6.5" rx="1.5"/><rect x="2.5" y="11" width="6.5" height="6.5" rx="1.5"/><rect x="11" y="11" width="6.5" height="6.5" rx="1.5"/></svg></div>
       <div class="stat-value">${avail}</div>
       <div class="stat-label">Available</div>
       <div class="stat-sub">ready to start</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">📈</div>
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="9.5" width="3" height="5" rx="0.75"/><rect x="6.5" y="6.5" width="3" height="8" rx="0.75"/><rect x="11.5" y="3.5" width="3" height="11" rx="0.75"/></svg></div>
       <div class="stat-value">${avg?avg+'%':'—'}</div>
       <div class="stat-label">Avg Score</div>
       <div class="stat-sub">across all quizzes</div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">🎯</div>
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5" stroke-dasharray="3 2"/><path d="M10 2.5A7.5 7.5 0 0 1 17.5 10" stroke-dasharray="none" stroke-width="2"/></svg></div>
       <div class="stat-value">${Math.round(done/14*100)}%</div>
       <div class="stat-label">Progress</div>
       <div class="stat-sub">overall completion</div>
@@ -2344,7 +2369,7 @@ function renderDashboard(){
       </div>
     </div>`;
   } else if(done===14){
-    cc.innerHTML='<div class="alert al-success" style="font-size:14px;padding:16px">🏆 All 14 modules complete. You are certified!</div>';
+    cc.innerHTML='<div class="alert al-success" style="font-size:14px;padding:16px"><span style="display:inline-flex;vertical-align:middle;margin-right:6px"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2l1.8 3.6L16 6.4l-3 2.9.7 4.1L10 11.5l-3.7 1.9.7-4.1-3-2.9 4.2-.8L10 2Z"/><circle cx="10" cy="15.5" r="2.5"/><line x1="10" y1="18" x2="10" y2="20"/></svg></span>All 14 modules complete. You are certified!</div>';
   } else {
     cc.innerHTML='<div class="alert al-info">No modules available yet.</div>';
   }
@@ -2392,7 +2417,7 @@ function renderModulesPage(){
         return`<div class="mod-card${isDone?' mod-done':''}${!un?' mod-locked':''}" onclick="${un?`goToModule(${id})`:''}" >
           <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
             <span class="badge ${m.tc}">${m.track}</span>
-            <span class="badge ${isDone?'b-green':sc!==null?sc<60?'b-red':'b-warn':'b-neu'}">${isDone?'✓':sc!==null?sc+'%':un?'Start':'🔒'}</span>
+            <span class="badge ${isDone?'b-green':sc!==null?sc<60?'b-red':'b-warn':'b-neu'}">${isDone?'✓':sc!==null?sc+'%':un?'Start':'<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7.5" width="9" height="7" rx="1"/><path d="M5.5 7.5V5.5a2.5 2.5 0 0 1 5 0v2"/></svg>'}</span>
           </div>
           <div class="mc-num">Module ${id} · ${m.time}</div>
           <div class="mc-title">${m.title}</div>
@@ -2438,7 +2463,7 @@ function startLesson(id){
       </div>
       <button class="btn btn-sm" onclick="showPage('dashboard')">← Dashboard</button>
     </div>
-    ${p.needsReview?'<div class="rev-banner">⚠ Review this lesson carefully — you need 60%+ to advance to the next module.</div>':''}
+    ${p.needsReview?'<div class="rev-banner"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L14.5 13.5H1.5L8 2Z"/><line x1="8" y1="7" x2="8" y2="10"/><circle cx="8" cy="11.75" r="0.75" fill="currentColor" stroke="none"/></svg> Review this lesson carefully — you need 60%+ to advance to the next module.</div>':''}
     <div class="card"><div class="lesson-body">${LESSONS[id]||'<p>Content coming soon.</p>'}</div></div>
     ${id<14&&qs?`
     <div class="card">
@@ -2452,7 +2477,7 @@ function startLesson(id){
     </div>`:''}
     ${id===14?`
     <div class="card">
-      <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon">🏆</div>Final Certification Exam</div></div>
+      <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2h10a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Z"/><polyline points="7,7 9,9 12,6"/><line x1="6" y1="12" x2="12" y2="12"/></svg></div>Final Certification Exam</div></div>
       <p style="font-size:13px;color:var(--text-mid);margin-bottom:14px">Three parts · 100 points · 70% required to receive your certification.</p>
       <button class="btn btn-primary" onclick="startQuiz(14)">Begin Final Exam →</button>
     </div>`:''}`;
@@ -2691,7 +2716,7 @@ function submitFinalExam(){
       </div>
       ${feedback?`<div class="alert al-info" style="text-align:left"><strong>Feedback:</strong> ${feedback}</div>`:''}
       ${passed?`<div class="cert-card">
-        <div class="cert-seal">🏆</div>
+        <div class="cert-seal"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2l1.8 3.6L16 6.4l-3 2.9.7 4.1L10 11.5l-3.7 1.9.7-4.1-3-2.9 4.2-.8L10 2Z"/><circle cx="10" cy="15.5" r="2.5"/><line x1="10" y1="18" x2="10" y2="20"/></svg></div>
         <div class="cert-title">JScript in Selerix BenSelect</div>
         <div class="cert-sub">Certificate of completion — all 14 modules across Language Foundation, BenSelect Architecture, and Applied JScript tracks.</div>
         <span class="badge b-green" style="font-size:12px;padding:6px 16px">✓ Certified</span>
@@ -3635,7 +3660,7 @@ function renderChallenge(moduleId) {
 
   return `
     <div class="challenge-card" id="challenge-card-${moduleId}">
-      <div class="challenge-eyebrow">⌨ Coding Challenge</div>
+      <div class="challenge-eyebrow"><span style="display:inline-flex;vertical-align:middle;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 2,10 9,3 16,10 14,10"/><polyline points="4,10 4,15 14,15 14,10"/><line x1="9" y1="15" x2="9" y2="11"/><line x1="7" y1="11" x2="11" y2="11"/></svg></span>Coding Challenge</div>
       <div class="challenge-title">${ch.title}</div>
       <div class="challenge-intro">${ch.intro}</div>
       <div class="challenge-task-label">Your task</div>
@@ -3656,10 +3681,10 @@ function renderChallenge(moduleId) {
           ${submitted ? 'Re-submit ↗' : 'Check my solution ↗'}
         </button>
         <span class="hints-toggle" onclick="toggleHints(${moduleId})">
-          💡 ${hintsVisible ? 'Hide' : 'Show'} hints (${ch.hints.length})
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4.5 4.5 0 0 1 3 7.94V11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1.06A4.5 4.5 0 0 1 8 2Z"/><line x1="6" y1="13.5" x2="10" y2="13.5"/><line x1="6.5" y1="15" x2="9.5" y2="15"/></svg> ${hintsVisible ? 'Hide' : 'Show'} hints (${ch.hints.length})
         </span>
         ${submitted ? `<span class="hints-toggle" onclick="toggleSolution(${moduleId})" style="background:var(--success-bg);border-color:rgba(40,168,124,0.2);color:var(--success)">
-          📋 ${solVisible ? 'Hide' : 'Show'} model solution
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 2H12a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h1.5"/><rect x="5.5" y="1" width="5" height="2.5" rx="1"/><line x1="5.5" y1="7" x2="10.5" y2="7"/><line x1="5.5" y1="9.5" x2="10.5" y2="9.5"/><line x1="5.5" y1="12" x2="8" y2="12"/></svg> ${solVisible ? 'Hide' : 'Show'} model solution
         </span>` : ''}
       </div>
       <div class="hints-box ${hintsVisible ? 'hints-visible' : ''}" id="hints-box-${moduleId}">
@@ -3689,7 +3714,7 @@ function toggleHints(moduleId) {
     if (toggle) {
       const ch = CODING_CHALLENGES[moduleId];
       const vis = state_challenges[moduleId].hintsVisible;
-      toggle.textContent = `💡 ${vis ? 'Hide' : 'Show'} hints (${ch.hints.length})`;
+      toggle.textContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4.5 4.5 0 0 1 3 7.94V11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1.06A4.5 4.5 0 0 1 8 2Z"/><line x1="6" y1="13.5" x2="10" y2="13.5"/><line x1="6.5" y1="15" x2="9.5" y2="15"/></svg> ${vis ? 'Hide' : 'Show'} hints (${ch.hints.length})`;
     }
   }
 }
@@ -3705,7 +3730,7 @@ function toggleSolution(moduleId) {
     const toggles = card.querySelectorAll('.hints-toggle');
     if (toggles[1]) {
       const vis = state_challenges[moduleId].solVisible;
-      toggles[1].textContent = `📋 ${vis ? 'Hide' : 'Show'} model solution`;
+      toggles[1].textContent = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 2H12a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h1.5"/><rect x="5.5" y="1" width="5" height="2.5" rx="1"/><line x1="5.5" y1="7" x2="10.5" y2="7"/><line x1="5.5" y1="9.5" x2="10.5" y2="9.5"/><line x1="5.5" y1="12" x2="8" y2="12"/></svg> ${vis ? 'Hide' : 'Show'} model solution`;
     }
   }
 }
@@ -3999,9 +4024,9 @@ function renderUserTopbar() {
           <div class="ud-header-email">${user.email}</div>
           ${user.role === 'admin' ? '<div style="margin-top:4px"><span class="badge b-warn">Admin</span></div>' : ''}
         </div>
-        ${user.role === 'admin' ? '<div class="ud-item" onclick="showAdminPanel()">👥 Manage users</div>' : ''}
-        <div class="ud-item" onclick="showPage(\'progress\')">📊 My progress</div>
-        <div class="ud-item ud-danger" onclick="doSignout()">← Sign out</div>
+        ${user.role === 'admin' ? '<div class="ud-item" onclick="showAdminPanel()"><span style="display:inline-flex;vertical-align:middle;margin-right:6px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="6" r="3"/><path d="M1 15c0-2.76 2.46-5 5.5-5"/><circle cx="12.5" cy="9" r="2"/><path d="M10 13.5c0-1.38 1.12-2.5 2.5-2.5S15 12.12 15 13.5"/><line x1="12.5" y1="6" x2="12.5" y2="7"/><polyline points="11.5,7.5 12.5,8 13.5,7.5"/></svg></span>Manage users</div>' : ''}
+        <div class="ud-item" onclick="showPage(\'progress\')"><span style="display:inline-flex;vertical-align:middle;margin-right:6px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="11" width="3.5" height="5" rx="0.75"/><rect x="7.25" y="7.5" width="3.5" height="8.5" rx="0.75"/><rect x="12.5" y="4" width="3.5" height="12" rx="0.75"/></svg></span>My progress</div>
+        <div class="ud-item ud-danger" onclick="doSignout()"><span style="display:inline-flex;vertical-align:middle;margin-right:6px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/><polyline points="10.5,5 14,8 10.5,11"/><line x1="14" y1="8" x2="6" y2="8"/></svg></span>Sign out</div>
       </div>
     </div>`;
 }
@@ -4074,7 +4099,7 @@ function showAdminPanel() {
       <button class="btn btn-sm" onclick="showPage('dashboard')">← Dashboard</button>
     </div>
     <div class="card">
-      <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon">👥</div>User roster</div></div>
+      <div class="card-hdr"><div class="card-hdr-left"><div class="card-hdr-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="3.5"/><path d="M1 16c0-3.31 2.69-6 6-6h2c3.31 0 6 2.69 6 6"/><circle cx="14" cy="6" r="2.5"/><path d="M17 14c0-2.21-1.34-4.1-3.25-4.73"/></svg></div>User roster</div></div>
       <div style="overflow-x:auto">
         <table class="admin-table">
           <thead>
@@ -4435,11 +4460,11 @@ function renderQuizExercise(moduleId) {
   return `
     <div class="divider" style="margin:24px 0"></div>
     <div id="qex-wrap-${moduleId}" class="qex-wrap">
-      <div class="qex-eyebrow">⌨ Coding exercise · +2 bonus points</div>
+      <div class="qex-eyebrow"><span style="display:inline-flex;vertical-align:middle;margin-right:4px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4,10 2,10 9,3 16,10 14,10"/><polyline points="4,10 4,15 14,15 14,10"/><line x1="9" y1="15" x2="9" y2="11"/><line x1="7" y1="11" x2="11" y2="11"/></svg></span>Coding exercise · +2 bonus points</div>
       <div class="qex-title">Apply what you just learned</div>
       <div class="qex-prompt">${ex.prompt}</div>
       <div class="qex-hint-row">
-        <span class="qex-hint-toggle" onclick="toggleQexHint(${moduleId})">💡 Show hint</span>
+        <span class="qex-hint-toggle" onclick="toggleQexHint(${moduleId})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4.5 4.5 0 0 1 3 7.94V11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1.06A4.5 4.5 0 0 1 8 2Z"/><line x1="6" y1="13.5" x2="10" y2="13.5"/><line x1="6.5" y1="15" x2="9.5" y2="15"/></svg> Show hint</span>
         <div class="qex-hint" id="qex-hint-${moduleId}" style="display:none">${ex.hint}</div>
       </div>
       <div class="qex-editor-label">Your answer</div>
@@ -4456,7 +4481,7 @@ function toggleQexHint(id) {
   if (!hint) return;
   const visible = hint.style.display !== 'none';
   hint.style.display = visible ? 'none' : 'block';
-  if (toggle) toggle.textContent = visible ? '💡 Show hint' : '💡 Hide hint';
+  if (toggle) toggle.innerHTML = visible ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4.5 4.5 0 0 1 3 7.94V11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1.06A4.5 4.5 0 0 1 8 2Z"/><line x1="6" y1="13.5" x2="10" y2="13.5"/><line x1="6.5" y1="15" x2="9.5" y2="15"/></svg> Show hint' : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2a4.5 4.5 0 0 1 3 7.94V11a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-1.06A4.5 4.5 0 0 1 8 2Z"/><line x1="6" y1="13.5" x2="10" y2="13.5"/><line x1="6.5" y1="15" x2="9.5" y2="15"/></svg> Hide hint';
 }
 
 function saveQexCode(id) {
@@ -4499,7 +4524,7 @@ function showQexResult(moduleId, result) {
         '<span class="badge ' + (passed ? 'b-green' : result.earned > 0 ? 'b-warn' : 'b-red') + '">' + result.earned + '/' + result.total + ' pts</span>' +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:5px">' + checksHtml + '</div>' +
-      (!passed ? '<div class="qex-solution-reveal" id="qex-sol-' + moduleId + '" onclick="showQexSolution(' + moduleId + ')">📋 Show correct answer</div>' : '') +
+      (!passed ? '<div class="qex-solution-reveal" id="qex-sol-' + moduleId + '" onclick="showQexSolution(' + moduleId + ')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 2H12a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h1.5"/><rect x="5.5" y="1" width="5" height="2.5" rx="1"/><line x1="5.5" y1="7" x2="10.5" y2="7"/><line x1="5.5" y1="9.5" x2="10.5" y2="9.5"/><line x1="5.5" y1="12" x2="8" y2="12"/></svg> Show correct answer</div>' : '') +
     '</div>';
   el.style.display = 'block';
 }
