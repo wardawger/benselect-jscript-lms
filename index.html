@@ -1535,7 +1535,21 @@ Event.Debug("Hello, " + empName + "!");</div>
   <div class="outcome-text">Employees with Prior Decline = 1 see the "Prior Decline" rate table (typically higher rates or restricted benefits). Employees with Prior Decline = 0 or empty see "default" rates. The enrollment UI does not change visually — only the rates differ. No error occurs if the custom field does not exist; CustomFields returns null for missing fields, and null == 1 is false, so the else branch runs safely.</div>
 </div>
 <div class="info-box">📌 Key takeaway: The Event object is your gateway to everything. All BenSelect data flows through it. Event.Debug() is your only visibility tool during testing.</div>`,
-2:`<h2>Variables: var vs const</h2>
+2:`<div class="lesson-video-wrap">
+  <div class="lesson-video-header">
+    <div class="lesson-video-icon">▶</div>
+    <div>
+      <div class="lesson-video-title">Module 2 — Language Fundamentals & Type System</div>
+      <div class="lesson-video-sub">Watch before reading!</div>
+    </div>
+  </div>
+  <video controls preload="metadata" poster="">
+    <source src="videos/module2_fundamentals.mp4" type="video/mp4">
+    <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="videos/module2_fundamentals.mp4" style="color:#4A9FD4">Download the video</a>.</p>
+  </video>
+  <div class="lesson-video-footer"><a href="videos/module2_fundamentals.mp4" download style="color:#4A9FD4">Download</a></div>
+</div>
+<h2>Variables: var vs const</h2>
 <p>JScript.NET uses <span class="ic">var</span> for mutable variables and <span class="ic">const</span> for immutable configuration values. Constants should be named UPPER_SNAKE_CASE and placed at the top of the script for easy editing.</p>
 <div class="code-block"><span class="kw">const</span> CUTOFF_DAY = 15;
 <span class="kw">const</span> DEATH_REASON_ID = 304;
