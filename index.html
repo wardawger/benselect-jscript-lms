@@ -449,7 +449,7 @@ textarea.code-ans::placeholder { color: #4A6880; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
-  .sidebar { display: none; }
+  /* sidebar visibility is handled by transform in the mobile nav CSS below */
   .main { margin-left: 0; }
   .stat-grid { grid-template-columns: 1fr 1fr; }
   .two-col { grid-template-columns: 1fr; }
@@ -524,7 +524,7 @@ textarea.code-ans::placeholder { color: #4A6880; }
   color: var(--text-light); font-size: 16px; pointer-events: none;
 }
 .glossary-filters {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+  display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px;
 }
 .gf-btn {
   padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
@@ -544,35 +544,64 @@ textarea.code-ans::placeholder { color: #4A6880; }
   background: var(--blue-pale); color: var(--blue);
   font-size: 10px; padding: 1px 7px; border-radius: 10px; font-weight: 500;
 }
-.gloss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gloss-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
 .gloss-card {
   background: var(--white); border: 1px solid #E8F0F8;
   border-radius: var(--radius-lg); padding: 14px 16px;
   box-shadow: var(--shadow-sm); transition: border-color 0.15s;
   cursor: default;
+  min-width: 0;       /* prevent grid blowout */
+  overflow: hidden;   /* contain long content */
+  word-break: break-word;
 }
 .gloss-card:hover { border-color: var(--accent); }
 .gloss-term {
   font-family: var(--mono); font-size: 12.5px; font-weight: 600;
   color: var(--navy); margin-bottom: 5px;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .gloss-cat {
   display: inline-block; font-size: 9px; padding: 2px 6px;
   border-radius: 3px; font-weight: 600; margin-bottom: 6px;
   text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--mono);
+  white-space: nowrap;
 }
-.gloss-def { font-size: 12.5px; color: var(--text-mid); line-height: 1.6; }
+.gloss-def {
+  font-size: 12.5px; color: var(--text-mid); line-height: 1.6;
+  word-break: break-word;
+}
 .gloss-example {
   font-family: var(--mono); font-size: 11px; color: var(--blue);
   background: var(--blue-pale); padding: 6px 10px;
   border-radius: var(--radius); margin-top: 8px; display: block;
+  overflow-x: auto;          /* scroll long code examples */
+  word-break: break-all;     /* wrap very long tokens */
+  white-space: pre-wrap;     /* preserve code formatting */
 }
 .gloss-hidden { display: none; }
 .no-results {
   text-align: center; padding: 40px 20px; color: var(--text-light);
   font-size: 14px;
 }
-@media(max-width:600px){ .gloss-grid { grid-template-columns: 1fr; } }
+/* Responsive grid breakpoints */
+@media (max-width: 900px) {
+  .gloss-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .gloss-grid { grid-template-columns: 1fr; }
+  .gloss-card { padding: 12px 14px; }
+  .gloss-term { font-size: 12px; }
+  .gloss-def  { font-size: 12px; }
+  .gloss-example { font-size: 10.5px; }
+  .glossary-search { font-size: 13px; padding: 10px 14px 10px 38px; }
+  .gf-btn { padding: 5px 10px; font-size: 11px; }
+  .glossary-search-wrap { margin-bottom: 14px; }
+}
 /* ── CODING CHALLENGE COMPONENTS ── */
 .challenge-card {
   background: var(--white); border: 1px solid #E8F0F8;
@@ -1098,12 +1127,21 @@ textarea.qex-editor::placeholder { color: #4A6880; }
 
 /* ── SIDEBAR NAV ICONS ── */
 .nav-icon {
-  width: 18px; min-width: 18px; height: 18px;
+  width: 16px; min-width: 16px; height: 16px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 15px; flex-shrink: 0;
-  /* replace the old nav-dot */
+  flex-shrink: 0; opacity: 0.55;
+  transition: opacity 0.15s;
 }
-/* Remove old nav-dot style from icon nav items */
+.nav-icon svg {
+  width: 100%; height: 100%;
+  color: inherit;
+  display: block;
+}
+.nav-item:hover .nav-icon { opacity: 0.85; }
+.nav-item.active .nav-icon { opacity: 1; }
+.nav-item.done-nav .nav-icon { opacity: 0.9; }
+.nav-item.locked-nav .nav-icon { opacity: 0.3; }
+/* Remove old nav-dot */
 .nav-item .nav-dot { display: none; }
 
 /* ── MOBILE HAMBURGER & OVERLAY ── */
@@ -1275,16 +1313,16 @@ textarea.qex-editor::placeholder { color: #4A6880; }
   <div class="nav-section">
     <div class="nav-section-label">Navigation</div>
     <div class="nav-item active" onclick="showPage('dashboard')" id="nv-dashboard">
-      <span class="nav-icon">⊞</span> Dashboard
+      <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="9.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="9.5" width="5" height="5" rx="1"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg></span> Dashboard
     </div>
     <div class="nav-item" onclick="showPage('modules')" id="nv-modules">
-      <span class="nav-icon">📚</span> All Modules
+      <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V4"/><path d="M8 4C8 4 6 3 3 3C2.4 3 2 3.4 2 4V12.5C2 13.1 2.4 13.5 3 13.5C6 13.5 8 14.5 8 14.5"/><path d="M8 4C8 4 10 3 13 3C13.6 3 14 3.4 14 4V12.5C14 13.1 13.6 13.5 13 13.5C10 13.5 8 14.5 8 14.5"/></svg></span> All Modules
     </div>
     <div class="nav-item" onclick="showPage('progress')" id="nv-progress">
-      <span class="nav-icon">📈</span> My Progress
+      <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="9" width="3" height="5.5" rx="0.75"/><rect x="6.5" y="6" width="3" height="8.5" rx="0.75"/><rect x="11.5" y="3" width="3" height="11.5" rx="0.75"/></svg></span> My Progress
     </div>
     <div class="nav-item" onclick="showPage('glossary')" id="nv-glossary">
-      <span class="nav-icon">📖</span> Glossary &amp; Index
+      <span class="nav-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/><line x1="4.5" y1="7" x2="9.5" y2="7"/><line x1="4.5" y1="9" x2="8" y2="9"/></svg></span> Glossary &amp; Index
     </div>
   </div>
 
@@ -2213,7 +2251,7 @@ function renderSidebar(){
   SNAV.forEach(({el,ids})=>{
     $(el).innerHTML=ids.map(id=>{
       const p=state.progress[id];const done=p.status==='complete';const un=unlocked(id);const sc=bestScore(id);
-      const icon = done ? '✓' : !un ? '🔒' : '▸';
+      const icon = done ? `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="5.5"/><polyline points="4.5,7 6.5,9 9.5,5"/></svg>` : !un ? `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6.5" width="8" height="6" rx="1"/><path d="M4.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5"/></svg>` : `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="5,3 9,7 5,11"/></svg>`;
       return`<div class="nav-item${done?' done-nav':''}${!un?' locked-nav':''}" onclick="${un?`goToModule(${id})`:''}" id="nv-m-${id}">
         <span class="nav-icon" style="font-size:11px;width:16px;min-width:16px">${icon}</span>
         <span style="flex:1;font-size:12px">M${id} — ${MODULES.find(x=>x.id===id).title.slice(0,18)}…</span>
