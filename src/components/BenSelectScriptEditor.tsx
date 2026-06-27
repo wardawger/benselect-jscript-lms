@@ -4,6 +4,22 @@ import { IS_COMPLETIONS } from '@/data/intellisense'
 import { CodeEditor } from './CodeEditor'
 import { IcInfo, IcExpandCollapse } from './Icons'
 
+// ── Animated collapse panel ─────────────────────────────────────────────────
+function AnimatedCollapse({ open, children }: { open: boolean; children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        maxHeight: open ? '1200px' : '0px',
+        overflow: 'hidden',
+        transition: 'max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease',
+        opacity: open ? 1 : 0,
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
 // ── Event type metadata ─────────────────────────────────────────────────────
 
 const EVENT_TYPE_TOOLTIPS: Record<string, string> = {
@@ -543,6 +559,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
 
   // Grading state
   const [submitted, setSubmitted] = useState(false)
+  const [codeSaved, setCodeSaved] = useState(false)   // true once user has saved the target event type
   const [results, setResults] = useState<{ label: string; earned: boolean }[]>([])
   const [bonus, setBonus] = useState(0)
   const [showSolution, setShowSolution] = useState(false)
@@ -557,22 +574,28 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
     if (!openEventType) return
     const code = scripts[openEventType] ?? ''
 
-    // Push to history
+    // Push to history only — no grading here
     const entry: HistoryEntry = { code, savedAt: new Date().toLocaleString() }
     setHistory(prev => ({ ...prev, [openEventType]: [entry, ...(prev[openEventType] ?? [])].slice(0, 20) }))
 
-    // Grade if this is the exercise event type
+    // Mark as saved if this is the exercise event type
     if (ex && openEventType === targetEventType) {
-      const scored = ex.keywords.map(kw => ({ label: kw.label, earned: kw.pattern.test(code) }))
-      const earned = scored.filter(r => r.earned).length
-      const b = Math.round((earned / ex.keywords.length) * 2)
-      setResults(scored)
-      setBonus(b)
-      setSubmitted(true)
-      onScore?.(b)
+      setCodeSaved(true)
     }
 
     setOpenEventType(null)
+  }
+
+  function handleSubmit() {
+    if (!ex || !targetEventType) return
+    const code = scripts[targetEventType] ?? ''
+    const scored = ex.keywords.map(kw => ({ label: kw.label, earned: kw.pattern.test(code) }))
+    const earned = scored.filter(r => r.earned).length
+    const b = Math.round((earned / ex.keywords.length) * 2)
+    setResults(scored)
+    setBonus(b)
+    setSubmitted(true)
+    onScore?.(b)
   }
 
   function handleRestore(code: string) {
@@ -584,6 +607,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
     if (!ex || !targetEventType) return
     setScripts(prev => ({ ...prev, [targetEventType]: ex.starter }))
     setSubmitted(false)
+    setCodeSaved(false)
     setResults([])
     setBonus(0)
     setShowSolution(false)
@@ -615,11 +639,14 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
           </div>
 
           {/* Hints */}
-          <button onClick={() => setShowHints(h => !h)} className="text-[12px] text-[#2A6EBB] hover:underline mt-2 flex items-center gap-1">
+          <button
+            onClick={() => setShowHints(h => !h)}
+            className="text-[12px] text-[#2A6EBB] hover:underline mt-2 flex items-center gap-1 select-none"
+          >
             <IcInfo size={11} />
             {showHints ? 'Hide hints' : 'Show hints'}
           </button>
-          {showHints && (
+          <AnimatedCollapse open={showHints}>
             <div className="mt-2 bg-[#FFF8ED] border border-[rgba(245,166,35,0.25)] rounded-lg p-3 space-y-1">
               {ex.hints.map((h, i) => (
                 <div key={i} className="text-[12px] font-mono text-[#7A5200] flex items-start gap-1.5">
@@ -627,7 +654,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
                 </div>
               ))}
             </div>
-          )}
+          </AnimatedCollapse>
         </div>
       )}
 
@@ -680,7 +707,26 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
         <span className="text-[12px] text-[#1A5296] underline cursor-default opacity-50">View All</span>
       </div>
 
-      {/* Grading results (shown after save in quiz mode) */}
+      {/* Quiz mode: Submit for Grading button (shown after save, before submit) */}
+      {mode === 'quiz' && codeSaved && !submitted && ex && (
+        <div className="px-4 py-3 border-t border-[#E8EEF4] flex items-center gap-3 bg-[#F8FAFC]">
+          <span className="text-[12px] text-emerald-700 font-medium flex items-center gap-1">
+            ✓ Code saved
+          </span>
+          <button
+            onClick={handleSubmit}
+            className="ml-auto text-[12px] font-semibold text-white px-4 py-1.5 rounded-lg transition-opacity hover:opacity-90"
+            style={{ background: '#007aff' }}
+          >
+            Submit for Grading →
+          </button>
+          <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-3 py-1.5 rounded-lg hover:bg-[#F4F7FB]">
+            Reset
+          </button>
+        </div>
+      )}
+
+      {/* Grading results (shown after submit in quiz mode) */}
       {submitted && ex && (
         <div className="border-t border-[#E8EEF4]">
           <div className={`m-4 rounded-xl p-4 border ${bonus === 2 ? 'bg-emerald-50 border-emerald-200' : bonus === 1 ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200'}`}>
@@ -700,7 +746,10 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
             </div>
           </div>
           <div className="px-4 pb-4 flex items-center gap-3">
-            <button onClick={() => setShowSolution(s => !s)} className="text-[12px] text-[#2A6EBB] hover:underline flex items-center gap-1">
+            <button
+              onClick={() => setShowSolution(s => !s)}
+              className="text-[12px] text-[#2A6EBB] hover:underline flex items-center gap-1 select-none"
+            >
               <IcExpandCollapse size={11} open={showSolution} />
               {showSolution ? 'Hide solution' : 'View solution'}
             </button>
@@ -708,33 +757,39 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
               Reset &amp; Try Again
             </button>
           </div>
-          {showSolution && (
+          <AnimatedCollapse open={showSolution}>
             <div className="px-4 pb-4">
               <pre className="bg-[#0B1829] text-[#B8D4EC] font-mono text-[12px] p-4 rounded-xl overflow-x-auto leading-relaxed">{ex.solution}</pre>
               <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-[#3A5068]">
                 <strong className="text-[#0B1829]">Explanation: </strong>{ex.solutionExplain}
               </div>
             </div>
-          )}
+          </AnimatedCollapse>
         </div>
       )}
 
       {/* Lesson mode: show solution after save */}
-      {mode === 'lesson' && !submitted && Object.keys(scripts).some(k => k === targetEventType && scripts[k] !== (ex?.starter ?? '')) && (
-        <div className="px-4 py-3 border-t border-[#E8EEF4] flex items-center gap-3">
-          <span className="text-[12px] text-emerald-700 font-medium">✓ Code saved</span>
-          <button onClick={() => setShowSolution(s => !s)} className="text-[12px] text-[#2A6EBB] hover:underline">
-            {showSolution ? 'Hide solution' : 'View solution'}
-          </button>
-          <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-3 py-1 rounded hover:bg-[#F4F7FB]">Reset</button>
-        </div>
-      )}
-      {mode === 'lesson' && showSolution && ex && (
-        <div className="px-4 pb-4">
-          <pre className="bg-[#0B1829] text-[#B8D4EC] font-mono text-[12px] p-4 rounded-xl overflow-x-auto leading-relaxed">{ex.solution}</pre>
-          <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-[#3A5068]">
-            <strong className="text-[#0B1829]">Explanation: </strong>{ex.solutionExplain}
+      {mode === 'lesson' && codeSaved && ex && (
+        <div className="border-t border-[#E8EEF4]">
+          <div className="px-4 py-3 flex items-center gap-3">
+            <span className="text-[12px] text-emerald-700 font-medium">✓ Code saved</span>
+            <button
+              onClick={() => setShowSolution(s => !s)}
+              className="text-[12px] text-[#2A6EBB] hover:underline flex items-center gap-1 select-none"
+            >
+              <IcExpandCollapse size={11} open={showSolution} />
+              {showSolution ? 'Hide solution' : 'View solution'}
+            </button>
+            <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-3 py-1 rounded hover:bg-[#F4F7FB]">Reset</button>
           </div>
+          <AnimatedCollapse open={showSolution}>
+            <div className="px-4 pb-4">
+              <pre className="bg-[#0B1829] text-[#B8D4EC] font-mono text-[12px] p-4 rounded-xl overflow-x-auto leading-relaxed">{ex.solution}</pre>
+              <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-[#3A5068]">
+                <strong className="text-[#0B1829]">Explanation: </strong>{ex.solutionExplain}
+              </div>
+            </div>
+          </AnimatedCollapse>
         </div>
       )}
 
