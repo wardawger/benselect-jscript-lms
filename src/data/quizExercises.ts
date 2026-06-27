@@ -17,29 +17,31 @@ export interface QuizExercise {
 
 export const QUIZ_EXERCISES: Record<number, QuizExercise> = {
   1: {
-    title: 'Your First BenSelect Script',
-    intro: 'Every BenSelect JScript begins with a comment that declares its event type. This tells BenSelect when to run your script — OnEligible, OnLifeEvent, or OnReport.',
-    task: 'Write a script that: (1) declares itself as an OnEligible script, (2) creates a constant DEBUG set to false, (3) uses an if(DEBUG) block to print "Script loaded" to the debug window.',
-    starter: '// Write your script below\n',
+    title: 'Prior Decline Rate Group Script',
+    intro: 'Module 1 introduced the Event object and showed how BenSelect JScript reads employee data to control plan behavior. The "Prior Decline" script from the lesson is one of the most common patterns in production — read a custom field and route the employee to the correct rate group.',
+    task: 'Recreate the Prior Decline script from the lesson. Your script must: (1) declare itself as an OnEligible script with a comment, (2) read the "Prior Decline" custom field into a variable called priorDecline, (3) use if/else to set Event.Engine.RateGroup to "Prior Decline" when the field equals 1, and "default" otherwise.',
+    starter: '// EventType: OnEligible\n\n// Read the custom field\n\n// Route to the correct rate group\n',
     hints: [
-      'The event type comment looks like: // EventType: OnEligible',
-      'Use const DEBUG = false; to create a boolean constant',
-      'Event.Debug() sends output to the admin debug window',
-      'An if block looks like: if(DEBUG){ Event.Debug("message"); }',
+      'Custom fields are accessed with: Event.Employee.CustomFields["Field Name"]',
+      'Boolean custom fields return 1 or 0 — always compare with == 1, never if(field)',
+      'Set the rate group with: Event.Engine.RateGroup = "name";',
+      'Your if/else should cover both the "Prior Decline" and the "default" cases',
     ],
     keywords: [
-      { pattern: /\/\/\s*EventType:\s*OnEligible/i,   points: 1, label: '// EventType: OnEligible comment' },
-      { pattern: /const\s+DEBUG\s*=\s*false/,          points: 1, label: 'const DEBUG = false' },
-      { pattern: /if\s*\(\s*DEBUG\s*\)/,               points: 1, label: 'if(DEBUG) block' },
-      { pattern: /Event\.Debug\s*\(/,                  points: 1, label: 'Event.Debug() call' },
+      { pattern: /\/\/\s*EventType:\s*OnEligible/i,                              points: 1, label: '// EventType: OnEligible comment' },
+      { pattern: /Event\.Employee\.CustomFields\s*\[\s*["']Prior Decline["']\s*\]/, points: 1, label: 'CustomFields["Prior Decline"] read' },
+      { pattern: /==\s*1/,                                                         points: 1, label: '== 1 comparison (not truthy check)' },
+      { pattern: /Event\.Engine\.RateGroup\s*=/,                                   points: 1, label: 'Event.Engine.RateGroup assignment' },
     ],
     solution: `// EventType: OnEligible
-const DEBUG = false;
+var priorDecline = Event.Employee.CustomFields["Prior Decline"];
 
-if(DEBUG){
-    Event.Debug("Script loaded");
+if(priorDecline == 1){
+    Event.Engine.RateGroup = "Prior Decline";
+} else {
+    Event.Engine.RateGroup = "default";
 }`,
-    solutionExplain: 'The EventType comment is required — BenSelect uses it to route the script to the correct enrollment event. const DEBUG = false is the professional pattern: flip it to true only while troubleshooting, ensuring debug output never reaches employees in production.',
+    solutionExplain: 'This is the exact script from the Module 1 lesson. The EventType comment tells BenSelect when to run it. Custom fields are read through Event.Employee.CustomFields["name"]. Comparing with == 1 (not a truthy check) is required because boolean custom fields return the numbers 1 and 0, not true/false. Event.Engine.RateGroup routes the employee to the named rate table configured in BenSelect.',
   },
 
   2: {
