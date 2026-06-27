@@ -3,24 +3,33 @@ import { GLOSSARY_ITEMS, GLOSS_CATS } from '@/data/glossary'
 import { cn } from '@/lib/utils'
 
 const CAT_COLORS: Record<string, string> = {
-  'BenSelect Core': 'bg-blue-100 text-blue-700',
-  'Enrollment Timing': 'bg-amber-100 text-amber-700',
-  'Script Event Types': 'bg-emerald-100 text-emerald-700',
-  'Underwriting': 'bg-purple-100 text-purple-700',
-  'JScript API': 'bg-sky-100 text-sky-700',
-  '.NET Classes': 'bg-rose-100 text-rose-700',
-  'JScript.NET Concepts': 'bg-indigo-100 text-indigo-700',
+  'BenSelect Core': 'bg-blue-50 text-blue-700',
+  'Enrollment Timing': 'bg-amber-50 text-amber-700',
+  'GI & Underwriting': 'bg-purple-50 text-purple-700',
+  'Event Types': 'bg-emerald-50 text-emerald-700',
+  'Event Object': 'bg-sky-50 text-sky-700',
+  'JScript.NET Language': 'bg-indigo-50 text-indigo-700',
+  'System.DateTime': 'bg-rose-50 text-rose-700',
+  'String Methods': 'bg-orange-50 text-orange-700',
+  'Custom Fields': 'bg-yellow-50 text-yellow-700',
+  'Scripting Patterns': 'bg-teal-50 text-teal-700',
 }
 
 export function GlossaryPage() {
   const [search, setSearch] = useState('')
   const [activecat, setActivecat] = useState<string | null>(null)
 
+  const catCounts = useMemo(() => {
+    const counts: Record<string, number> = { All: GLOSSARY_ITEMS.length }
+    GLOSS_CATS.forEach(c => { counts[c] = GLOSSARY_ITEMS.filter(i => i.cat === c).length })
+    return counts
+  }, [])
+
   const filtered = useMemo(() => {
     return GLOSSARY_ITEMS.filter(item => {
       const matchesCat = !activecat || item.cat === activecat
       const q = search.toLowerCase()
-      const matchesSearch = !q || item.term.toLowerCase().includes(q) || item.def.toLowerCase().includes(q) || (item.ex && item.ex.toLowerCase().includes(q))
+      const matchesSearch = !q || item.term.toLowerCase().includes(q) || item.def.toLowerCase().includes(q) || (item.ex && item.ex.toLowerCase().includes(q)) || item.cat.toLowerCase().includes(q)
       return matchesCat && matchesSearch
     })
   }, [search, activecat])
@@ -50,14 +59,14 @@ export function GlossaryPage() {
         />
       </div>
 
-      {/* Category filters */}
+      {/* Category filters with counts */}
       <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setActivecat(null)}
           className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border-[1.5px] transition-all',
             !activecat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
         >
-          All
+          All <span className="opacity-60">({catCounts['All']})</span>
         </button>
         {GLOSS_CATS.map(cat => (
           <button
@@ -66,7 +75,7 @@ export function GlossaryPage() {
             className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border-[1.5px] transition-all',
               activecat === cat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
           >
-            {cat}
+            {cat} <span className="opacity-60">({catCounts[cat]})</span>
           </button>
         ))}
       </div>
@@ -81,7 +90,7 @@ export function GlossaryPage() {
       {grouped.map(({ cat, items }) => (
         <div key={cat} className="mb-8">
           <div className="flex items-center gap-3 mb-3">
-            <h2 className="text-[11px] font-semibold text-[#7A9BB8] uppercase tracking-wider">{cat}</h2>
+            <h2 className="text-[11px] font-semibold text-[#7A9BB8] uppercase tracking-wider whitespace-nowrap">{cat}</h2>
             <span className="text-[10px] bg-[#EBF4FB] text-[#2A6EBB] px-2 py-0.5 rounded-full font-medium">{items.length}</span>
             <div className="flex-1 h-px bg-[#E8F0F8]" />
           </div>

@@ -48,7 +48,7 @@ export function defaultState(): AppState {
     activeModule: null,
     quizMode: false,
     progress: initProgress(),
-    userName: 'Learner',
+    userName: '',
   }
 }
 

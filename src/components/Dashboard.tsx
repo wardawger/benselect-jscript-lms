@@ -4,6 +4,7 @@ import { getCompletedCount, getOverallScore } from '@/store/progress'
 
 interface DashboardProps {
   state: AppState
+  page?: string
   onNavigate: (page: string, moduleId?: number) => void
 }
 
@@ -14,10 +15,11 @@ const TRACK_BADGE: Record<string, { bg: string; text: string }> = {
   'Exam': { bg: 'bg-red-100 text-red-700', text: 'EX' },
 }
 
-export function Dashboard({ state, onNavigate }: DashboardProps) {
+export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardProps) {
   const completed = getCompletedCount(state.progress)
   const avgScore = getOverallScore(state.progress)
   const pct = Math.round((completed / 14) * 100)
+  const isModulesPage = page === 'modules'
 
   // Find next available module
   const nextModule = MODULES.find(m => state.progress[m.id]?.status === 'available')
@@ -26,13 +28,23 @@ export function Dashboard({ state, onNavigate }: DashboardProps) {
     <div className="p-8 max-w-4xl">
       {/* Page header */}
       <div className="mb-6">
-        <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Welcome back</div>
-        <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight leading-tight">JScript in Selerix BenSelect</h1>
-        <p className="text-[13px] text-[#3A5068] mt-1.5 leading-relaxed">Master BenSelect scripting through 13 modules and a final certification exam.</p>
+        {isModulesPage ? (
+          <>
+            <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Course</div>
+            <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight leading-tight">All Modules</h1>
+            <p className="text-[13px] text-[#3A5068] mt-1.5 leading-relaxed">Browse all 14 modules. Complete each in order to unlock the next.</p>
+          </>
+        ) : (
+          <>
+            <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Welcome back{state.userName ? `, ${state.userName}` : ''}</div>
+            <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight leading-tight">JScript in Selerix BenSelect</h1>
+            <p className="text-[13px] text-[#3A5068] mt-1.5 leading-relaxed">Master BenSelect scripting through 13 modules and a final certification exam.</p>
+          </>
+        )}
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
+      {/* Stats — dashboard only */}
+      {!isModulesPage && <div className="grid grid-cols-4 gap-4 mb-6">
         {[
           { icon: '📚', value: `${completed}/14`, label: 'Modules Done', sub: `${pct}% complete` },
           { icon: '🎯', value: avgScore ? `${avgScore}%` : '—', label: 'Avg Quiz Score', sub: completed > 0 ? 'across completed modules' : 'no quizzes yet' },
@@ -47,10 +59,10 @@ export function Dashboard({ state, onNavigate }: DashboardProps) {
             <div className="text-[12px] text-[#3A5068] mt-1.5">{stat.sub}</div>
           </div>
         ))}
-      </div>
+      </div>}
 
-      {/* Continue card */}
-      {nextModule && (
+      {/* Continue card — dashboard only */}
+      {!isModulesPage && nextModule && (
         <div className="bg-gradient-to-r from-[#0B1829] to-[#112240] rounded-2xl p-6 mb-6 relative overflow-hidden shadow-lg">
           <div className="absolute right-[-20px] top-[-20px] w-32 h-32 rounded-full bg-[rgba(74,159,212,0.12)] pointer-events-none" />
           <div className="relative">

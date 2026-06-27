@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Sidebar } from './components/Sidebar'
 import { Dashboard } from './components/Dashboard'
 import { LessonPage } from './components/LessonPage'
@@ -8,13 +8,96 @@ import { ProgressPage } from './components/ProgressPage'
 import type { AppState } from './store/progress'
 import { loadState, saveState, defaultState } from './store/progress'
 
+function LoginModal({ onSubmit }: { onSubmit: (name: string) => void }) {
+  const [name, setName] = useState('')
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0B1829]/80 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm mx-4">
+        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2A6EBB] to-[#4A9FD4] flex items-center justify-center text-white font-bold text-lg mb-5">BS</div>
+        <h2 className="text-[20px] font-bold text-[#0B1829] mb-1.5">Welcome to BenSelect LMS</h2>
+        <p className="text-[13px] text-[#3A5068] mb-6">What's your name? We'll use it to personalize your progress.</p>
+        <form onSubmit={e => { e.preventDefault(); if (name.trim()) onSubmit(name.trim()) }}>
+          <input
+            autoFocus
+            type="text"
+            placeholder="Your name…"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            className="w-full border-[1.5px] border-[#D0DEF0] rounded-xl px-4 py-3 text-[14px] text-[#0B1829] outline-none focus:border-[#4A9FD4] focus:ring-2 focus:ring-[rgba(74,159,212,0.12)] mb-4 transition-all"
+          />
+          <button
+            type="submit"
+            disabled={!name.trim()}
+            className="w-full bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] text-white font-medium py-3 rounded-xl text-[14px] hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            Start Learning →
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+function UserDropdown({ userName, onRename, onReset }: { userName: string; onRename: () => void; onReset: () => void }) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-2 text-[13px] font-medium text-[#0B1829] bg-[#F4F7FB] hover:bg-[#EBF4FB] border border-[#E2ECF5] px-3 py-1.5 rounded-lg transition-colors"
+      >
+        <span className="w-6 h-6 rounded-full bg-gradient-to-br from-[#2A6EBB] to-[#4A9FD4] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+          {userName.charAt(0).toUpperCase()}
+        </span>
+        <span className="max-w-[120px] truncate">{userName}</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" className={`transition-transform ${open ? 'rotate-180' : ''}`}><polyline points="2,4 6,8 10,4"/></svg>
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1.5 w-44 bg-white rounded-xl shadow-lg border border-[#E2ECF5] overflow-hidden z-50">
+          <button
+            onClick={() => { onRename(); setOpen(false) }}
+            className="w-full text-left px-4 py-2.5 text-[13px] text-[#3A5068] hover:bg-[#F4F7FB] flex items-center gap-2.5"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M10 2.5l1.5 1.5L4.5 11H3v-1.5L10 2.5z"/></svg>
+            Change Name
+          </button>
+          <div className="h-px bg-[#E8F0F8]" />
+          <button
+            onClick={() => { if (confirm('Reset all progress? This cannot be undone.')) { onReset(); setOpen(false) } }}
+            className="w-full text-left px-4 py-2.5 text-[13px] text-[#E84C4C] hover:bg-red-50 flex items-center gap-2.5"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 7a5 5 0 1 0 1-3"/><polyline points="1,2 1,5 4,5"/></svg>
+            Reset Progress
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function App() {
   const [state, setState] = useState<AppState>(loadState)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(!loadState().userName)
 
   useEffect(() => {
     saveState(state)
   }, [state])
+
+  function setUserName(name: string) {
+    setState(prev => ({ ...prev, userName: name }))
+    setShowLoginModal(false)
+  }
 
   function navigate(page: string, moduleId?: number) {
     setState(prev => ({
@@ -64,6 +147,7 @@ export default function App() {
 
   function resetProgress() {
     const fresh = defaultState()
+    fresh.userName = state.userName
     setState(fresh)
     saveState(fresh)
   }
@@ -71,8 +155,9 @@ export default function App() {
   function renderContent() {
     switch (state.page) {
       case 'dashboard':
+        return <Dashboard state={state} page="dashboard" onNavigate={navigate} />
       case 'modules':
-        return <Dashboard state={state} onNavigate={navigate} />
+        return <Dashboard state={state} page="modules" onNavigate={navigate} />
       case 'lesson':
         if (state.activeModule) {
           return (
@@ -84,7 +169,7 @@ export default function App() {
             />
           )
         }
-        return <Dashboard state={state} onNavigate={navigate} />
+        return <Dashboard state={state} page="dashboard" onNavigate={navigate} />
       case 'quiz':
         if (state.activeModule) {
           return (
@@ -95,13 +180,13 @@ export default function App() {
             />
           )
         }
-        return <Dashboard state={state} onNavigate={navigate} />
+        return <Dashboard state={state} page="dashboard" onNavigate={navigate} />
       case 'glossary':
         return <GlossaryPage />
       case 'progress':
         return <ProgressPage state={state} onNavigate={navigate} onReset={resetProgress} />
       default:
-        return <Dashboard state={state} onNavigate={navigate} />
+        return <Dashboard state={state} page="dashboard" onNavigate={navigate} />
     }
   }
 
@@ -116,6 +201,8 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen bg-[#F4F7FB]">
+      {showLoginModal && <LoginModal onSubmit={setUserName} />}
+
       {/* Desktop sidebar */}
       <div className="hidden lg:block fixed top-0 left-0 h-screen w-60 z-30">
         <Sidebar state={state} onNavigate={navigate} />
@@ -151,9 +238,16 @@ export default function App() {
             <span className="text-[13px] font-medium text-[#0B1829]">{pageTitle[state.page] ?? 'Dashboard'}</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-[11px] font-mono text-[#2A6EBB] bg-[#EBF4FB] px-3 py-1 rounded-full">
+            <span className="hidden sm:inline text-[11px] font-mono text-[#2A6EBB] bg-[#EBF4FB] px-3 py-1 rounded-full">
               {Object.values(state.progress).filter(p => p.status === 'complete').length}/14 Complete
             </span>
+            {state.userName && (
+              <UserDropdown
+                userName={state.userName}
+                onRename={() => setShowLoginModal(true)}
+                onReset={resetProgress}
+              />
+            )}
           </div>
         </header>
 
