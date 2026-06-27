@@ -216,15 +216,31 @@ export default function App() {
         <Sidebar state={state} onNavigate={navigate} />
       </div>
 
-      {/* Mobile overlay */}
-      {mobileNavOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 flex">
-          <div className="fixed inset-0 bg-black/50" onClick={() => setMobileNavOpen(false)} />
-          <div className="relative z-50 w-60 h-full">
-            <Sidebar state={state} onNavigate={navigate} onClose={() => setMobileNavOpen(false)} />
-          </div>
+      {/* Mobile overlay — always mounted, animated in/out */}
+      <div
+        className="lg:hidden fixed inset-0 z-40 flex"
+        style={{
+          pointerEvents: mobileNavOpen ? 'auto' : 'none',
+        }}
+      >
+        <div
+          className="fixed inset-0 bg-black/50"
+          onClick={() => setMobileNavOpen(false)}
+          style={{
+            opacity: mobileNavOpen ? 1 : 0,
+            transition: 'opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
+        />
+        <div
+          className="relative z-50 w-60 h-full"
+          style={{
+            transform: mobileNavOpen ? 'translateX(0)' : 'translateX(-240px)',
+            transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
+        >
+          <Sidebar state={state} onNavigate={navigate} onClose={() => setMobileNavOpen(false)} />
         </div>
-      )}
+      </div>
 
       {/* Main content — margin-left syncs with sidebar slide */}
       <div className={`flex-1 flex flex-col min-h-screen sidebar-push ${sidebarCollapsed ? 'sidebar-push--collapsed' : ''}`}>
@@ -246,9 +262,18 @@ export default function App() {
             >
               <IcSidebarToggle size={18} />
             </button>
-            <span className="text-[13px] text-[#7A9BB8]">BenSelect LMS</span>
-            <span className="text-[#E8F0F8]">›</span>
-            <span className="text-[13px] font-medium text-[#0B1829]">{pageTitle[state.page] ?? 'Dashboard'}</span>
+            <button
+              onClick={() => navigate('dashboard')}
+              className="text-[13px] text-[#7A9BB8] hover:text-[#2A6EBB] transition-colors"
+            >
+              BenSelect LMS
+            </button>
+            {state.page !== 'dashboard' && (
+              <>
+                <span className="text-[#E8F0F8]">›</span>
+                <span className="text-[13px] font-medium text-[#0B1829]">{pageTitle[state.page] ?? 'Dashboard'}</span>
+              </>
+            )}
           </div>
           <div className="flex items-center gap-3">
             <span className="hidden sm:inline text-[11px] font-mono text-[#2A6EBB] bg-[#EBF4FB] px-3 py-1 rounded-full">
