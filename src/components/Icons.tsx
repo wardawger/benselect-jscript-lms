@@ -193,6 +193,16 @@ export function IcInfo({ size = 12, className }: IconProps) {
   )
 }
 
+export function IcSidebarToggle({ size = 16, className }: IconProps) {
+  // Panel-left icon: outer rect + vertical divider representing sidebar
+  return (
+    <svg width={size} height={size} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <rect x="1.5" y="2" width="13" height="12" rx="1.5"/>
+      <line x1="5.5" y1="2" x2="5.5" y2="14"/>
+    </svg>
+  )
+}
+
 export function IcArrowRight({ size = 14, className }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>

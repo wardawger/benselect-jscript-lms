@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { IcEdit, IcReset, IcMenu, IcChevronDown } from './components/Icons'
+import { IcEdit, IcReset, IcMenu, IcChevronDown, IcSidebarToggle } from './components/Icons'
 import { Sidebar } from './components/Sidebar'
 import { Dashboard } from './components/Dashboard'
 import { LessonPage } from './components/LessonPage'
@@ -90,6 +90,7 @@ export default function App() {
   const [state, setState] = useState<AppState>(loadState)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(!loadState().userName)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   useEffect(() => {
     saveState(state)
@@ -204,8 +205,14 @@ export default function App() {
     <div className="flex min-h-screen bg-[#F4F7FB]">
       {showLoginModal && <LoginModal onSubmit={setUserName} />}
 
-      {/* Desktop sidebar */}
-      <div className="hidden lg:block fixed top-0 left-0 h-screen w-60 z-30">
+      {/* Desktop sidebar — slides in/out with ease */}
+      <div
+        className="hidden lg:block fixed top-0 left-0 h-screen w-60 z-30"
+        style={{
+          transform: sidebarCollapsed ? 'translateX(-240px)' : 'translateX(0)',
+          transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
         <Sidebar state={state} onNavigate={navigate} />
       </div>
 
@@ -219,16 +226,25 @@ export default function App() {
         </div>
       )}
 
-      {/* Main content */}
-      <div className="flex-1 lg:ml-60 flex flex-col min-h-screen">
+      {/* Main content — margin-left syncs with sidebar slide */}
+      <div className={`flex-1 flex flex-col min-h-screen sidebar-push ${sidebarCollapsed ? 'sidebar-push--collapsed' : ''}`}>
         {/* Top bar */}
-        <header className="bg-white border-b border-[#E2ECF5] px-6 h-[60px] flex items-center justify-between sticky top-0 z-20 shadow-sm">
-          <div className="flex items-center gap-3">
+        <header className="bg-white border-b border-[#E2ECF5] px-4 h-[60px] flex items-center justify-between sticky top-0 z-20 shadow-sm">
+          <div className="flex items-center gap-2">
+            {/* Mobile hamburger */}
             <button
               className="lg:hidden p-2 rounded-lg text-[#7A9BB8] hover:bg-[#F4F7FB]"
               onClick={() => setMobileNavOpen(true)}
             >
               <IcMenu size={20} />
+            </button>
+            {/* Desktop sidebar toggle */}
+            <button
+              className="hidden lg:flex p-2 rounded-lg text-[#7A9BB8] hover:bg-[#F4F7FB] hover:text-[#2A6EBB] transition-colors"
+              onClick={() => setSidebarCollapsed(c => !c)}
+              title={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
+            >
+              <IcSidebarToggle size={18} />
             </button>
             <span className="text-[13px] text-[#7A9BB8]">BenSelect LMS</span>
             <span className="text-[#E8F0F8]">›</span>

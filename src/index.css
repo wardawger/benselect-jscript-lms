@@ -80,6 +80,17 @@
   --bs-danger: #E84C4C;
 }
 
+/* ── SIDEBAR SLIDE ──────────────────────────────────────────────────── */
+@media (min-width: 1024px) {
+  .sidebar-push {
+    margin-left: 240px;
+    transition: margin-left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sidebar-push--collapsed {
+    margin-left: 0px;
+  }
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
