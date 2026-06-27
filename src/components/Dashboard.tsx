@@ -56,7 +56,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
   ]
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl">
       {/* Page header */}
       <div className="mb-6">
         {isModulesPage ? (
@@ -78,7 +78,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
 
       {/* Stats — dashboard only */}
       {!isModulesPage && (
-        <div className="grid grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
           {stats.map(stat => (
             <div key={stat.label} className="bg-white rounded-xl p-4 shadow-sm border border-[#E8F0F8] relative overflow-hidden hover:shadow-md transition-shadow">
               <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4]" />
@@ -95,7 +95,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
 
       {/* Continue card — dashboard only */}
       {!isModulesPage && nextModule && (
-        <div className="bg-gradient-to-r from-[#0B1829] to-[#112240] rounded-2xl p-6 mb-6 relative overflow-hidden shadow-lg">
+        <div className="bg-gradient-to-r from-[#0B1829] to-[#112240] rounded-2xl p-4 sm:p-6 mb-6 relative overflow-hidden shadow-lg">
           <div className="absolute right-[-20px] top-[-20px] w-32 h-32 rounded-full bg-[rgba(74,159,212,0.12)] pointer-events-none" />
           <div className="relative">
             <div className="text-[10px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Continue Learning</div>
@@ -119,7 +119,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
             <div className="text-[11px] font-semibold text-[#7A9BB8] uppercase tracking-wider whitespace-nowrap">{track.label}</div>
             <div className="flex-1 h-px bg-[#E8F0F8]" />
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {track.ids.map(id => {
               const mod    = MODULES.find(m => m.id === id)!
               const p      = state.progress[id]
@@ -142,7 +142,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
                   </div>
                   <div className="text-[11px] font-mono text-[#7A9BB8] mb-0.5">Module {id}</div>
                   <div className="text-[13px] font-medium text-[#0B1829] leading-snug mb-2">{mod.title}</div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2 flex-wrap mt-auto">
                     <span className="text-[11px] text-[#7A9BB8]">{mod.time}</span>
                     {isDone && (
                       <span className="flex items-center gap-1 text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">

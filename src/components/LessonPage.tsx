@@ -18,7 +18,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
   const p = state.progress[moduleId]
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl">
       {/* Header */}
       <div className="flex items-start justify-between gap-4 mb-5 pb-5 border-b border-[#E8F0F8]">
         <div className="flex-1 min-w-0">

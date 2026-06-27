@@ -100,7 +100,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
 
   if (showResult) {
     return (
-      <div className="p-8 max-w-2xl">
+      <div className="p-4 sm:p-6 lg:p-8 max-w-2xl">
         {/* Result card */}
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#E8F0F8] mb-6">
           <div className="text-center">
@@ -217,7 +217,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
   }
 
   return (
-    <div className="p-8 max-w-2xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-2xl">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">

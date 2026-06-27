@@ -41,7 +41,7 @@ export function GlossaryPage() {
   }, [filtered])
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl">
       <div className="mb-6">
         <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Reference</div>
         <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight">Glossary & Index</h1>
