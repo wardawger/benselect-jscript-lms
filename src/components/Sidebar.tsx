@@ -3,6 +3,7 @@ import type { AppState, ModuleProgress } from '@/store/progress'
 import { getCompletedCount, getOverallScore } from '@/store/progress'
 import { cn } from '@/lib/utils'
 import { IcDashboard, IcModules, IcProgress, IcGlossary, IcCheckCircle, IcLock, IcChevronRight } from './Icons'
+import { ScrollArea } from './ui/scroll-area'
 
 interface SidebarProps {
   state: AppState
@@ -49,7 +50,8 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
       </div>
 
       {/* Scrollable nav body */}
-      <nav className="flex-1 overflow-y-auto py-4 space-y-5">
+      <ScrollArea className="flex-1">
+      <nav className="py-4 space-y-5">
 
         {/* Primary nav */}
         <div>
@@ -122,6 +124,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
           </div>
         ))}
       </nav>
+      </ScrollArea>
 
       {/* Footer */}
       <div className="px-5 py-4 border-t border-white/[0.07] space-y-2">
