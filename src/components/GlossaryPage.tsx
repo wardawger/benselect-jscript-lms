@@ -95,14 +95,14 @@ export function GlossaryPage() {
             <span className="text-[10px] bg-[#EBF4FB] text-[#2A6EBB] px-2 py-0.5 rounded-full font-medium">{items.length}</span>
             <div className="flex-1 h-px bg-[#E8F0F8]" />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {items.map(item => (
               <div key={item.term} className="bg-white border border-[#E8F0F8] rounded-xl p-4 shadow-sm hover:border-[#4A9FD4] transition-colors">
                 <span className={cn('text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded mb-2 inline-block', CAT_COLORS[item.cat] ?? 'bg-gray-100 text-gray-600')}>
                   {item.cat}
                 </span>
-                <div className="font-mono text-[12.5px] font-semibold text-[#0B1829] mb-1.5 break-words">{item.term}</div>
-                <div className="text-[12.5px] text-[#3A5068] leading-relaxed">{item.def}</div>
+                <div className="font-mono text-[12.5px] font-semibold text-[#0B1829] mb-1.5 break-all">{item.term}</div>
+                <div className="text-[12.5px] text-[#3A5068] leading-relaxed break-words">{item.def}</div>
                 {item.ex && (
                   <code className="block font-mono text-[11px] text-[#2A6EBB] bg-[#EBF4FB] px-2.5 py-1.5 rounded-lg mt-2 overflow-x-auto whitespace-pre-wrap break-all">
                     {item.ex}
