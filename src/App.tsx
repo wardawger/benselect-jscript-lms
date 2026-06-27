@@ -55,9 +55,9 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-2 text-[13px] font-medium text-[#0B1829] bg-[#F4F7FB] hover:bg-[#EBF4FB] border border-[#E2ECF5] px-3 py-1.5 rounded-lg transition-colors"
+        className="flex items-center gap-2 text-[13px] font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-[#e2e8f0] px-3 py-1.5 rounded-lg transition-colors"
       >
-        <span className="w-6 h-6 rounded-full bg-gradient-to-br from-[#2A6EBB] to-[#4A9FD4] flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+        <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0" style={{ background: '#007aff' }}>
           {userName.charAt(0).toUpperCase()}
         </span>
         <span className="max-w-[120px] truncate">{userName}</span>
@@ -202,7 +202,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#F4F7FB]">
+    <div className="flex min-h-screen bg-white">
       {showLoginModal && <LoginModal onSubmit={setUserName} />}
 
       {/* Desktop sidebar — slides in/out with ease */}
@@ -245,18 +245,18 @@ export default function App() {
       {/* Main content — margin-left syncs with sidebar slide */}
       <div className={`flex-1 flex flex-col min-h-screen sidebar-push ${sidebarCollapsed ? 'sidebar-push--collapsed' : ''}`}>
         {/* Top bar */}
-        <header className="bg-white border-b border-[#E2ECF5] px-4 h-[60px] flex items-center justify-between sticky top-0 z-20 shadow-sm">
+        <header className="bg-white border-b border-[#e2e8f0] px-4 h-[60px] flex items-center justify-between sticky top-0 z-20 shadow-sm">
           <div className="flex items-center gap-2">
             {/* Mobile hamburger */}
             <button
-              className="lg:hidden p-2 rounded-lg text-[#7A9BB8] hover:bg-[#F4F7FB]"
+              className="lg:hidden p-2 rounded-lg text-slate-400 hover:bg-slate-50 transition-colors"
               onClick={() => setMobileNavOpen(true)}
             >
               <IcMenu size={20} />
             </button>
             {/* Desktop sidebar toggle */}
             <button
-              className="hidden lg:flex p-2 rounded-lg text-[#7A9BB8] hover:bg-[#F4F7FB] hover:text-[#2A6EBB] transition-colors"
+              className="hidden lg:flex p-2 rounded-lg text-slate-400 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
               onClick={() => setSidebarCollapsed(c => !c)}
               title={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
             >
@@ -264,19 +264,19 @@ export default function App() {
             </button>
             <button
               onClick={() => navigate('dashboard')}
-              className="text-[13px] text-[#7A9BB8] hover:text-[#2A6EBB] transition-colors"
+              className="text-[13px] text-slate-400 hover:text-[#007aff] transition-colors"
             >
               BenSelect LMS
             </button>
             {state.page !== 'dashboard' && (
               <>
-                <span className="text-[#E8F0F8]">›</span>
-                <span className="text-[13px] font-medium text-[#0B1829]">{pageTitle[state.page] ?? 'Dashboard'}</span>
+                <span className="text-slate-200 text-[13px]">›</span>
+                <span className="text-[13px] font-medium text-[#0d1e3d]">{pageTitle[state.page] ?? 'Dashboard'}</span>
               </>
             )}
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline text-[11px] font-mono text-[#2A6EBB] bg-[#EBF4FB] px-3 py-1 rounded-full">
+            <span className="hidden sm:inline text-[11px] font-mono px-3 py-1 rounded-full font-semibold" style={{ background: '#e1f0ff', color: '#007aff' }}>
               {Object.values(state.progress).filter(p => p.status === 'complete').length}/14 Complete
             </span>
             {state.userName && (

@@ -9,11 +9,54 @@ interface DashboardProps {
   onNavigate: (page: string, moduleId?: number) => void
 }
 
-const TRACK_BADGE: Record<string, { bg: string; text: string }> = {
-  'Track 1': { bg: 'bg-blue-100 text-blue-700',     text: 'T1' },
-  'Track 2': { bg: 'bg-amber-100 text-amber-700',   text: 'T2' },
-  'Track 3': { bg: 'bg-emerald-100 text-emerald-700', text: 'T3' },
-  'Exam':    { bg: 'bg-red-100 text-red-700',        text: 'EX' },
+// ── Radial SVG progress ring ─────────────────────────────────────────────────
+function RadialProgress({ pct, size = 96 }: { pct: number; size?: number }) {
+  const r = (size - 12) / 2
+  const circ = 2 * Math.PI * r
+  const dash = (pct / 100) * circ
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="rotate-[-90deg]">
+      <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e1f0ff" strokeWidth={6} />
+      <circle
+        cx={size / 2} cy={size / 2} r={r} fill="none"
+        stroke="#007aff" strokeWidth={6}
+        strokeDasharray={`${dash} ${circ}`}
+        strokeLinecap="round"
+        style={{ transition: 'stroke-dasharray 0.6s ease' }}
+      />
+    </svg>
+  )
+}
+
+// ── Status badge ─────────────────────────────────────────────────────────────
+function StatusBadge({ status, score }: { status: string; score?: number }) {
+  if (status === 'complete') {
+    return (
+      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
+        <IcCheck size={8} /> Done{score !== undefined ? ` · ${score}%` : ''}
+      </span>
+    )
+  }
+  if (status === 'available') {
+    return (
+      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full text-[#007aff] border border-[#007aff]/20" style={{ background: '#e1f0ff' }}>
+        Available
+      </span>
+    )
+  }
+  return (
+    <span className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-slate-100 text-slate-400 border border-slate-200">
+      <IcLock size={8} /> Locked
+    </span>
+  )
+}
+
+// ── Track accent colors ───────────────────────────────────────────────────────
+const TRACK_META: Record<string, { dot: string; label: string }> = {
+  'Track 1': { dot: '#007aff', label: 'T1' },
+  'Track 2': { dot: '#f59e0b', label: 'T2' },
+  'Track 3': { dot: '#10b981', label: 'T3' },
+  'Exam':    { dot: '#ef4444', label: 'EX' },
 }
 
 export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardProps) {
@@ -21,157 +64,260 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
   const avgScore  = getOverallScore(state.progress)
   const pct       = Math.round((completed / 14) * 100)
   const isModulesPage = page === 'modules'
-
   const nextModule = MODULES.find(m => state.progress[m.id]?.status === 'available')
 
-  const stats = [
+  const kpis = [
     {
       Icon: IcLayers,
       value: `${completed}/14`,
       label: 'Modules Done',
-      sub: `${pct}% complete`,
+      sub: `${pct}% of course`,
+      color: '#007aff',
+      bg: '#e1f0ff',
     },
     {
       Icon: IcTarget,
       value: avgScore ? `${avgScore}%` : '—',
       label: 'Avg Quiz Score',
-      sub: completed > 0 ? 'across completed modules' : 'no quizzes yet',
+      sub: completed > 0 ? 'across completed' : 'no quizzes yet',
+      color: '#10b981',
+      bg: '#d1fae5',
     },
     {
       Icon: IcAward,
-      value: completed === 14 ? (
-        <span className="flex items-center gap-1 text-[#2A6EBB]">
-          <IcCheck size={20} className="text-[#2A6EBB]" />
-        </span>
-      ) : '—',
-      label: 'Certification',
-      sub: completed === 14 ? 'Earned!' : 'Complete all modules',
+      value: completed === 14 ? '✓' : `${14 - completed}`,
+      label: completed === 14 ? 'Certified!' : 'Modules Left',
+      sub: completed === 14 ? 'Certificate earned' : 'until completion',
+      color: '#f59e0b',
+      bg: '#fef3c7',
     },
     {
       Icon: IcClock,
       value: '20.5h',
       label: 'Total Content',
-      sub: '14 modules · all tracks',
+      sub: '14 modules · 4 tracks',
+      color: '#8b5cf6',
+      bg: '#ede9fe',
     },
   ]
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl">
-      {/* Page header */}
-      <div className="mb-6">
-        {isModulesPage ? (
-          <>
-            <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Course</div>
-            <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight leading-tight">All Modules</h1>
-            <p className="text-[13px] text-[#3A5068] mt-1.5 leading-relaxed">Browse all 14 modules. Complete each in order to unlock the next.</p>
-          </>
-        ) : (
-          <>
-            <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">
-              Welcome back{state.userName ? `, ${state.userName}` : ''}
-            </div>
-            <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight leading-tight">JScript in Selerix BenSelect</h1>
-            <p className="text-[13px] text-[#3A5068] mt-1.5 leading-relaxed">Master BenSelect scripting through 13 modules and a final certification exam.</p>
-          </>
-        )}
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl space-y-8">
+
+      {/* ── Page header ───────────────────────────────────────────────────── */}
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-1" style={{ color: '#007aff' }}>
+          {isModulesPage ? 'Course' : `Welcome back${state.userName ? `, ${state.userName}` : ''}`}
+        </p>
+        <h1 className="text-[26px] font-bold tracking-tight" style={{ color: '#0d1e3d' }}>
+          {isModulesPage ? 'All Modules' : 'JScript in Selerix BenSelect'}
+        </h1>
+        <p className="text-slate-500 text-[13px] mt-1">
+          {isModulesPage
+            ? 'Browse all 14 modules. Complete each in order to unlock the next.'
+            : 'Master BenSelect scripting through 13 modules and a final certification exam.'}
+        </p>
       </div>
 
-      {/* Stats — dashboard only */}
+      {/* ── KPI Cards ─────────────────────────────────────────────────────── */}
       {!isModulesPage && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
-          {stats.map(stat => (
-            <div key={stat.label} className="bg-white rounded-xl p-4 shadow-sm border border-[#E8F0F8] relative overflow-hidden hover:shadow-md transition-shadow">
-              <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4]" />
-              <div className="w-9 h-9 rounded-lg bg-[#EBF4FB] flex items-center justify-center mb-3 text-[#2A6EBB]">
-                <stat.Icon size={18} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {kpis.map(({ Icon, value, label, sub, color, bg }) => (
+            <div
+              key={label}
+              className="bg-white rounded-xl border border-[#e2e8f0] p-5 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: bg }}>
+                <Icon size={18} style={{ color }} />
               </div>
-              <div className="text-[28px] font-bold text-[#0B1829] leading-none tracking-tight">{stat.value}</div>
-              <div className="text-[11px] text-[#7A9BB8] mt-1 font-medium uppercase tracking-wider">{stat.label}</div>
-              <div className="text-[12px] text-[#3A5068] mt-1.5">{stat.sub}</div>
+              <div>
+                <div className="text-[26px] font-bold leading-none tracking-tight" style={{ color: '#0d1e3d' }}>{value}</div>
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mt-1">{label}</div>
+                <div className="text-[12px] text-slate-500 mt-0.5">{sub}</div>
+              </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Continue card — dashboard only */}
-      {!isModulesPage && nextModule && (
-        <div className="bg-gradient-to-r from-[#0B1829] to-[#112240] rounded-2xl p-4 sm:p-6 mb-6 relative overflow-hidden shadow-lg">
-          <div className="absolute right-[-20px] top-[-20px] w-32 h-32 rounded-full bg-[rgba(74,159,212,0.12)] pointer-events-none" />
-          <div className="relative">
-            <div className="text-[10px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Continue Learning</div>
-            <div className="text-[16px] font-bold text-white mb-1.5 leading-tight">Module {nextModule.id}: {nextModule.title}</div>
-            <div className="text-[12px] text-[rgba(255,255,255,0.5)] mb-4">{nextModule.time} · {nextModule.track}</div>
-            <button
-              onClick={() => onNavigate('lesson', nextModule.id)}
-              className="bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] text-white text-[13px] font-medium px-5 py-2 rounded-lg shadow-md hover:opacity-90 transition-opacity"
-            >
-              Start Module →
-            </button>
-          </div>
-        </div>
-      )}
+      {/* ── Hero: Continue Learning + Radial Progress ──────────────────────── */}
+      {!isModulesPage && (
+        <div
+          className="rounded-2xl overflow-hidden border border-[#e2e8f0] shadow-sm"
+          style={{ background: '#0d1e3d' }}
+        >
+          <div className="flex flex-col sm:flex-row items-stretch">
 
-      {/* Module grid by track */}
-      {TRACK_GROUPS.map(track => (
-        <div key={track.label} className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="flex-1 h-px bg-[#E8F0F8]" />
-            <div className="text-[11px] font-semibold text-[#7A9BB8] uppercase tracking-wider whitespace-nowrap">{track.label}</div>
-            <div className="flex-1 h-px bg-[#E8F0F8]" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {track.ids.map(id => {
-              const mod    = MODULES.find(m => m.id === id)!
-              const p      = state.progress[id]
-              const badge  = TRACK_BADGE[mod.track]
-              const isLocked = p.status === 'locked'
-              const isDone   = p.status === 'complete'
-              return (
-                <button
-                  key={id}
-                  onClick={() => !isLocked && onNavigate('lesson', id)}
-                  disabled={isLocked}
-                  className={`text-left bg-white rounded-xl p-4 border transition-all relative overflow-hidden group ${
-                    isDone ? 'border-emerald-200' : 'border-[#E8F0F8]'
-                  } ${isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md hover:-translate-y-0.5 cursor-pointer shadow-sm'}`}
-                >
-                  {isDone && <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-emerald-500 to-emerald-400" />}
-                  {!isDone && !isLocked && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />}
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${badge.bg}`}>{mod.track}</span>
-                  </div>
-                  <div className="text-[11px] font-mono text-[#7A9BB8] mb-0.5">Module {id}</div>
-                  <div className="text-[13px] font-medium text-[#0B1829] leading-snug mb-2">{mod.title}</div>
-                  <div className="flex items-center justify-between gap-2 flex-wrap mt-auto">
-                    <span className="text-[11px] text-[#7A9BB8]">{mod.time}</span>
-                    {isDone && (
-                      <span className="flex items-center gap-1 text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full">
-                        <IcCheck size={9} className="text-emerald-600" />
-                        Done{p.score ? ` · ${p.score}%` : ''}
+            {/* Left: continue learning */}
+            <div className="flex-1 p-6 sm:p-8 flex flex-col justify-between gap-6">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-white/40 mb-2">Continue Learning</p>
+                {nextModule ? (
+                  <>
+                    <h2 className="text-white text-[18px] font-bold leading-snug mb-1">
+                      Module {nextModule.id}: {nextModule.title}
+                    </h2>
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      <span className="inline-flex items-center gap-1.5 text-[11px] text-white/50">
+                        <IcClock size={11} /> {nextModule.time}
                       </span>
-                    )}
-                    {p.status === 'available' && (
-                      <span className="flex items-center gap-1 text-[10px] text-[#4A9FD4] font-semibold">
-                        Available <IcChevronRight size={10} className="text-[#4A9FD4]" />
-                      </span>
-                    )}
-                    {isLocked && (
-                      <span className="flex items-center gap-1 text-[10px] text-[#B0C8DC]">
-                        <IcLock size={10} className="text-[#B0C8DC]" /> Locked
-                      </span>
-                    )}
-                  </div>
-                  {isDone && (
-                    <div className="mt-2 h-1 bg-[#EBF4FB] rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full" style={{ width: '100%' }} />
+                      <span className="w-px h-3 bg-white/20" />
+                      <span className="text-[11px] text-white/50">{nextModule.track}</span>
                     </div>
-                  )}
-                </button>
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {nextModule.topics.slice(0, 3).map(t => (
+                        <span key={t} className="text-[10px] text-white/40 bg-white/[0.07] px-2.5 py-0.5 rounded-full border border-white/[0.08]">
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <h2 className="text-white text-[18px] font-bold">All modules complete!</h2>
+                )}
+              </div>
+              {nextModule && (
+                <div>
+                  <button
+                    onClick={() => onNavigate('lesson', nextModule.id)}
+                    className="inline-flex items-center gap-2 text-[13px] font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90"
+                    style={{ background: '#007aff' }}
+                  >
+                    Start Module <IcChevronRight size={14} />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Right: radial progress */}
+            <div className="flex items-center justify-center p-6 sm:p-8 border-t sm:border-t-0 sm:border-l border-white/[0.07]">
+              <div className="relative flex items-center justify-center">
+                <RadialProgress pct={pct} size={108} />
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-white font-bold text-[20px] leading-none">{pct}%</span>
+                  <span className="text-white/40 text-[10px] mt-0.5">complete</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Track progress strips */}
+          <div className="border-t border-white/[0.07] px-6 sm:px-8 py-4 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {TRACK_GROUPS.map(track => {
+              const done = track.ids.filter(id => state.progress[id]?.status === 'complete').length
+              const tpct = Math.round((done / track.ids.length) * 100)
+              const meta = TRACK_META[track.label.split(' — ')[0]] ?? { dot: '#007aff', label: '?' }
+              return (
+                <div key={track.label} className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full shrink-0" style={{ background: meta.dot }} />
+                      <span className="text-[10px] text-white/40 font-medium">{meta.label}</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-white/30">{done}/{track.ids.length}</span>
+                  </div>
+                  <div className="h-1 rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{ width: `${tpct}%`, background: meta.dot }}
+                    />
+                  </div>
+                </div>
               )
             })}
           </div>
         </div>
-      ))}
+      )}
+
+      {/* ── Bento Module Grid by Track ────────────────────────────────────── */}
+      <div className="space-y-8">
+        {TRACK_GROUPS.map(track => {
+          const meta = TRACK_META[track.label.split(' — ')[0]] ?? { dot: '#007aff', label: '?' }
+          const done = track.ids.filter(id => state.progress[id]?.status === 'complete').length
+          return (
+            <section key={track.label}>
+              {/* Sticky track header */}
+              <div className="sticky top-[60px] z-10 bg-white/80 backdrop-blur-sm border-b border-[#e2e8f0] mb-4 pb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: meta.dot }} />
+                  <span className="text-[13px] font-bold" style={{ color: '#0d1e3d' }}>
+                    {track.label.split(' — ')[0]}
+                  </span>
+                  <span className="text-slate-400 text-[13px]">—</span>
+                  <span className="text-slate-500 text-[12px]">{track.label.split(' — ')[1] ?? track.desc}</span>
+                </div>
+                <span className="text-[11px] font-mono text-slate-400">{done}/{track.ids.length} done</span>
+              </div>
+
+              {/* Module cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {track.ids.map(id => {
+                  const mod    = MODULES.find(m => m.id === id)!
+                  const p      = state.progress[id]
+                  const isLocked = p.status === 'locked'
+                  const isDone   = p.status === 'complete'
+                  return (
+                    <button
+                      key={id}
+                      onClick={() => !isLocked && onNavigate('lesson', id)}
+                      disabled={isLocked}
+                      className={[
+                        'text-left bg-white rounded-xl border border-[#e2e8f0] p-5 flex flex-col gap-3 transition-all relative overflow-hidden group',
+                        isLocked
+                          ? 'opacity-50 cursor-not-allowed'
+                          : 'hover:shadow-md hover:-translate-y-0.5 cursor-pointer shadow-sm',
+                        isDone ? 'border-emerald-100' : '',
+                      ].join(' ')}
+                    >
+                      {/* Done top bar */}
+                      {isDone && (
+                        <div className="absolute top-0 left-0 right-0 h-[3px] bg-emerald-400 rounded-t-xl" />
+                      )}
+                      {/* Available hover bar */}
+                      {!isDone && !isLocked && (
+                        <div
+                          className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl scale-x-0 group-hover:scale-x-100 transition-transform origin-left"
+                          style={{ background: '#007aff' }}
+                        />
+                      )}
+
+                      {/* Module number + status */}
+                      <div className="flex items-start justify-between gap-2">
+                        <span
+                          className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded"
+                          style={{ background: '#e1f0ff', color: '#007aff' }}
+                        >
+                          M{id}
+                        </span>
+                        <StatusBadge status={p.status} score={p.score} />
+                      </div>
+
+                      {/* Title */}
+                      <div>
+                        <div className="text-[13px] font-semibold leading-snug" style={{ color: '#0d1e3d' }}>
+                          {mod.title}
+                        </div>
+                      </div>
+
+                      {/* Footer meta */}
+                      <div className="flex items-center gap-2 mt-auto flex-wrap">
+                        <span className="flex items-center gap-1 text-[11px] text-slate-400">
+                          <IcClock size={10} /> {mod.time}
+                        </span>
+                        {p.needsReview && (
+                          <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">
+                            Review
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </section>
+          )
+        })}
+      </div>
     </div>
   )
 }
