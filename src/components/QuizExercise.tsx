@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
 import { CodeEditor } from './CodeEditor'
+import { IcInfo, IcExpandCollapse } from './Icons'
 
 interface QuizExerciseProps {
   moduleId: number
@@ -65,9 +66,7 @@ export function QuizExercise({ moduleId, onScore }: QuizExerciseProps) {
         onClick={() => setShowHints(h => !h)}
         className="text-[12px] text-[#2A6EBB] hover:underline mb-3 flex items-center gap-1"
       >
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-          <circle cx="6" cy="6" r="5"/><line x1="6" y1="5" x2="6" y2="9"/><circle cx="6" cy="3.5" r="0.75" fill="currentColor" stroke="none"/>
-        </svg>
+        <IcInfo size={12} />
         {showHints ? 'Hide hints' : 'Show hints'}
       </button>
 
@@ -125,9 +124,7 @@ export function QuizExercise({ moduleId, onScore }: QuizExerciseProps) {
               onClick={() => setShowSolution(s => !s)}
               className="text-[12px] text-[#2A6EBB] hover:underline flex items-center gap-1"
             >
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <polyline points={showSolution ? '2,8 6,4 10,8' : '2,4 6,8 10,4'}/>
-              </svg>
+              <IcExpandCollapse size={12} open={showSolution} />
               {showSolution ? 'Hide solution' : 'View solution'}
             </button>
             {showSolution && (

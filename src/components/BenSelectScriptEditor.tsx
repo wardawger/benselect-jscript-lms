@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
 import { IS_COMPLETIONS } from '@/data/intellisense'
 import { CodeEditor } from './CodeEditor'
+import { IcInfo, IcExpandCollapse } from './Icons'
 
 // ── Event type metadata ─────────────────────────────────────────────────────
 
@@ -615,7 +616,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
 
           {/* Hints */}
           <button onClick={() => setShowHints(h => !h)} className="text-[12px] text-[#2A6EBB] hover:underline mt-2 flex items-center gap-1">
-            <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><circle cx="6" cy="6" r="5"/><line x1="6" y1="5" x2="6" y2="9"/><circle cx="6" cy="3.5" r="0.75" fill="currentColor" stroke="none"/></svg>
+            <IcInfo size={11} />
             {showHints ? 'Hide hints' : 'Show hints'}
           </button>
           {showHints && (
@@ -700,9 +701,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
           </div>
           <div className="px-4 pb-4 flex items-center gap-3">
             <button onClick={() => setShowSolution(s => !s)} className="text-[12px] text-[#2A6EBB] hover:underline flex items-center gap-1">
-              <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-                <polyline points={showSolution ? '2,8 6,4 10,8' : '2,4 6,8 10,4'}/>
-              </svg>
+              <IcExpandCollapse size={11} open={showSolution} />
               {showSolution ? 'Hide solution' : 'View solution'}
             </button>
             <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-3 py-1 rounded hover:bg-[#F4F7FB]">

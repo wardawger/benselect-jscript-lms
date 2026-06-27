@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { IcCheck, IcX } from './Icons'
 import { QUIZ } from '@/data/quizzes'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
 import { BenSelectScriptEditor } from './BenSelectScriptEditor'
@@ -129,9 +130,9 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
             <div className="mb-5">
               <span className={`inline-flex items-center gap-1.5 text-[12px] font-semibold px-4 py-1.5 rounded-full ${passed ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
                 {passed ? (
-                  <><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="2,6 5,9 10,3"/></svg> 60% threshold met</>
+                  <><IcCheck size={12} /> 60% threshold met</>
                 ) : (
-                  <><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg> 60% required to advance</>
+                  <><IcX size={12} /> 60% required to advance</>
                 )}
               </span>
             </div>
@@ -185,8 +186,8 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
               >
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-[10px] font-mono text-[#4A9FD4] uppercase tracking-wider">Q{qi + 1}</span>
-                  <span className={cn('text-[10px] font-semibold px-2 py-0.5 rounded-full', ans.state === 'correct' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700')}>
-                    {ans.state === 'correct' ? '✓ Correct' : '✗ Incorrect'}
+                  <span className={cn('flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full', ans.state === 'correct' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700')}>
+                    {ans.state === 'correct' ? <><IcCheck size={9} /> Correct</> : <><IcX size={9} /> Incorrect</>}
                   </span>
                 </div>
                 <div className="text-[14px] font-semibold text-[#0B1829] mb-3">{q.q}</div>
@@ -198,7 +199,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
                       oi === ans.selected && ans.state === 'wrong' ? 'border-red-300 bg-red-50 text-red-800' :
                       'border-[#E8F0F8] text-[#7A9BB8]'
                     )}>
-                      {oi === q.a && <span className="mr-1">✓</span>}{opt}
+                      {oi === q.a && <IcCheck size={10} className="mr-1 inline-block text-emerald-600" />}{opt}
                     </div>
                   ))}
                 </div>

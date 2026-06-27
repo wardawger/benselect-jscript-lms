@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { IcEdit, IcReset, IcMenu, IcChevronDown } from './components/Icons'
 import { Sidebar } from './components/Sidebar'
 import { Dashboard } from './components/Dashboard'
 import { LessonPage } from './components/LessonPage'
@@ -60,7 +61,7 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
           {userName.charAt(0).toUpperCase()}
         </span>
         <span className="max-w-[120px] truncate">{userName}</span>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" className={`transition-transform ${open ? 'rotate-180' : ''}`}><polyline points="2,4 6,8 10,4"/></svg>
+        <IcChevronDown size={12} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="absolute right-0 top-full mt-1.5 w-44 bg-white rounded-xl shadow-lg border border-[#E2ECF5] overflow-hidden z-50">
@@ -68,7 +69,7 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
             onClick={() => { onRename(); setOpen(false) }}
             className="w-full text-left px-4 py-2.5 text-[13px] text-[#3A5068] hover:bg-[#F4F7FB] flex items-center gap-2.5"
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M10 2.5l1.5 1.5L4.5 11H3v-1.5L10 2.5z"/></svg>
+            <IcEdit size={14} />
             Change Name
           </button>
           <div className="h-px bg-[#E8F0F8]" />
@@ -76,7 +77,7 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
             onClick={() => { if (confirm('Reset all progress? This cannot be undone.')) { onReset(); setOpen(false) } }}
             className="w-full text-left px-4 py-2.5 text-[13px] text-[#E84C4C] hover:bg-red-50 flex items-center gap-2.5"
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><path d="M2 7a5 5 0 1 0 1-3"/><polyline points="1,2 1,5 4,5"/></svg>
+            <IcReset size={14} />
             Reset Progress
           </button>
         </div>
@@ -227,11 +228,7 @@ export default function App() {
               className="lg:hidden p-2 rounded-lg text-[#7A9BB8] hover:bg-[#F4F7FB]"
               onClick={() => setMobileNavOpen(true)}
             >
-              <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 20 20">
-                <line x1="3" y1="6" x2="17" y2="6" />
-                <line x1="3" y1="10" x2="17" y2="10" />
-                <line x1="3" y1="14" x2="17" y2="14" />
-              </svg>
+              <IcMenu size={20} />
             </button>
             <span className="text-[13px] text-[#7A9BB8]">BenSelect LMS</span>
             <span className="text-[#E8F0F8]">›</span>

@@ -2,6 +2,7 @@ import { MODULES, TRACK_GROUPS } from '@/data/modules'
 import type { AppState, ModuleProgress } from '@/store/progress'
 import { getCompletedCount, getOverallScore } from '@/store/progress'
 import { cn } from '@/lib/utils'
+import { IcDashboard, IcModules, IcProgress, IcGlossary, IcCheckCircle, IcLock, IcChevronRight } from './Icons'
 
 interface SidebarProps {
   state: AppState
@@ -9,40 +10,17 @@ interface SidebarProps {
   onClose?: () => void
 }
 
-// SVG icon helpers
-function IconDashboard() {
-  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1.5" y="1.5" width="5" height="5" rx="1"/><rect x="8.5" y="1.5" width="5" height="5" rx="1"/><rect x="1.5" y="8.5" width="5" height="5" rx="1"/><rect x="8.5" y="8.5" width="5" height="5" rx="1"/></svg>
-}
-function IconModules() {
-  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1.5" y="1.5" width="12" height="3" rx="1"/><rect x="1.5" y="6" width="12" height="3" rx="1"/><rect x="1.5" y="10.5" width="12" height="3" rx="1"/></svg>
-}
-function IconProgress() {
-  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1.5" y="9" width="2.5" height="4.5" rx="0.75"/><rect x="6.25" y="6" width="2.5" height="7.5" rx="0.75"/><rect x="11" y="3" width="2.5" height="10.5" rx="0.75"/></svg>
-}
-function IconGlossary() {
-  return <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 2.5h9a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3"/><path d="M3 2.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1"/><line x1="5" y1="5.5" x2="10" y2="5.5"/><line x1="5" y1="8" x2="10" y2="8"/><line x1="5" y1="10.5" x2="8" y2="10.5"/></svg>
-}
-function IconCheck() {
-  return <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="7" cy="7" r="5.5"/><polyline points="4.5,7 6.5,9 9.5,5"/></svg>
-}
-function IconLock() {
-  return <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="6.5" width="8" height="6" rx="1"/><path d="M4.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5"/></svg>
-}
-function IconChevron() {
-  return <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="5,3 9,7 5,11"/></svg>
-}
-
 const NAV_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', Icon: IconDashboard },
-  { id: 'modules', label: 'All Modules', Icon: IconModules },
-  { id: 'progress', label: 'My Progress', Icon: IconProgress },
-  { id: 'glossary', label: 'Glossary & Index', Icon: IconGlossary },
+  { id: 'dashboard', label: 'Dashboard',      Icon: IcDashboard },
+  { id: 'modules',   label: 'All Modules',    Icon: IcModules   },
+  { id: 'progress',  label: 'My Progress',    Icon: IcProgress  },
+  { id: 'glossary',  label: 'Glossary & Index', Icon: IcGlossary },
 ]
 
 function moduleIcon(p: ModuleProgress) {
-  if (p.status === 'complete') return <IconCheck />
-  if (p.status === 'locked') return <IconLock />
-  return <IconChevron />
+  if (p.status === 'complete') return <IcCheckCircle size={14} />
+  if (p.status === 'locked')   return <IcLock size={14} />
+  return <IcChevronRight size={14} />
 }
 
 export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
@@ -81,7 +59,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
                 )}
               >
                 <span className={cn('flex items-center justify-center w-4 h-4 shrink-0', isActive ? 'text-[#4A9FD4]' : '')}>
-                  <Icon />
+                  <Icon size={15} />
                 </span>
                 {label}
               </button>
@@ -100,16 +78,11 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
               const p = state.progress[id]
               const isActive = state.activeModule === id
               const isLocked = p.status === 'locked'
-              const isDone = p.status === 'complete'
+              const isDone   = p.status === 'complete'
               return (
                 <button
                   key={id}
-                  onClick={() => {
-                    if (!isLocked) {
-                      onNavigate('lesson', id)
-                      onClose?.()
-                    }
-                  }}
+                  onClick={() => { if (!isLocked) { onNavigate('lesson', id); onClose?.() } }}
                   disabled={isLocked}
                   className={cn(
                     'w-full flex items-center gap-2.5 px-5 py-2 text-[13px] border-l-[3px] transition-all text-left',
@@ -125,7 +98,9 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
                   <span className="flex items-center justify-center w-[14px] h-[14px] shrink-0">
                     {moduleIcon(p)}
                   </span>
-                  <span className="truncate flex-1 text-left text-[12px]">{id}. {mod.title.length > 22 ? mod.title.slice(0, 22) + '…' : mod.title}</span>
+                  <span className="truncate flex-1 text-left text-[12px]">
+                    {id}. {mod.title.length > 22 ? mod.title.slice(0, 22) + '…' : mod.title}
+                  </span>
                   {p.score !== undefined && (
                     <span className="text-[10px] font-mono text-[#B0C8DC] bg-white/5 px-1 rounded shrink-0">
                       {p.score}%

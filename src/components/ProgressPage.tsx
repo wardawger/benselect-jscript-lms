@@ -1,6 +1,7 @@
 import { MODULES, TRACK_GROUPS } from '@/data/modules'
 import type { AppState } from '@/store/progress'
 import { getCompletedCount, getOverallScore } from '@/store/progress'
+import { IcAward, IcCheck, IcLock, IcChevronRight } from './Icons'
 
 interface ProgressPageProps {
   state: AppState
@@ -10,8 +11,8 @@ interface ProgressPageProps {
 
 export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) {
   const completed = getCompletedCount(state.progress)
-  const avgScore = getOverallScore(state.progress)
-  const pct = Math.round((completed / 14) * 100)
+  const avgScore  = getOverallScore(state.progress)
+  const pct       = Math.round((completed / 14) * 100)
 
   const scores = Object.entries(state.progress)
     .filter(([, p]) => p.score !== undefined)
@@ -27,6 +28,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
 
       {/* Summary stats */}
       <div className="grid grid-cols-3 gap-4 mb-8">
+        {/* Completion */}
         <div className="bg-white rounded-xl p-5 shadow-sm border border-[#E8F0F8]">
           <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{pct}%</div>
           <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">Overall completion</div>
@@ -35,20 +37,31 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
           </div>
           <div className="text-[12px] text-[#3A5068] mt-2">{completed} of 14 modules done</div>
         </div>
+
+        {/* Avg quiz score */}
         <div className="bg-white rounded-xl p-5 shadow-sm border border-[#E8F0F8]">
           <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{avgScore ? `${avgScore}%` : '—'}</div>
           <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">Average quiz score</div>
           {avgScore > 0 && (
             <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
-              <div className={`h-full rounded-full transition-all ${avgScore >= 80 ? 'bg-gradient-to-r from-emerald-500 to-emerald-400' : avgScore >= 60 ? 'bg-gradient-to-r from-amber-400 to-amber-500' : 'bg-[#E84C4C]'}`} style={{ width: `${avgScore}%` }} />
+              <div
+                className={`h-full rounded-full transition-all ${avgScore >= 80 ? 'bg-gradient-to-r from-emerald-500 to-emerald-400' : avgScore >= 60 ? 'bg-gradient-to-r from-amber-400 to-amber-500' : 'bg-[#E84C4C]'}`}
+                style={{ width: `${avgScore}%` }}
+              />
             </div>
           )}
           <div className="text-[12px] text-[#3A5068] mt-2">{scores.length} modules scored</div>
         </div>
+
+        {/* Certification */}
         <div className="bg-white rounded-xl p-5 shadow-sm border border-[#E8F0F8]">
-          <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">
-            {completed === 14 ? '🏆' : `${14 - completed}`}
-          </div>
+          {completed === 14 ? (
+            <div className="w-10 h-10 rounded-lg bg-[#EBF4FB] flex items-center justify-center mb-2 text-[#2A6EBB]">
+              <IcAward size={22} />
+            </div>
+          ) : (
+            <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{14 - completed}</div>
+          )}
           <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">
             {completed === 14 ? 'Certified!' : 'Modules remaining'}
           </div>
@@ -62,7 +75,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
       {TRACK_GROUPS.map(track => {
         const trackMods = track.ids.map(id => ({ mod: MODULES.find(m => m.id === id)!, p: state.progress[id] }))
         const trackDone = trackMods.filter(m => m.p.status === 'complete').length
-        const trackPct = Math.round((trackDone / trackMods.length) * 100)
+        const trackPct  = Math.round((trackDone / trackMods.length) * 100)
         return (
           <div key={track.label} className="bg-white rounded-xl shadow-sm border border-[#E8F0F8] mb-4 overflow-hidden">
             <div className="px-5 py-4 border-b border-[#E8F0F8] flex items-center justify-between">
@@ -78,7 +91,16 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
             <div className="divide-y divide-[#F4F7FB]">
               {trackMods.map(({ mod, p }) => (
                 <div key={mod.id} className="flex items-center gap-3 px-5 py-3 hover:bg-[#F8FAFC] transition-colors">
-                  <div className={`w-2 h-2 rounded-full shrink-0 ${p.status === 'complete' ? 'bg-emerald-500' : p.status === 'available' ? 'bg-[#4A9FD4]' : 'bg-[#E8F0F8]'}`} />
+                  {/* Status dot → icon */}
+                  <span className={`w-4 h-4 flex items-center justify-center shrink-0 ${
+                    p.status === 'complete' ? 'text-emerald-500' :
+                    p.status === 'available' ? 'text-[#4A9FD4]' :
+                    'text-[#C8D8E8]'
+                  }`}>
+                    {p.status === 'complete' ? <IcCheck size={11} /> :
+                     p.status === 'locked'   ? <IcLock size={12} /> :
+                                               <IcChevronRight size={11} />}
+                  </span>
                   <div className="flex-1 min-w-0">
                     <div className="text-[13px] font-medium text-[#0B1829] truncate">
                       {mod.id}. {mod.title}
@@ -86,20 +108,18 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
                     <div className="text-[11px] text-[#7A9BB8] mt-0.5">{mod.time}</div>
                   </div>
                   {p.status === 'complete' && (
-                    <span className="text-[11px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium shrink-0">
-                      ✓ {p.score !== undefined ? `${p.score}%` : 'Done'}
+                    <span className="flex items-center gap-1 text-[11px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium shrink-0">
+                      <IcCheck size={9} className="text-emerald-600" />
+                      {p.score !== undefined ? `${p.score}%` : 'Done'}
                     </span>
                   )}
                   {p.status === 'available' && (
                     <button
                       onClick={() => onNavigate('lesson', mod.id)}
-                      className="text-[11px] text-[#2A6EBB] bg-[#EBF4FB] px-2.5 py-0.5 rounded-full font-medium hover:bg-[#D0E8FA] transition-colors shrink-0"
+                      className="flex items-center gap-1 text-[11px] text-[#2A6EBB] bg-[#EBF4FB] px-2.5 py-0.5 rounded-full font-medium hover:bg-[#D0E8FA] transition-colors shrink-0"
                     >
-                      Start →
+                      Start <IcChevronRight size={9} className="text-[#2A6EBB]" />
                     </button>
-                  )}
-                  {p.status === 'locked' && (
-                    <span className="text-[11px] text-[#B0C8DC] shrink-0">🔒</span>
                   )}
                   {p.needsReview && (
                     <span className="text-[11px] text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-medium shrink-0 ml-1">Review</span>
@@ -114,9 +134,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
       {/* Reset */}
       <div className="mt-8 pt-6 border-t border-[#E8F0F8]">
         <button
-          onClick={() => {
-            if (confirm('Reset all progress? This cannot be undone.')) onReset()
-          }}
+          onClick={() => { if (confirm('Reset all progress? This cannot be undone.')) onReset() }}
           className="text-[12px] text-[#E84C4C] hover:underline"
         >
           Reset all progress

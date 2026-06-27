@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { GLOSSARY_ITEMS, GLOSS_CATS } from '@/data/glossary'
 import { cn } from '@/lib/utils'
+import { IcSearch } from './Icons'
 
 const CAT_COLORS: Record<string, string> = {
   'BenSelect Core': 'bg-blue-50 text-blue-700',
@@ -49,7 +50,7 @@ export function GlossaryPage() {
 
       {/* Search */}
       <div className="relative mb-4">
-        <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#7A9BB8]" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 16 16"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14" y2="14"/></svg>
+        <IcSearch size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A9BB8]" />
         <input
           type="text"
           placeholder="Search terms, definitions, code examples…"
