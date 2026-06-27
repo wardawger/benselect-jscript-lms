@@ -102,7 +102,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
   ]
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8 w-full space-y-8">
 
       {/* ── Page header ───────────────────────────────────────────────────── */}
       <div>
@@ -121,7 +121,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
 
       {/* ── KPI Cards ─────────────────────────────────────────────────────── */}
       {!isModulesPage && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4 xl:gap-6">
           {kpis.map(({ Icon, value, label, sub, color, bg }) => (
             <div
               key={label}
@@ -250,7 +250,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
               </div>
 
               {/* Module cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {track.ids.map(id => {
                   const mod    = MODULES.find(m => m.id === id)!
                   const p      = state.progress[id]

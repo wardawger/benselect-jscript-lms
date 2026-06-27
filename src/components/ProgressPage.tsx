@@ -19,7 +19,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
     .map(([id, p]) => ({ id: Number(id), score: p.score!, mod: MODULES.find(m => m.id === Number(id))! }))
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full">
       <div className="mb-6">
         <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Analytics</div>
         <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight">My Progress</h1>
