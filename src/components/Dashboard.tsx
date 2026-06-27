@@ -127,8 +127,8 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
               key={label}
               className="bg-white rounded-xl border border-[#e2e8f0] p-5 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: bg }}>
-                <Icon size={18} style={{ color }} />
+              <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: bg, color }}>
+                <Icon size={18} />
               </div>
               <div>
                 <div className="text-[26px] font-bold leading-none tracking-tight" style={{ color: '#0d1e3d' }}>{value}</div>
