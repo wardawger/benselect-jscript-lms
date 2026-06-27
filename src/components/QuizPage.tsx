@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { QUIZ } from '@/data/quizzes'
+import { QUIZ_EXERCISES } from '@/data/quizExercises'
+import { QuizExercise } from './QuizExercise'
 import { cn } from '@/lib/utils'
 
 interface QuizPageProps {
@@ -64,6 +66,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
   const [submitted, setSubmitted] = useState(false)
   const [showResult, setShowResult] = useState(false)
   const [hoveredQ, setHoveredQ] = useState<number | null>(null)
+  const [exerciseBonus, setExerciseBonus] = useState(0)
 
   // Scroll to top when result appears
   useEffect(() => {
@@ -90,7 +93,8 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
   }
 
   const correctCount = answers.filter(a => a.state === 'correct').length
-  const score = submitted ? Math.round((correctCount / questions.length) * 100) : 0
+  const mcScore = submitted ? Math.round((correctCount / questions.length) * 100) : 0
+  const score = Math.min(100, mcScore + exerciseBonus)
   const passed = score >= 60
 
   if (showResult) {
@@ -105,7 +109,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
             <div className="text-[13px] text-[#3A5068] mb-4">{correctCount} of {questions.length} questions correct</div>
 
             {/* Stats mini-grid */}
-            <div className="grid grid-cols-2 gap-3 mb-5 text-left">
+            <div className={`grid gap-3 mb-5 text-left ${exerciseBonus > 0 ? 'grid-cols-3' : 'grid-cols-2'}`}>
               <div className="bg-[#F8FAFC] rounded-xl p-3 border border-[#E8F0F8]">
                 <div className="text-[10px] text-[#7A9BB8] uppercase tracking-wider font-medium mb-1">Correct</div>
                 <div className="text-[22px] font-bold text-[#0B1829]">{correctCount}<span className="text-[13px] text-[#7A9BB8] font-normal">/{questions.length}</span></div>
@@ -114,6 +118,12 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
                 <div className="text-[10px] text-[#7A9BB8] uppercase tracking-wider font-medium mb-1">Score</div>
                 <div className="text-[22px] font-bold" style={{ color: passed ? '#28A87C' : '#E84C4C' }}>{score}<span className="text-[13px] font-normal text-[#7A9BB8]">%</span></div>
               </div>
+              {exerciseBonus > 0 && (
+                <div className="bg-emerald-50 rounded-xl p-3 border border-emerald-200">
+                  <div className="text-[10px] text-emerald-600 uppercase tracking-wider font-medium mb-1">Coding Bonus</div>
+                  <div className="text-[22px] font-bold text-emerald-700">+{exerciseBonus}<span className="text-[13px] font-normal text-emerald-500">pts</span></div>
+                </div>
+              )}
             </div>
 
             <div className="mb-5">
@@ -246,6 +256,13 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
           </div>
         ))}
       </div>
+
+      {/* Coding exercise (graded — bonus pts) */}
+      {QUIZ_EXERCISES[moduleId] && (
+        <div className="mt-6 bg-white rounded-xl shadow-sm border border-[#E8F0F8] p-6">
+          <QuizExercise moduleId={moduleId} onScore={setExerciseBonus} />
+        </div>
+      )}
 
       <div className="mt-6 flex items-center justify-between">
         <span className="text-[13px] text-[#7A9BB8]">

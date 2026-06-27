@@ -1,5 +1,7 @@
 import { MODULES } from '@/data/modules'
 import { LESSONS } from '@/data/lessons'
+import { QUIZ_EXERCISES } from '@/data/quizExercises'
+import { LessonChallenge } from './LessonChallenge'
 import type { AppState } from '@/store/progress'
 
 interface LessonPageProps {
@@ -61,6 +63,9 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
         className="lesson-content"
         dangerouslySetInnerHTML={{ __html: lessonHtml }}
       />
+
+      {/* Practice coding challenge */}
+      {QUIZ_EXERCISES[moduleId] && <LessonChallenge moduleId={moduleId} />}
 
       {/* Quiz CTA at bottom */}
       <div className="mt-10 pt-6 border-t border-[#E8F0F8] flex items-center justify-between">
