@@ -185,6 +185,10 @@ body {
 .lesson-content .lesson-video-title { font-size: 0.8125rem; font-weight: 600; color: #fff; }
 .lesson-content .lesson-video-sub { font-size: 0.6875rem; color: rgba(255,255,255,0.45); margin-top: 2px; }
 .lesson-content video { width: 100%; display: block; max-height: 400px; }
+.lesson-content .lesson-video-wrap iframe {
+  width: 100%; display: block; border: none;
+  aspect-ratio: 16 / 9;
+}
 .lesson-content .lesson-video-footer {
   font-size: 0.6875rem; color: rgba(255,255,255,0.35); padding: 0.5rem 1rem; font-family: 'Roboto Mono', monospace;
 }

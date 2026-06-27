@@ -7,11 +7,7 @@ export const LESSONS: Record<number, string> = {
       <div class="lesson-video-sub">Watch before reading · Use captions if needed</div>
     </div>
   </div>
-  <video controls preload="metadata" poster="">
-    <source src="/videos/module1_intro.mp4" type="video/mp4">
-    <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="/videos/module1_intro.mp4" style="color:#4A9FD4">Download the video</a>.</p>
-  </video>
-  <div class="lesson-video-footer">module1_intro.mp4 · Place in a /videos/ folder · <a href="/videos/module1_intro.mp4" download style="color:#4A9FD4">Download</a></div>
+  <iframe src="https://www.youtube.com/embed/4MIX06Dibbs" title="Module 1 — Intro to JScript.NET &amp; the .NET Platform" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 <h2>What Is JScript.NET?</h2>
 <p>JScript.NET is Microsoft's server-side scripting language built on the <span class="ic">.NET Common Language Runtime (CLR)</span>. It is <strong>not</strong> the same as JavaScript you write in a browser — there is no DOM, no <span class="ic">window</span>, no <span class="ic">document</span>. It runs entirely on the server inside BenSelect.</p>
@@ -65,11 +61,7 @@ Event.Debug("Hello, " + empName + "!");</div>
       <div class="lesson-video-sub">Watch before reading · Use captions if needed</div>
     </div>
   </div>
-  <video controls preload="metadata">
-    <source src="/videos/module2_fundamentals.mp4" type="video/mp4">
-    <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="/videos/module2_fundamentals.mp4" style="color:#4A9FD4">Download the video</a>.</p>
-  </video>
-  <div class="lesson-video-footer">module2_fundamentals.mp4 · Place in /videos/ folder alongside index.html</div>
+  <iframe src="https://www.youtube.com/embed/yxlDpvrBsB4" title="Module 2 — Language Fundamentals &amp; Type System" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 <h2>Variables: var vs const</h2>
 <p>JScript.NET uses <span class="ic">var</span> for mutable variables and <span class="ic">const</span> for immutable configuration values. Constants should be named UPPER_SNAKE_CASE and placed at the top of the script for easy editing.</p>
@@ -134,11 +126,7 @@ Event.Debug("Hello, " + empName + "!");</div>
       <div class="lesson-video-sub">Watch before reading · Use captions if needed</div>
     </div>
   </div>
-  <video controls preload="metadata">
-    <source src="/videos/module3_functions.mp4" type="video/mp4">
-    <p style="color:#fff;padding:20px;text-align:center">Your browser does not support HTML5 video. <a href="/videos/module3_functions.mp4" style="color:#4A9FD4">Download the video</a>.</p>
-  </video>
-  <div class="lesson-video-footer">module3_functions.mp4 · Place in /videos/ folder alongside index.html</div>
+  <iframe src="https://www.youtube.com/embed/YaYvAW97jUs" title="Module 3 — Functions &amp; Code Organization" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 <h2>Why Functions Matter in BenSelect</h2>
 <p>BenSelect scripts are single files with no imports. As scripts grow complex (the AUL STD/LTD script is 250+ lines), functions are the only organizational tool. The Term Life GI Script has 5 distinct helper functions — study it as the gold standard for BenSelect function architecture.</p>
