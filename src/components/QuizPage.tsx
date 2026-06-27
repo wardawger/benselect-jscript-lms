@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { QUIZ } from '@/data/quizzes'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
-import { QuizExercise } from './QuizExercise'
+import { BenSelectScriptEditor } from './BenSelectScriptEditor'
 import { cn } from '@/lib/utils'
 
 interface QuizPageProps {
@@ -257,10 +257,10 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
         ))}
       </div>
 
-      {/* Coding exercise (graded — bonus pts) */}
+      {/* Coding exercise (graded — bonus pts) — Selerix-style plan JScript editor */}
       {QUIZ_EXERCISES[moduleId] && (
-        <div className="mt-6 bg-white rounded-xl shadow-sm border border-[#E8F0F8] p-6">
-          <QuizExercise moduleId={moduleId} onScore={setExerciseBonus} />
+        <div className="mt-6">
+          <BenSelectScriptEditor moduleId={moduleId} mode="quiz" onScore={setExerciseBonus} />
         </div>
       )}
 

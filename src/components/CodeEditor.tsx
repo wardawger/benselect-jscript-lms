@@ -74,10 +74,14 @@ interface CodeEditorProps {
   rows?: number
   placeholder?: string
   disabled?: boolean
+  textareaRef?: React.RefObject<HTMLTextAreaElement>
+  onScroll?: (e: React.UIEvent<HTMLTextAreaElement>) => void
+  className?: string
 }
 
-export function CodeEditor({ value, onChange, rows = 10, placeholder, disabled }: CodeEditorProps) {
-  const taRef = useRef<HTMLTextAreaElement>(null)
+export function CodeEditor({ value, onChange, rows = 10, placeholder, disabled, textareaRef: externalRef, onScroll, className }: CodeEditorProps) {
+  const internalRef = useRef<HTMLTextAreaElement>(null)
+  const taRef = (externalRef ?? internalRef) as React.RefObject<HTMLTextAreaElement>
   const [matches, setMatches] = useState<ISCompletion[]>([])
   const [activeIdx, setActiveIdx] = useState(0)
   const [pos, setPos] = useState<DropdownPos>({ top: 0, left: 0 })
@@ -150,11 +154,12 @@ export function CodeEditor({ value, onChange, rows = 10, placeholder, disabled }
     <div className="relative">
       <textarea
         ref={taRef}
-        className="qex-editor"
+        className={className ?? 'qex-editor'}
         rows={rows}
         value={value}
         onChange={handleInput}
         onKeyDown={handleKeyDown}
+        onScroll={onScroll}
         placeholder={placeholder ?? 'Write your JScript here…'}
         disabled={disabled}
         spellCheck={false}
