@@ -74,7 +74,7 @@ interface CodeEditorProps {
   rows?: number
   placeholder?: string
   disabled?: boolean
-  textareaRef?: React.RefObject<HTMLTextAreaElement>
+  textareaRef?: React.RefObject<HTMLTextAreaElement | null>
   onScroll?: (e: React.UIEvent<HTMLTextAreaElement>) => void
   className?: string
 }

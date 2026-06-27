@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
 import { IS_COMPLETIONS } from '@/data/intellisense'
 import { CodeEditor } from './CodeEditor'
@@ -143,10 +143,9 @@ interface EditorModalProps {
   history: HistoryEntry[]
   onRestore: (code: string) => void
   isExercise: boolean
-  exerciseTitle?: string
 }
 
-function EditorModal({ eventType, code, onChange, onSave, onCancel, history, onRestore, isExercise, exerciseTitle }: EditorModalProps) {
+function EditorModal({ eventType, code, onChange, onSave, onCancel, history, onRestore, isExercise }: EditorModalProps) {
   const taRef = useRef<HTMLTextAreaElement>(null)
   const lnRef = useRef<HTMLDivElement>(null)
   const [fullscreen, setFullscreen] = useState(false)
@@ -548,8 +547,6 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
   const [showSolution, setShowSolution] = useState(false)
   const [showHints, setShowHints] = useState(false)
 
-  const currentCode = openEventType ? (scripts[openEventType] ?? '') : ''
-
   function setCurrentCode(v: string) {
     if (!openEventType) return
     setScripts(prev => ({ ...prev, [openEventType]: v }))
@@ -753,7 +750,6 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
           history={history[openEventType] ?? []}
           onRestore={handleRestore}
           isExercise={openEventType === targetEventType && !!ex}
-          exerciseTitle={ex?.title}
         />
       )}
     </div>
