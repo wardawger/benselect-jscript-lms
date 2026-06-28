@@ -707,8 +707,8 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
         <span className="text-[12px] text-[#1A5296] underline cursor-default opacity-50">View All</span>
       </div>
 
-      {/* Quiz mode: Submit for Grading button (shown after save, before submit) */}
-      {mode === 'quiz' && codeSaved && !submitted && ex && (
+      {/* Submit button (shown after save, before submit) */}
+      {codeSaved && !submitted && ex && (
         <div className="px-4 py-3 border-t border-[#E8EEF4] flex items-center gap-3 bg-[#F8FAFC]">
           <span className="text-[12px] text-emerald-700 font-medium flex items-center gap-1">
             ✓ Code saved
@@ -716,9 +716,9 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
           <button
             onClick={handleSubmit}
             className="ml-auto text-[12px] font-semibold text-white px-4 py-1.5 rounded-lg transition-opacity hover:opacity-90"
-            style={{ background: '#007aff' }}
+            style={{ background: mode === 'quiz' ? '#007aff' : '#2A6EBB' }}
           >
-            Submit for Grading →
+            {mode === 'quiz' ? 'Submit for Grading →' : 'Check My Answer →'}
           </button>
           <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-bs-body px-3 py-1.5 rounded-lg hover:bg-[#F4F7FB]">
             Reset
@@ -726,13 +726,15 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
         </div>
       )}
 
-      {/* Grading results (shown after submit in quiz mode) */}
+      {/* Results (shown after submit) */}
       {submitted && ex && (
         <div className="border-t border-[#E8EEF4]">
-          <div className={`m-4 rounded-xl p-4 border ${bonus === 2 ? 'bg-emerald-50 border-emerald-200' : bonus === 1 ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200'}`}>
+          <div className={`m-4 rounded-xl p-4 border ${earnedCount === totalCount ? 'bg-emerald-50 border-emerald-200' : earnedCount > 0 ? 'bg-amber-50 border-amber-200' : 'bg-red-50 border-red-200'}`}>
             <div className="flex items-center justify-between mb-2">
-              <div className="text-[14px] font-bold" style={{ color: bonus === 2 ? '#28A87C' : bonus === 1 ? '#D4820A' : '#E84C4C' }}>
-                {bonus === 2 ? '🏆 Full bonus! +2 pts' : bonus === 1 ? '⚡ Partial bonus +1 pt' : '✗ No bonus earned'}
+              <div className="text-[14px] font-bold" style={{ color: earnedCount === totalCount ? '#28A87C' : earnedCount > 0 ? '#D4820A' : '#E84C4C' }}>
+                {mode === 'quiz'
+                  ? (bonus === 2 ? '🏆 Full bonus! +2 pts' : bonus === 1 ? '⚡ Partial bonus +1 pt' : '✗ No bonus earned')
+                  : (earnedCount === totalCount ? '✓ Correct! All criteria met.' : earnedCount > 0 ? '⚡ Almost — a few things still need updating.' : '✗ Not quite — review the hints and try again.')}
               </div>
               <div className="text-[12px] text-[#7A9BB8]">{earnedCount}/{totalCount} criteria met</div>
             </div>
@@ -756,31 +758,6 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
             <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-bs-body px-3 py-1 rounded hover:bg-[#F4F7FB]">
               Reset &amp; Try Again
             </button>
-          </div>
-          <AnimatedCollapse open={showSolution}>
-            <div className="px-4 pb-4">
-              <pre className="bg-[#0B1829] text-[#B8D4EC] font-mono text-[12px] p-4 rounded-xl overflow-x-auto leading-relaxed">{ex.solution}</pre>
-              <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-bs-body">
-                <strong className="text-[#0B1829]">Explanation: </strong>{ex.solutionExplain}
-              </div>
-            </div>
-          </AnimatedCollapse>
-        </div>
-      )}
-
-      {/* Lesson mode: show solution after save */}
-      {mode === 'lesson' && codeSaved && ex && (
-        <div className="border-t border-[#E8EEF4]">
-          <div className="px-4 py-3 flex items-center gap-3">
-            <span className="text-[12px] text-emerald-700 font-medium">✓ Code saved</span>
-            <button
-              onClick={() => setShowSolution(s => !s)}
-              className="text-[12px] text-[#2A6EBB] hover:underline flex items-center gap-1 select-none"
-            >
-              <IcExpandCollapse size={11} open={showSolution} />
-              {showSolution ? 'Hide solution' : 'View solution'}
-            </button>
-            <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-bs-body px-3 py-1 rounded hover:bg-[#F4F7FB]">Reset</button>
           </div>
           <AnimatedCollapse open={showSolution}>
             <div className="px-4 pb-4">
