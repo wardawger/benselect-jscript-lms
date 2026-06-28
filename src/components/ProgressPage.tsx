@@ -46,8 +46,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
             <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all"
-              style={{ background: avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C' }}
-                style={{ width: `${avgScore}%` }}
+                style={{ width: `${avgScore}%`, background: avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C' }}
               />
             </div>
           )}
