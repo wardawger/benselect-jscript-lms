@@ -38,6 +38,114 @@ const TRACK_COLOR: Record<string, string> = {
   'Exam':    '#ef4444',
 }
 
+// ── Unique SVG tile pattern per module ──────────────────────────────────────
+function ModulePattern({ id, color }: { id: number; color: string }) {
+  const pid = `mp${id}`
+  const c = color
+  const o = 0.18  // pattern opacity
+
+  const patterns: Record<number, React.ReactNode> = {
+    // M1 — Intro: uniform dot grid (foundation)
+    1: <pattern id={pid} width="28" height="28" patternUnits="userSpaceOnUse">
+        <circle cx="14" cy="14" r="2" fill={c} opacity={o} />
+       </pattern>,
+    // M2 — Language: horizontal code-line stripes
+    2: <pattern id={pid} width="48" height="16" patternUnits="userSpaceOnUse">
+        <rect x="0" y="6" width="32" height="2" rx="1" fill={c} opacity={o} />
+        <rect x="0" y="12" width="20" height="2" rx="1" fill={c} opacity={o * 0.6} />
+       </pattern>,
+    // M3 — Functions: nested squares (scope / closure)
+    3: <pattern id={pid} width="40" height="40" patternUnits="userSpaceOnUse">
+        <rect x="4" y="4" width="32" height="32" rx="2" fill="none" stroke={c} strokeWidth="1.5" opacity={o} />
+        <rect x="12" y="12" width="16" height="16" rx="2" fill="none" stroke={c} strokeWidth="1" opacity={o * 0.6} />
+       </pattern>,
+    // M4 — OOP: hexagon grid (structure / class hierarchy)
+    4: <pattern id={pid} width="36" height="31.2" patternUnits="userSpaceOnUse">
+        <polygon points="18,2 32,9.6 32,24.6 18,32.2 4,24.6 4,9.6" fill="none" stroke={c} strokeWidth="1.2" opacity={o} />
+       </pattern>,
+    // M5 — .NET Framework: connected node graph
+    5: <pattern id={pid} width="56" height="56" patternUnits="userSpaceOnUse">
+        <circle cx="8"  cy="8"  r="3" fill={c} opacity={o} />
+        <circle cx="48" cy="8"  r="3" fill={c} opacity={o} />
+        <circle cx="28" cy="28" r="3" fill={c} opacity={o} />
+        <circle cx="8"  cy="48" r="3" fill={c} opacity={o} />
+        <circle cx="48" cy="48" r="3" fill={c} opacity={o} />
+        <line x1="8"  y1="8"  x2="28" y2="28" stroke={c} strokeWidth="1" opacity={o * 0.7} />
+        <line x1="48" y1="8"  x2="28" y2="28" stroke={c} strokeWidth="1" opacity={o * 0.7} />
+        <line x1="8"  y1="48" x2="28" y2="28" stroke={c} strokeWidth="1" opacity={o * 0.7} />
+        <line x1="48" y1="48" x2="28" y2="28" stroke={c} strokeWidth="1" opacity={o * 0.7} />
+       </pattern>,
+    // M6 — Error Handling: zigzag / lightning bolt
+    6: <pattern id={pid} width="32" height="24" patternUnits="userSpaceOnUse">
+        <polyline points="0,12 8,4 16,20 24,8 32,12" fill="none" stroke={c} strokeWidth="1.5" opacity={o} strokeLinecap="round" strokeLinejoin="round" />
+       </pattern>,
+    // M7 — Architecture: blueprint grid crosshatch
+    7: <pattern id={pid} width="32" height="32" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="0" x2="32" y2="0" stroke={c} strokeWidth="0.6" opacity={o} />
+        <line x1="0" y1="0" x2="0"  y2="32" stroke={c} strokeWidth="0.6" opacity={o} />
+        <line x1="16" y1="0" x2="16" y2="32" stroke={c} strokeWidth="0.3" opacity={o * 0.5} />
+        <line x1="0" y1="16" x2="32" y2="16" stroke={c} strokeWidth="0.3" opacity={o * 0.5} />
+       </pattern>,
+    // M8 — Event Object: concentric rings (event ripple)
+    8: <pattern id={pid} width="60" height="60" patternUnits="userSpaceOnUse">
+        <circle cx="30" cy="30" r="6"  fill="none" stroke={c} strokeWidth="1.2" opacity={o} />
+        <circle cx="30" cy="30" r="14" fill="none" stroke={c} strokeWidth="0.8" opacity={o * 0.6} />
+        <circle cx="30" cy="30" r="22" fill="none" stroke={c} strokeWidth="0.5" opacity={o * 0.35} />
+       </pattern>,
+    // M9 — Rate Groups: diagonal parallel lines
+    9: <pattern id={pid} width="20" height="20" patternUnits="userSpaceOnUse">
+        <line x1="0" y1="20" x2="20" y2="0" stroke={c} strokeWidth="1.5" opacity={o} />
+        <line x1="-10" y1="20" x2="10" y2="0" stroke={c} strokeWidth="1.5" opacity={o} />
+        <line x1="10" y1="20" x2="30" y2="0" stroke={c} strokeWidth="1.5" opacity={o} />
+       </pattern>,
+    // M10 — Dates: calendar grid (rows × columns)
+    10: <pattern id={pid} width="48" height="40" patternUnits="userSpaceOnUse">
+         {[0,1,2,3].map(col => [0,1,2].map(row => (
+           <rect key={`${col}-${row}`} x={col * 12 + 2} y={row * 12 + 10} width="8" height="8" rx="1" fill={c} opacity={row === 0 && col < 2 ? o * 1.2 : o * 0.5} />
+         )))}
+         <rect x="0" y="2" width="46" height="6" rx="2" fill={c} opacity={o * 0.4} />
+        </pattern>,
+    // M11 — Benefits/GI: triangle tessellation
+    11: <pattern id={pid} width="32" height="28" patternUnits="userSpaceOnUse">
+         <polygon points="16,2 30,26 2,26" fill="none" stroke={c} strokeWidth="1.2" opacity={o} />
+         <polygon points="0,28 14,4 28,28" fill="none" stroke={c} strokeWidth="0.7" opacity={o * 0.4} />
+        </pattern>,
+    // M12 — Life Events: branching Y-path (decision tree)
+    12: <pattern id={pid} width="48" height="48" patternUnits="userSpaceOnUse">
+         <line x1="24" y1="48" x2="24" y2="24" stroke={c} strokeWidth="1.5" opacity={o} strokeLinecap="round" />
+         <line x1="24" y1="24" x2="8"  y2="8"  stroke={c} strokeWidth="1.2" opacity={o} strokeLinecap="round" />
+         <line x1="24" y1="24" x2="40" y2="8"  stroke={c} strokeWidth="1.2" opacity={o} strokeLinecap="round" />
+         <circle cx="8"  cy="8"  r="3" fill={c} opacity={o} />
+         <circle cx="40" cy="8"  r="3" fill={c} opacity={o} />
+        </pattern>,
+    // M13 — Reports: bar chart silhouette
+    13: <pattern id={pid} width="48" height="40" patternUnits="userSpaceOnUse">
+         <rect x="4"  y="24" width="6" height="14" rx="1" fill={c} opacity={o} />
+         <rect x="14" y="14" width="6" height="24" rx="1" fill={c} opacity={o} />
+         <rect x="24" y="8"  width="6" height="30" rx="1" fill={c} opacity={o} />
+         <rect x="34" y="18" width="6" height="20" rx="1" fill={c} opacity={o} />
+         <line x1="0" y1="38" x2="48" y2="38" stroke={c} strokeWidth="1" opacity={o * 0.6} />
+        </pattern>,
+    // M14 — Exam: radial star burst
+    14: <pattern id={pid} width="64" height="64" patternUnits="userSpaceOnUse">
+         {[0,30,60,90,120,150].map((deg, i) => {
+           const r = deg * Math.PI / 180
+           return <line key={i} x1="32" y1="32" x2={32 + Math.cos(r) * 26} y2={32 + Math.sin(r) * 26} stroke={c} strokeWidth="1.2" opacity={o} strokeLinecap="round" />
+         })}
+         <circle cx="32" cy="32" r="5" fill={c} opacity={o * 0.8} />
+        </pattern>,
+  }
+
+  const pat = patterns[id]
+  if (!pat) return null
+  return (
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" className="absolute inset-0" preserveAspectRatio="xMidYMid slice">
+      <defs>{pat}</defs>
+      <rect width="100%" height="100%" fill={`url(#${pid})`} />
+    </svg>
+  )
+}
+
 export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageProps) {
   const mod = MODULES.find(m => m.id === moduleId)
   if (!mod) return null
@@ -65,11 +173,14 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
       </div>
 
       {/* ── Module header card ──────────────────────────────────────────────── */}
-      <div className="bg-white rounded-2xl border border-[#e2e8f0] shadow-sm overflow-hidden mb-6">
-        {/* Color accent bar keyed to track */}
-        <div className="h-1 w-full" style={{ background: trackColor }} />
+      <div className="rounded-2xl shadow-lg overflow-hidden mb-6 relative" style={{ background: '#0d1e3d' }}>
+        {/* Unique SVG pattern overlay */}
+        <ModulePattern id={moduleId} color={trackColor} />
 
-        <div className="p-6 sm:p-8">
+        {/* Bottom edge color strip keyed to track */}
+        <div className="absolute bottom-0 left-0 right-0 h-[3px]" style={{ background: trackColor }} />
+
+        <div className="relative p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="flex-1 min-w-0">
               {/* Track + module number */}
@@ -80,32 +191,32 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
                 >
                   {mod.track}
                 </span>
-                <span className="text-[12px] font-mono text-slate-400">Module {mod.id} of 14</span>
+                <span className="text-[12px] font-mono text-white/40">Module {mod.id} of 14</span>
               </div>
 
-              <h1 className="text-[22px] sm:text-[26px] font-bold tracking-tight leading-tight mb-3" style={{ color: '#0d1e3d' }}>
+              <h1 className="text-[22px] sm:text-[26px] font-bold tracking-tight leading-tight mb-3 text-white">
                 {mod.title}
               </h1>
 
               {/* Meta row */}
               <div className="flex flex-wrap items-center gap-3">
-                <span className="flex items-center gap-1.5 text-[12px] text-slate-500">
+                <span className="flex items-center gap-1.5 text-[12px] text-white/60">
                   <IcClock size={13} /> {mod.time}
                 </span>
-                <span className="w-px h-3 bg-slate-200" />
-                <span className="text-[12px] text-slate-500">{mod.topics.length} topics</span>
+                <span className="w-px h-3 bg-white/20" />
+                <span className="text-[12px] text-white/60">{mod.topics.length} topics</span>
                 {p.status === 'complete' && (
                   <>
-                    <span className="w-px h-3 bg-slate-200" />
-                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2.5 py-0.5 rounded-full">
+                    <span className="w-px h-3 bg-white/20" />
+                    <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-300 bg-emerald-900/50 border border-emerald-700/50 px-2.5 py-0.5 rounded-full">
                       <IcCheck size={9} /> Completed{p.score ? ` · ${p.score}%` : ''}
                     </span>
                   </>
                 )}
                 {p.needsReview && (
                   <>
-                    <span className="w-px h-3 bg-slate-200" />
-                    <span className="text-[11px] font-semibold text-amber-600 bg-amber-50 border border-amber-100 px-2.5 py-0.5 rounded-full">
+                    <span className="w-px h-3 bg-white/20" />
+                    <span className="text-[11px] font-semibold text-amber-300 bg-amber-900/40 border border-amber-700/40 px-2.5 py-0.5 rounded-full">
                       Review Recommended
                     </span>
                   </>
@@ -118,7 +229,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
               <button
                 onClick={() => onStartQuiz(moduleId)}
                 className="flex items-center gap-2 text-[13px] font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90 shadow-sm"
-                style={{ background: '#007aff' }}
+                style={{ background: trackColor }}
               >
                 {p.status === 'complete' ? 'Retake Quiz' : 'Take Quiz'}
                 <IcChevronRight size={13} />
