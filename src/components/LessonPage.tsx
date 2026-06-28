@@ -165,7 +165,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
 
       {/* ── Breadcrumb ─────────────────────────────────────────────────────── */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[12px] text-slate-500 mb-5">
-        <button onClick={onBack} className="hover:text-[#007aff] transition-colors">Dashboard</button>
+        <button onClick={onBack} className="hover:text-bs-blue transition-colors">Dashboard</button>
         <IcChevronRight size={10} />
         <span className="text-slate-500">{mod.track}</span>
         <IcChevronRight size={10} />
@@ -296,7 +296,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
               <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-[#e2e8f0]" style={{ background: '#f8fafc' }}>
                 <span
                   className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
-                  style={{ background: '#007aff' }}
+                  style={{ background: '#2A6EBB' }}
                 >
                   Practice
                 </span>
@@ -318,7 +318,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
             <button
               onClick={() => onStartQuiz(moduleId)}
               className="shrink-0 flex items-center gap-2 text-[13px] font-semibold text-white px-6 py-2.5 rounded-xl transition-opacity hover:opacity-90"
-              style={{ background: '#007aff' }}
+              style={{ background: '#2A6EBB' }}
             >
               {p.status === 'complete' ? 'Retake Quiz' : 'Take Module Quiz'}
               <IcChevronRight size={13} />
@@ -336,7 +336,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
               {preamble && (
                 <a
                   href="#section-video"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-bs-blue transition-colors"
                 >
                   <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-slate-300" />
                   Video Overview
@@ -346,7 +346,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
                 <a
                   key={idx}
                   href={`#section-${idx}`}
-                  className="flex items-start gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
+                  className="flex items-start gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-bs-blue transition-colors"
                 >
                   <span
                     className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white shrink-0 mt-px"
@@ -360,9 +360,9 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
               {QUIZ_EXERCISES[moduleId] && (
                 <a
                   href="#section-exercise"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-bs-blue transition-colors"
                 >
-                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#007aff' }} />
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#2A6EBB' }} />
                   Practice Exercise
                 </a>
               )}

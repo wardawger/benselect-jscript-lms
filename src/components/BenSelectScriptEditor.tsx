@@ -130,7 +130,7 @@ function HistoryModal({ history, onRestore, onClose }: { history: HistoryEntry[]
               <div>
                 <div className="text-[12px] font-mono text-[#0B1829]">Version {history.length - i}</div>
                 <div className="text-[11px] text-[#7A9BB8] mt-0.5">{h.savedAt}</div>
-                <div className="text-[11px] font-mono text-[#3A5068] mt-1 truncate max-w-[280px]">{h.code.split('\n')[0]}</div>
+                <div className="text-[11px] font-mono text-bs-body mt-1 truncate max-w-[280px]">{h.code.split('\n')[0]}</div>
               </div>
               <button
                 onClick={() => { onRestore(h.code); onClose() }}
@@ -632,7 +632,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
       {/* Intro + task */}
       {ex && (
         <div className="px-4 py-3 border-b border-[#E8EEF4] bg-white">
-          <p className="text-[13px] text-[#3A5068] mb-2">{ex.intro}</p>
+          <p className="text-[13px] text-bs-body mb-2">{ex.intro}</p>
           <div className={`rounded-lg p-3 border ${mode === 'quiz' ? 'bg-[#EBF4FB] border-[rgba(42,110,187,0.2)]' : 'bg-emerald-50 border-emerald-200'}`}>
             <div className={`text-[10px] font-mono font-bold uppercase tracking-wider mb-1 ${mode === 'quiz' ? 'text-[#2A6EBB]' : 'text-emerald-700'}`}>Task</div>
             <p className={`text-[12.5px] leading-relaxed ${mode === 'quiz' ? 'text-[#0B1829]' : 'text-emerald-900'}`}>{ex.task}</p>
@@ -720,7 +720,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
           >
             Submit for Grading →
           </button>
-          <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-3 py-1.5 rounded-lg hover:bg-[#F4F7FB]">
+          <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-bs-body px-3 py-1.5 rounded-lg hover:bg-[#F4F7FB]">
             Reset
           </button>
         </div>
@@ -753,14 +753,14 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
               <IcExpandCollapse size={11} open={showSolution} />
               {showSolution ? 'Hide solution' : 'View solution'}
             </button>
-            <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-3 py-1 rounded hover:bg-[#F4F7FB]">
+            <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-bs-body px-3 py-1 rounded hover:bg-[#F4F7FB]">
               Reset &amp; Try Again
             </button>
           </div>
           <AnimatedCollapse open={showSolution}>
             <div className="px-4 pb-4">
               <pre className="bg-[#0B1829] text-[#B8D4EC] font-mono text-[12px] p-4 rounded-xl overflow-x-auto leading-relaxed">{ex.solution}</pre>
-              <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-[#3A5068]">
+              <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-bs-body">
                 <strong className="text-[#0B1829]">Explanation: </strong>{ex.solutionExplain}
               </div>
             </div>
@@ -780,12 +780,12 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
               <IcExpandCollapse size={11} open={showSolution} />
               {showSolution ? 'Hide solution' : 'View solution'}
             </button>
-            <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-3 py-1 rounded hover:bg-[#F4F7FB]">Reset</button>
+            <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-bs-body px-3 py-1 rounded hover:bg-[#F4F7FB]">Reset</button>
           </div>
           <AnimatedCollapse open={showSolution}>
             <div className="px-4 pb-4">
               <pre className="bg-[#0B1829] text-[#B8D4EC] font-mono text-[12px] p-4 rounded-xl overflow-x-auto leading-relaxed">{ex.solution}</pre>
-              <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-[#3A5068]">
+              <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-bs-body">
                 <strong className="text-[#0B1829]">Explanation: </strong>{ex.solutionExplain}
               </div>
             </div>

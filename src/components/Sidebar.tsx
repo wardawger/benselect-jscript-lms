@@ -38,7 +38,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-[13px] shrink-0"
-            style={{ background: '#007aff' }}
+            style={{ background: '#2A6EBB' }}
           >
             BS
           </div>
@@ -70,7 +70,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
                         ? 'text-white font-medium'
                         : 'text-white/60 hover:text-white/80 hover:bg-white/[0.05]'
                     )}
-                    style={isActive ? { background: '#007aff' } : undefined}
+                    style={isActive ? { background: '#2A6EBB' } : undefined}
                   >
                     <Icon size={15} className="h-4 w-4 shrink-0" />
                     {label}
@@ -137,7 +137,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
         <div className="h-1 rounded-full bg-white/10 overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-500"
-            style={{ width: `${pct}%`, background: '#007aff' }}
+            style={{ width: `${pct}%`, background: '#2A6EBB' }}
           />
         </div>
         {avgScore > 0 && (

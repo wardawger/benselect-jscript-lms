@@ -110,7 +110,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
             <ScoreRing score={score} passed={passed} />
 
             <div className="text-[20px] font-bold text-[#0B1829] mb-1">{passed ? 'Quiz Passed!' : 'Not Yet Passed'}</div>
-            <div className="text-[13px] text-[#3A5068] mb-4">{correctCount} of {questions.length} questions correct</div>
+            <div className="text-[13px] text-bs-body mb-4">{correctCount} of {questions.length} questions correct</div>
 
             {/* Stats mini-grid */}
             <div className={`grid gap-3 mb-5 text-left ${exerciseBonus > 0 ? 'grid-cols-3' : 'grid-cols-2'}`}>
@@ -170,7 +170,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
               )}
               <button
                 onClick={() => { onComplete(moduleId, score, passed); onBack() }}
-                className="border border-[#D0DEF0] text-[#3A5068] text-[13px] px-5 py-2.5 rounded-lg hover:bg-[#F4F7FB] transition-colors"
+                className="border border-[#D0DEF0] text-bs-body text-[13px] px-5 py-2.5 rounded-lg hover:bg-[#F4F7FB] transition-colors"
               >
                 Back to Lesson
               </button>
@@ -230,7 +230,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
           <button onClick={onBack} className="text-[12px] text-[#7A9BB8] hover:text-[#2A6EBB] transition-colors">← Back to Lesson</button>
         </div>
         <h1 className="text-[22px] font-bold text-[#0B1829] tracking-tight">Module {moduleId} Quiz</h1>
-        <p className="text-[13px] text-[#3A5068] mt-1">{questions.length} questions · 60% required to pass</p>
+        <p className="text-[13px] text-bs-body mt-1">{questions.length} questions · 60% required to pass</p>
       </div>
 
       <div className="space-y-5">
@@ -254,7 +254,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
                       'w-full text-left flex items-start gap-3 p-3 rounded-lg border-[1.5px] text-[13px] transition-all',
                       isSelected
                         ? 'border-[#2A6EBB] bg-[#EBF4FB] text-[#0B1829] font-medium'
-                        : 'border-[#D8E8F4] text-[#3A5068] hover:border-[#4A9FD4] hover:bg-[#F4F9FE]'
+                        : 'border-[#D8E8F4] text-bs-body hover:border-[#4A9FD4] hover:bg-[#F4F9FE]'
                     )}
                   >
                     <span className={cn(

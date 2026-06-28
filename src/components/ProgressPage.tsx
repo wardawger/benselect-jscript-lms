@@ -23,7 +23,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
       <div className="mb-6">
         <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Analytics</div>
         <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight">My Progress</h1>
-        <p className="text-[13px] text-[#3A5068] mt-1.5">Track your completion and quiz performance across all modules.</p>
+        <p className="text-[13px] text-bs-body mt-1.5">Track your completion and quiz performance across all modules.</p>
       </div>
 
       {/* Summary stats */}
@@ -35,7 +35,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
           <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
             <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#2A6EBB' }} />
           </div>
-          <div className="text-[12px] text-[#3A5068] mt-2">{completed} of 14 modules done</div>
+          <div className="text-[12px] text-bs-body mt-2">{completed} of 14 modules done</div>
         </div>
 
         {/* Avg quiz score */}
@@ -50,7 +50,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
               />
             </div>
           )}
-          <div className="text-[12px] text-[#3A5068] mt-2">{scores.length} modules scored</div>
+          <div className="text-[12px] text-bs-body mt-2">{scores.length} modules scored</div>
         </div>
 
         {/* Certification */}
@@ -65,7 +65,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
           <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">
             {completed === 14 ? 'Certified!' : 'Modules remaining'}
           </div>
-          <div className="text-[12px] text-[#3A5068] mt-4">
+          <div className="text-[12px] text-bs-body mt-4">
             {completed === 14 ? 'All modules complete. Certificate earned!' : 'Keep going to earn your certification'}
           </div>
         </div>
@@ -84,7 +84,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
                 <div className="text-[12px] text-[#7A9BB8] mt-0.5">{track.desc}</div>
               </div>
               <div className="text-right">
-                <div className="text-[13px] font-mono font-medium text-[#3A5068]">{trackDone}/{trackMods.length}</div>
+                <div className="text-[13px] font-mono font-medium text-bs-body">{trackDone}/{trackMods.length}</div>
                 <div className="text-[11px] text-[#7A9BB8]">{trackPct}%</div>
               </div>
             </div>

@@ -19,7 +19,7 @@ function RadialProgress({ pct, size = 96 }: { pct: number; size?: number }) {
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e1f0ff" strokeWidth={6} />
       <circle
         cx={size / 2} cy={size / 2} r={r} fill="none"
-        stroke="#007aff" strokeWidth={6}
+        stroke="#2A6EBB" strokeWidth={6}
         strokeDasharray={`${dash} ${circ}`}
         strokeLinecap="round"
         style={{ transition: 'stroke-dasharray 0.6s ease' }}
@@ -39,7 +39,7 @@ function StatusBadge({ status, score }: { status: string; score?: number }) {
   }
   if (status === 'available') {
     return (
-      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full text-[#007aff] border border-[#007aff]/20" style={{ background: '#e1f0ff' }}>
+      <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full text-bs-blue border border-[#2A6EBB]/20" style={{ background: '#EBF4FB' }}>
         Available
       </span>
     )
@@ -72,8 +72,8 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
       value: `${completed}/14`,
       label: 'Modules Done',
       sub: `${pct}% of course`,
-      color: '#007aff',
-      bg: '#e1f0ff',
+      color: '#2A6EBB',
+      bg: '#EBF4FB',
     },
     {
       Icon: IcTarget,
@@ -106,7 +106,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
 
       {/* ── Page header ───────────────────────────────────────────────────── */}
       <div>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-1" style={{ color: '#007aff' }}>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-1" style={{ color: '#2A6EBB' }}>
           {isModulesPage ? 'Course' : `Welcome back${state.userName ? `, ${state.userName}` : ''}`}
         </p>
         <h1 className="text-[26px] font-bold tracking-tight" style={{ color: '#0B1829' }}>
@@ -181,7 +181,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
                   <button
                     onClick={() => onNavigate('lesson', nextModule.id)}
                     className="inline-flex items-center gap-2 text-[13px] font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90"
-                    style={{ background: '#007aff' }}
+                    style={{ background: '#2A6EBB' }}
                   >
                     Start Module <IcChevronRight size={14} />
                   </button>
@@ -285,7 +285,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
                       <div className="flex items-start justify-between gap-2">
                         <span
                           className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded"
-                          style={{ background: '#e1f0ff', color: '#007aff' }}
+                          style={{ background: '#EBF4FB', color: '#2A6EBB' }}
                         >
                           M{id}
                         </span>

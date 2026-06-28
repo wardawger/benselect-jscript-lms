@@ -34,6 +34,25 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* BenSelect semantic utilities */
+  --color-bs-navy: var(--bs-navy);
+  --color-bs-navy-mid: var(--bs-navy-mid);
+  --color-bs-blue: var(--bs-blue);
+  --color-bs-blue-light: var(--bs-blue-light);
+  --color-bs-blue-pale: var(--bs-blue-pale);
+  --color-bs-body: var(--bs-body);
+  --color-bs-success: var(--bs-success);
+  --color-bs-warning: var(--bs-warning);
+  --color-bs-danger: var(--bs-danger);
+  --color-bs-track-1: var(--bs-track-1);
+  --color-bs-track-1-pale: var(--bs-track-1-pale);
+  --color-bs-track-2: var(--bs-track-2);
+  --color-bs-track-3: var(--bs-track-3);
+  --color-bs-exam: var(--bs-exam);
+  --color-bs-surface-alt: var(--bs-surface-alt);
+  --color-bs-border-light: var(--bs-border-light);
+  --color-bs-border-input: var(--bs-border-input);
 }
 
 :root {
@@ -78,6 +97,19 @@
   --bs-success: #28A87C;
   --bs-warning: #F5A623;
   --bs-danger: #E84C4C;
+
+  /* Track colors */
+  --bs-track-1: #007AFF;
+  --bs-track-1-pale: #E1F0FF;
+  --bs-track-2: #F59E0B;
+  --bs-track-3: #10B981;
+  --bs-exam: #EF4444;
+
+  /* Semantic surface tokens */
+  --bs-body: #3A5068;
+  --bs-surface-alt: #F8FAFC;
+  --bs-border-light: #E8F0F8;
+  --bs-border-input: #D0DEF0;
 }
 
 /* ── SIDEBAR SLIDE ──────────────────────────────────────────────────── */
@@ -125,7 +157,7 @@ body {
 }
 
 /* ── LESSON CONTENT ─────────────────────────────────────────────── */
-.lesson-content { font-size: 14px; line-height: 1.8; color: #3A5068; }
+.lesson-content { font-size: 14px; line-height: 1.8; color: var(--bs-body); }
 /* h2 is now a card header rendered outside lesson-content — keep rule for edge cases */
 .lesson-content h2 {
   font-size: 1rem; font-weight: 700; color: var(--bs-navy);
@@ -193,7 +225,7 @@ body {
   font-family: 'Roboto Mono', monospace; font-size: 0.6875rem; font-weight: 600;
   color: var(--bs-blue); min-width: 80px; padding-top: 1px; white-space: nowrap; flex-shrink: 0;
 }
-.lesson-content .breakdown-text { color: #3A5068; line-height: 1.6; }
+.lesson-content .breakdown-text { color: var(--bs-body); line-height: 1.6; }
 .lesson-content .breakdown-text strong { color: var(--bs-navy); }
 
 /* On narrow screens, stack the label above the text */
@@ -277,7 +309,7 @@ body {
 .is-type { font-size: 10px; color: #B0C8DC; font-family: 'Roboto Mono', monospace; padding: 1px 5px; background: #F0F4F8; border-radius: 3px; white-space: nowrap; }
 .is-footer { display: flex; gap: 12px; padding: 6px 12px; background: #F8FAFC; border-top: 1px solid #E8F0F8; font-size: 11px; color: #7A9BB8; }
 .is-key { display: flex; align-items: center; gap: 4px; }
-.is-key kbd { background: #E8F0F8; border: 1px solid #D0DEF0; border-radius: 3px; padding: 1px 4px; font-size: 10px; font-family: inherit; color: #3A5068; }
+.is-key kbd { background: #E8F0F8; border: 1px solid #D0DEF0; border-radius: 3px; padding: 1px 4px; font-size: 10px; font-family: inherit; color: var(--bs-body); }
 
 /* BenSelect modal editor textarea */
 textarea.bs-editor-textarea {

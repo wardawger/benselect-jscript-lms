@@ -57,7 +57,7 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
         onClick={() => setOpen(o => !o)}
         className="flex items-center gap-2 text-[13px] font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-[#e2e8f0] px-3 py-1.5 rounded-lg transition-colors"
       >
-        <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0" style={{ background: '#007aff' }}>
+        <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0" style={{ background: '#2A6EBB' }}>
           {userName.charAt(0).toUpperCase()}
         </span>
         <span className="max-w-[120px] truncate">{userName}</span>
@@ -258,14 +258,14 @@ export default function App() {
             {/* Desktop sidebar toggle */}
             <button
               aria-label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
-              className="hidden lg:flex p-2 rounded-lg text-slate-400 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
+              className="hidden lg:flex p-2 rounded-lg text-slate-400 hover:bg-slate-50 hover:text-bs-blue transition-colors"
               onClick={() => setSidebarCollapsed(c => !c)}
             >
               <IcSidebarToggle size={18} />
             </button>
             <button
               onClick={() => navigate('dashboard')}
-              className="text-[13px] text-slate-400 hover:text-[#007aff] transition-colors"
+              className="text-[13px] text-slate-400 hover:text-bs-blue transition-colors"
             >
               BenSelect LMS
             </button>
@@ -277,7 +277,7 @@ export default function App() {
             )}
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline text-[11px] font-mono px-3 py-1 rounded-full font-semibold" style={{ background: '#e1f0ff', color: '#007aff' }}>
+            <span className="hidden sm:inline text-[11px] font-mono px-3 py-1 rounded-full font-semibold" style={{ background: '#EBF4FB', color: '#2A6EBB' }}>
               {Object.values(state.progress).filter(p => p.status === 'complete').length}/14 Complete
             </span>
             {state.userName && (

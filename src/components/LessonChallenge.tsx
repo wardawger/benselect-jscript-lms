@@ -44,7 +44,7 @@ export function LessonChallenge({ moduleId }: LessonChallengeProps) {
         <span className="text-[10px] font-mono text-[#7A9BB8]">no grade · builds skills</span>
       </div>
       <h3 className="text-[15px] font-bold text-[#0B1829] mb-1">{ex.title}</h3>
-      <p className="text-[13px] text-[#3A5068] mb-3">{ex.intro}</p>
+      <p className="text-[13px] text-bs-body mb-3">{ex.intro}</p>
 
       {/* Task box */}
       <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4">
@@ -120,14 +120,14 @@ export function LessonChallenge({ moduleId }: LessonChallengeProps) {
             {showSolution && (
               <div className="mt-2">
                 <pre className="bg-[#0B1829] text-[#B8D4EC] font-mono text-[12px] p-4 rounded-xl overflow-x-auto leading-relaxed">{ex.solution}</pre>
-                <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-[#3A5068]">
+                <div className="mt-2 bg-[#F0F6FD] border border-[#C8DFF0] rounded-xl p-3 text-[12.5px] text-bs-body">
                   <strong className="text-[#0B1829]">Explanation: </strong>{ex.solutionExplain}
                 </div>
               </div>
             )}
           </div>
 
-          <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-[#3A5068] px-4 py-1.5 rounded-lg hover:bg-[#F4F7FB] transition-colors">
+          <button onClick={handleReset} className="text-[12px] border border-[#D0DEF0] text-bs-body px-4 py-1.5 rounded-lg hover:bg-[#F4F7FB] transition-colors">
             Reset &amp; Try Again
           </button>
         </div>

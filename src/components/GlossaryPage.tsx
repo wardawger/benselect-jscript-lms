@@ -45,7 +45,7 @@ export function GlossaryPage() {
       <div className="mb-6">
         <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Reference</div>
         <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight">Glossary & Index</h1>
-        <p className="text-[13px] text-[#3A5068] mt-1.5">{GLOSSARY_ITEMS.length} terms across {GLOSS_CATS.length} categories</p>
+        <p className="text-[13px] text-bs-body mt-1.5">{GLOSSARY_ITEMS.length} terms across {GLOSS_CATS.length} categories</p>
       </div>
 
       {/* Search */}
@@ -65,7 +65,7 @@ export function GlossaryPage() {
         <button
           onClick={() => setActivecat(null)}
           className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border-[1.5px] transition-all',
-            !activecat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
+            !activecat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-bs-body bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
         >
           All <span className="opacity-60">({catCounts['All']})</span>
         </button>
@@ -74,7 +74,7 @@ export function GlossaryPage() {
             key={cat}
             onClick={() => setActivecat(activecat === cat ? null : cat)}
             className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border-[1.5px] transition-all',
-              activecat === cat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
+              activecat === cat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-bs-body bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
           >
             {cat} <span className="opacity-60">({catCounts[cat]})</span>
           </button>
@@ -102,7 +102,7 @@ export function GlossaryPage() {
                   {item.cat}
                 </span>
                 <div className="font-mono text-[12.5px] font-semibold text-[#0B1829] mb-1.5 break-all">{item.term}</div>
-                <div className="text-[12.5px] text-[#3A5068] leading-relaxed break-words">{item.def}</div>
+                <div className="text-[12.5px] text-bs-body leading-relaxed break-words">{item.def}</div>
                 {item.ex && (
                   <code className="block font-mono text-[11px] text-[#2A6EBB] bg-[#EBF4FB] px-2.5 py-1.5 rounded-lg mt-2 overflow-x-auto whitespace-pre-wrap break-all">
                     {item.ex}
