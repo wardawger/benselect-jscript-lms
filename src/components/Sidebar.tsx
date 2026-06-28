@@ -55,7 +55,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
 
         {/* Primary nav */}
         <div>
-          <div className="text-[9px] font-semibold text-white/30 uppercase tracking-[0.12em] px-5 mb-2">Navigation</div>
+          <div className="text-[9px] font-semibold text-white/50 uppercase tracking-[0.12em] px-5 mb-2">Navigation</div>
           <ul className="space-y-0.5 px-2">
             {NAV_ITEMS.map(({ id, label, Icon }) => {
               const isActive = state.page === id && !state.activeModule
@@ -84,7 +84,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
         {/* Module tracks */}
         {TRACK_GROUPS.map(track => (
           <div key={track.label}>
-            <div className="text-[9px] font-semibold text-white/30 uppercase tracking-[0.12em] px-5 mb-2 truncate">
+            <div className="text-[9px] font-semibold text-white/50 uppercase tracking-[0.12em] px-5 mb-2 truncate">
               {track.label.split(' — ')[0]}
             </div>
             <ul className="space-y-0.5 px-2">
@@ -101,22 +101,22 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
                       disabled={isLocked}
                       aria-current={isActive ? 'page' : undefined}
                       className={cn(
-                        'w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-all text-left group min-h-[40px] sm:min-h-0',
+                        'w-full flex items-start gap-2.5 px-3 py-2 rounded-lg text-[12px] transition-all text-left group',
                         isActive
                           ? 'bg-white/10 text-white font-medium'
                           : isDone
-                          ? 'text-emerald-400/80 hover:bg-white/[0.05] hover:text-emerald-300'
+                          ? 'text-emerald-300 hover:bg-white/[0.05] hover:text-emerald-200'
                           : isLocked
-                          ? 'text-white/30 cursor-not-allowed'
-                          : 'text-white/60 hover:text-white/80 hover:bg-white/[0.05]'
+                          ? 'text-white/35 cursor-not-allowed'
+                          : 'text-white/70 hover:text-white hover:bg-white/[0.05]'
                       )}
                     >
-                      <span className="shrink-0 w-4 h-4 flex items-center justify-center">
+                      <span className="shrink-0 w-4 h-4 flex items-center justify-center mt-0.5">
                         <StatusIcon p={p} />
                       </span>
-                      <span className="truncate flex-1">{id}. {mod.title.length > 21 ? mod.title.slice(0, 21) + '…' : mod.title}</span>
+                      <span className="flex-1 leading-snug line-clamp-2">{id}. {mod.title}</span>
                       {p.score !== undefined && (
-                        <span className="text-[10px] font-mono text-white/30 shrink-0">{p.score}%</span>
+                        <span className="text-[10px] font-mono text-white/40 shrink-0 mt-0.5">{p.score}%</span>
                       )}
                     </button>
                   </li>
@@ -131,8 +131,8 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
       {/* Footer */}
       <div className="px-5 py-4 border-t border-white/[0.07] space-y-2">
         <div className="flex justify-between items-center">
-          <span className="text-[11px] text-white/40">Progress</span>
-          <span className="text-[11px] font-mono text-white/50">{completed}/{total} · {pct}%</span>
+          <span className="text-[11px] text-white/55">Progress</span>
+          <span className="text-[11px] font-mono text-white/65">{completed}/{total} · {pct}%</span>
         </div>
         <div className="h-1 rounded-full bg-white/10 overflow-hidden">
           <div
@@ -141,7 +141,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
           />
         </div>
         {avgScore > 0 && (
-          <div className="text-[10px] text-white/30">Avg quiz score: {avgScore}%</div>
+          <div className="text-[10px] text-white/50">Avg quiz score: {avgScore}%</div>
         )}
       </div>
     </aside>
