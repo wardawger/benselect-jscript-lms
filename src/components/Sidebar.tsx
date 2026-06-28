@@ -31,7 +31,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
   const avgScore = getOverallScore(state.progress)
 
   return (
-    <aside className="flex flex-col h-full w-60 shrink-0" style={{ background: '#0d1e3d' }}>
+    <aside className="flex flex-col h-full w-60 shrink-0" style={{ background: '#0B1829' }} aria-label="Primary navigation">
 
       {/* Brand */}
       <div className="px-5 pt-6 pb-5 border-b border-white/[0.07]">
@@ -63,11 +63,12 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
                 <li key={id}>
                   <button
                     onClick={() => { onNavigate(id); onClose?.() }}
+                    aria-current={isActive ? 'page' : undefined}
                     className={cn(
-                      'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] transition-all text-left',
+                      'w-full flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] transition-all text-left min-h-[44px] sm:min-h-0',
                       isActive
                         ? 'text-white font-medium'
-                        : 'text-white/50 hover:text-white/80 hover:bg-white/[0.05]'
+                        : 'text-white/60 hover:text-white/80 hover:bg-white/[0.05]'
                     )}
                     style={isActive ? { background: '#007aff' } : undefined}
                   >
@@ -98,15 +99,16 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
                     <button
                       onClick={() => { if (!isLocked) { onNavigate('lesson', id); onClose?.() } }}
                       disabled={isLocked}
+                      aria-current={isActive ? 'page' : undefined}
                       className={cn(
-                        'w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-all text-left group',
+                        'w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-[12px] transition-all text-left group min-h-[40px] sm:min-h-0',
                         isActive
                           ? 'bg-white/10 text-white font-medium'
                           : isDone
                           ? 'text-emerald-400/80 hover:bg-white/[0.05] hover:text-emerald-300'
                           : isLocked
-                          ? 'text-white/20 cursor-not-allowed'
-                          : 'text-white/50 hover:text-white/80 hover:bg-white/[0.05]'
+                          ? 'text-white/30 cursor-not-allowed'
+                          : 'text-white/60 hover:text-white/80 hover:bg-white/[0.05]'
                       )}
                     >
                       <span className="shrink-0 w-4 h-4 flex items-center justify-center">

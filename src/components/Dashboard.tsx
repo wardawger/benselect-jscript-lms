@@ -15,7 +15,7 @@ function RadialProgress({ pct, size = 96 }: { pct: number; size?: number }) {
   const circ = 2 * Math.PI * r
   const dash = (pct / 100) * circ
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="rotate-[-90deg]">
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="rotate-[-90deg]" role="img" aria-label={`${pct}% course complete`}>
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e1f0ff" strokeWidth={6} />
       <circle
         cx={size / 2} cy={size / 2} r={r} fill="none"
@@ -109,7 +109,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-1" style={{ color: '#007aff' }}>
           {isModulesPage ? 'Course' : `Welcome back${state.userName ? `, ${state.userName}` : ''}`}
         </p>
-        <h1 className="text-[26px] font-bold tracking-tight" style={{ color: '#0d1e3d' }}>
+        <h1 className="text-[26px] font-bold tracking-tight" style={{ color: '#0B1829' }}>
           {isModulesPage ? 'All Modules' : 'JScript in Selerix BenSelect'}
         </h1>
         <p className="text-slate-500 text-[13px] mt-1">
@@ -125,13 +125,13 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
           {kpis.map(({ Icon, value, label, sub, color, bg }) => (
             <div
               key={label}
-              className="bg-white rounded-xl border border-[#e2e8f0] p-5 flex flex-col gap-3 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl border border-[#e2e8f0] p-5 flex flex-col gap-3"
             >
               <div className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0" style={{ background: bg, color }}>
                 <Icon size={18} />
               </div>
               <div>
-                <div className="text-[26px] font-bold leading-none tracking-tight" style={{ color: '#0d1e3d' }}>{value}</div>
+                <div className="text-[26px] font-bold leading-none tracking-tight" style={{ color: '#0B1829' }}>{value}</div>
                 <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mt-1">{label}</div>
                 <div className="text-[12px] text-slate-500 mt-0.5">{sub}</div>
               </div>
@@ -143,8 +143,8 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
       {/* ── Hero: Continue Learning + Radial Progress ──────────────────────── */}
       {!isModulesPage && (
         <div
-          className="rounded-2xl overflow-hidden border border-[#e2e8f0] shadow-sm"
-          style={{ background: '#0d1e3d' }}
+          className="rounded-2xl overflow-hidden border border-[#e2e8f0]"
+          style={{ background: '#0B1829' }}
         >
           <div className="flex flex-col sm:flex-row items-stretch">
 
@@ -240,7 +240,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
               <div className="sticky top-[60px] z-10 bg-white/80 backdrop-blur-sm border-b border-[#e2e8f0] mb-4 pb-3 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: meta.dot }} />
-                  <span className="text-[13px] font-bold" style={{ color: '#0d1e3d' }}>
+                  <span className="text-[13px] font-bold" style={{ color: '#0B1829' }}>
                     {track.label.split(' — ')[0]}
                   </span>
                   <span className="text-slate-400 text-[13px]">—</span>
@@ -265,7 +265,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
                         'text-left bg-white rounded-xl border border-[#e2e8f0] p-5 flex flex-col gap-3 transition-all relative overflow-hidden group',
                         isLocked
                           ? 'opacity-50 cursor-not-allowed'
-                          : 'hover:shadow-md hover:-translate-y-0.5 cursor-pointer shadow-sm',
+                          : 'hover:shadow-md hover:-translate-y-0.5 cursor-pointer',
                         isDone ? 'border-emerald-100' : '',
                       ].join(' ')}
                     >
@@ -294,7 +294,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
 
                       {/* Title */}
                       <div>
-                        <div className="text-[13px] font-semibold leading-snug" style={{ color: '#0d1e3d' }}>
+                        <div className="text-[13px] font-semibold leading-snug" style={{ color: '#0B1829' }}>
                           {mod.title}
                         </div>
                       </div>

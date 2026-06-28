@@ -29,23 +29,24 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
       {/* Summary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {/* Completion */}
-        <div className="bg-white rounded-xl p-5 shadow-sm border border-[#E8F0F8]">
+        <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
           <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{pct}%</div>
           <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">Overall completion</div>
           <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] rounded-full transition-all" style={{ width: `${pct}%` }} />
+            <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#2A6EBB' }} />
           </div>
           <div className="text-[12px] text-[#3A5068] mt-2">{completed} of 14 modules done</div>
         </div>
 
         {/* Avg quiz score */}
-        <div className="bg-white rounded-xl p-5 shadow-sm border border-[#E8F0F8]">
+        <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
           <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{avgScore ? `${avgScore}%` : '—'}</div>
           <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">Average quiz score</div>
           {avgScore > 0 && (
             <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all ${avgScore >= 80 ? 'bg-gradient-to-r from-emerald-500 to-emerald-400' : avgScore >= 60 ? 'bg-gradient-to-r from-amber-400 to-amber-500' : 'bg-[#E84C4C]'}`}
+                className="h-full rounded-full transition-all"
+              style={{ background: avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C' }}
                 style={{ width: `${avgScore}%` }}
               />
             </div>
@@ -54,7 +55,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
         </div>
 
         {/* Certification */}
-        <div className="bg-white rounded-xl p-5 shadow-sm border border-[#E8F0F8]">
+        <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
           {completed === 14 ? (
             <div className="w-10 h-10 rounded-lg bg-[#EBF4FB] flex items-center justify-center mb-2 text-[#2A6EBB]">
               <IcAward size={22} />
@@ -77,7 +78,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
         const trackDone = trackMods.filter(m => m.p.status === 'complete').length
         const trackPct  = Math.round((trackDone / trackMods.length) * 100)
         return (
-          <div key={track.label} className="bg-white rounded-xl shadow-sm border border-[#E8F0F8] mb-4 overflow-hidden">
+          <div key={track.label} className="bg-white rounded-xl border border-[#E8F0F8] mb-4 overflow-hidden">
             <div className="px-5 py-4 border-b border-[#E8F0F8] flex items-center justify-between">
               <div>
                 <div className="text-[14px] font-semibold text-[#0B1829]">{track.label}</div>

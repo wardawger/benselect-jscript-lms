@@ -68,6 +68,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
   const [showResult, setShowResult] = useState(false)
   const [hoveredQ, setHoveredQ] = useState<number | null>(null)
   const [exerciseBonus, setExerciseBonus] = useState(0)
+  const [validationError, setValidationError] = useState(false)
 
   // Scroll to top when result appears
   useEffect(() => {
@@ -77,13 +78,15 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
   function selectAnswer(qi: number, oi: number) {
     if (submitted) return
     setAnswers(prev => prev.map((a, i) => i === qi ? { ...a, selected: oi } : a))
+    setValidationError(false)
   }
 
   function submit() {
     if (answers.some(a => a.selected === null)) {
-      alert('Please answer all questions before submitting.')
+      setValidationError(true)
       return
     }
+    setValidationError(false)
     const graded = answers.map((a, i) => ({
       ...a,
       state: (a.selected === questions[i].a ? 'correct' : 'wrong') as AnswerState
@@ -141,7 +144,8 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
               {passed && moduleId < 14 && (
                 <button
                   onClick={() => onComplete(moduleId, score, passed)}
-                  className="bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] text-white text-[13px] font-medium px-5 py-2.5 rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+                  className="text-white text-[13px] font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+                  style={{ background: '#2A6EBB' }}
                 >
                   Next Module →
                 </button>
@@ -149,7 +153,8 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
               {passed && moduleId === 14 && (
                 <button
                   onClick={() => onComplete(moduleId, score, passed)}
-                  className="bg-gradient-to-r from-emerald-500 to-emerald-400 text-white text-[13px] font-medium px-5 py-2.5 rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+                  className="text-white text-[13px] font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+                  style={{ background: '#28A87C' }}
                 >
                   🏆 Claim Certificate
                 </button>
@@ -157,7 +162,8 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
               {!passed && (
                 <button
                   onClick={() => { setSubmitted(false); setShowResult(false); setAnswers(questions.map(() => ({ selected: null, state: 'unanswered' }))) }}
-                  className="bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] text-white text-[13px] font-medium px-5 py-2.5 rounded-lg shadow-sm hover:opacity-90 transition-opacity"
+                  className="text-white text-[13px] font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+                  style={{ background: '#2A6EBB' }}
                 >
                   Review & Retry
                 </button>
@@ -238,21 +244,29 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
             <div className="text-[11px] font-mono text-[#4A9FD4] uppercase tracking-wider mb-1.5">Question {qi + 1}</div>
             <div className="text-[14px] font-semibold text-[#0B1829] mb-3 leading-snug">{q.q}</div>
             <div className="space-y-2">
-              {q.opts.map((opt, oi) => (
-                <button
-                  key={oi}
-                  onClick={() => selectAnswer(qi, oi)}
-                  className={cn(
-                    'w-full text-left flex items-start gap-3 p-3 rounded-lg border-[1.5px] text-[13px] transition-all',
-                    answers[qi].selected === oi
-                      ? 'border-[#2A6EBB] bg-[#EBF4FB] text-[#0B1829] font-medium'
-                      : 'border-[#D8E8F4] text-[#3A5068] hover:border-[#4A9FD4] hover:bg-[#EBF4FB]'
-                  )}
-                >
-                  <input type="radio" readOnly checked={answers[qi].selected === oi} className="mt-0.5 shrink-0 accent-[#2A6EBB]" />
-                  <span>{opt}</span>
-                </button>
-              ))}
+              {q.opts.map((opt, oi) => {
+                const isSelected = answers[qi].selected === oi
+                return (
+                  <button
+                    key={oi}
+                    onClick={() => selectAnswer(qi, oi)}
+                    className={cn(
+                      'w-full text-left flex items-start gap-3 p-3 rounded-lg border-[1.5px] text-[13px] transition-all',
+                      isSelected
+                        ? 'border-[#2A6EBB] bg-[#EBF4FB] text-[#0B1829] font-medium'
+                        : 'border-[#D8E8F4] text-[#3A5068] hover:border-[#4A9FD4] hover:bg-[#F4F9FE]'
+                    )}
+                  >
+                    <span className={cn(
+                      'w-4 h-4 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center transition-colors',
+                      isSelected ? 'border-[#2A6EBB] bg-[#2A6EBB]' : 'border-[#C8D8E8] bg-white'
+                    )}>
+                      {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white block" />}
+                    </span>
+                    <span>{opt}</span>
+                  </button>
+                )
+              })}
             </div>
           </div>
         ))}
@@ -265,17 +279,25 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
         </div>
       )}
 
-      <div className="mt-6 flex items-center justify-between">
-        <span className="text-[13px] text-[#7A9BB8]">
-          {answers.filter(a => a.selected !== null).length} of {questions.length} answered
-        </span>
-        <button
-          onClick={submit}
-          disabled={answers.some(a => a.selected === null)}
-          className="bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] text-white text-[13px] font-medium px-6 py-2.5 rounded-lg shadow-sm hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-        >
-          Submit Quiz
-        </button>
+      <div className="mt-6 space-y-3">
+        {validationError && (
+          <div role="alert" className="flex items-center gap-2 text-[13px] text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2.5">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6.5"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r="0.75" fill="currentColor" stroke="none"/></svg>
+            Please answer all {questions.length} questions before submitting.
+          </div>
+        )}
+        <div className="flex items-center justify-between">
+          <span className="text-[13px] text-[#7A9BB8]">
+            {answers.filter(a => a.selected !== null).length} of {questions.length} answered
+          </span>
+          <button
+            onClick={submit}
+            className="text-white text-[13px] font-semibold px-6 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+            style={{ background: '#2A6EBB' }}
+          >
+            Submit Quiz
+          </button>
+        </div>
       </div>
     </div>
   )

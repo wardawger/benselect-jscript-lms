@@ -164,16 +164,16 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
     <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full">
 
       {/* ── Breadcrumb ─────────────────────────────────────────────────────── */}
-      <div className="flex items-center gap-1.5 text-[12px] text-slate-400 mb-5">
+      <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[12px] text-slate-500 mb-5">
         <button onClick={onBack} className="hover:text-[#007aff] transition-colors">Dashboard</button>
         <IcChevronRight size={10} />
-        <span className="text-slate-400">{mod.track}</span>
+        <span className="text-slate-500">{mod.track}</span>
         <IcChevronRight size={10} />
-        <span className="text-[#0d1e3d] font-medium truncate">Module {mod.id}</span>
-      </div>
+        <span className="text-[#0B1829] font-medium truncate" aria-current="page">Module {mod.id}</span>
+      </nav>
 
       {/* ── Module header card ──────────────────────────────────────────────── */}
-      <div className="rounded-2xl shadow-lg overflow-hidden mb-6 relative" style={{ background: '#0d1e3d' }}>
+      <div className="rounded-2xl shadow-lg overflow-hidden mb-6 relative" style={{ background: '#0B1829' }}>
         {/* Unique SVG pattern overlay */}
         <ModulePattern id={moduleId} color={trackColor} />
 
@@ -246,12 +246,12 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
         <div className="flex-1 min-w-0 space-y-5">
 
           {/* Learning Objectives */}
-          <div className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden">
+          <div className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden">
             <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-[#e2e8f0]" style={{ background: '#f8fafc' }}>
               <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ background: '#e1f0ff', color: '#007aff' }}>
                 <IcTarget size={13} />
               </div>
-              <span className="text-[13px] font-semibold" style={{ color: '#0d1e3d' }}>Learning Objectives</span>
+              <span className="text-[13px] font-semibold" style={{ color: '#0B1829' }}>Learning Objectives</span>
             </div>
             <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {mod.topics.map(t => (
@@ -270,7 +270,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
 
           {/* Content section cards */}
           {contentSections.map((section, idx) => (
-            <div key={idx} id={`section-${idx}`} className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden scroll-mt-20">
+            <div key={idx} id={`section-${idx}`} className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden scroll-mt-20">
               {/* Section header */}
               <div className="flex items-center gap-3 px-5 py-4 border-b border-[#e2e8f0]" style={{ background: '#f8fafc' }}>
                 <span
@@ -281,7 +281,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
                 </span>
                 <h2
                   className="text-[14px] font-semibold leading-snug"
-                  style={{ color: '#0d1e3d' }}
+                  style={{ color: '#0B1829' }}
                   dangerouslySetInnerHTML={{ __html: section.heading! }}
                 />
               </div>
@@ -292,7 +292,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
 
           {/* Practice coding exercise */}
           {QUIZ_EXERCISES[moduleId] && (
-            <div id="section-exercise" className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden scroll-mt-20">
+            <div id="section-exercise" className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden scroll-mt-20">
               <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-[#e2e8f0]" style={{ background: '#f8fafc' }}>
                 <span
                   className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
@@ -300,7 +300,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
                 >
                   Practice
                 </span>
-                <span className="text-[13px] font-semibold" style={{ color: '#0d1e3d' }}>Coding Exercise</span>
+                <span className="text-[13px] font-semibold" style={{ color: '#0B1829' }}>Coding Exercise</span>
                 <span className="text-[11px] text-slate-400 ml-auto">Use the JScript editor below</span>
               </div>
               <div className="p-5">
@@ -310,9 +310,9 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
           )}
 
           {/* Quiz CTA footer */}
-          <div className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="bg-white rounded-xl border border-[#e2e8f0] p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <div className="text-[14px] font-semibold" style={{ color: '#0d1e3d' }}>Ready to test your knowledge?</div>
+              <div className="text-[14px] font-semibold" style={{ color: '#0B1829' }}>Ready to test your knowledge?</div>
               <div className="text-[12px] text-slate-500 mt-0.5">Score 60% or higher to unlock the next module</div>
             </div>
             <button
@@ -327,8 +327,8 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
         </div>
 
         {/* Sticky sidebar: section TOC (desktop only) */}
-        <aside className="hidden xl:block w-52 shrink-0 sticky top-[76px]">
-          <div className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden">
+        <aside className="hidden lg:block w-48 xl:w-52 shrink-0 sticky top-[76px]" aria-label="In this module">
+          <div className="bg-white rounded-xl border border-[#e2e8f0] overflow-hidden">
             <div className="px-4 py-3 border-b border-[#e2e8f0]" style={{ background: '#f8fafc' }}>
               <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-slate-400">In this module</span>
             </div>

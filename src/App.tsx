@@ -13,8 +13,8 @@ function LoginModal({ onSubmit }: { onSubmit: (name: string) => void }) {
   const [name, setName] = useState('')
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0B1829]/80 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-sm mx-4">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2A6EBB] to-[#4A9FD4] flex items-center justify-center text-white font-bold text-lg mb-5">BS</div>
+      <div className="bg-white rounded-2xl p-8 w-full max-w-sm mx-4 border border-[#E2ECF5]">
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg mb-5" style={{ background: '#2A6EBB' }}>BS</div>
         <h2 className="text-[20px] font-bold text-[#0B1829] mb-1.5">Welcome to BenSelect LMS</h2>
         <p className="text-[13px] text-[#3A5068] mb-6">What's your name? We'll use it to personalize your progress.</p>
         <form onSubmit={e => { e.preventDefault(); if (name.trim()) onSubmit(name.trim()) }}>
@@ -29,7 +29,7 @@ function LoginModal({ onSubmit }: { onSubmit: (name: string) => void }) {
           <button
             type="submit"
             disabled={!name.trim()}
-            className="w-full bg-gradient-to-r from-[#2A6EBB] to-[#4A9FD4] text-white font-medium py-3 rounded-xl text-[14px] hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+            className="w-full text-white font-medium py-3 rounded-xl text-[14px] hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed" style={{ background: '#2A6EBB' }}
           >
             Start Learning →
           </button>
@@ -249,6 +249,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             {/* Mobile hamburger */}
             <button
+              aria-label="Open navigation menu"
               className="lg:hidden p-2 rounded-lg text-slate-400 hover:bg-slate-50 transition-colors"
               onClick={() => setMobileNavOpen(true)}
             >
@@ -256,9 +257,9 @@ export default function App() {
             </button>
             {/* Desktop sidebar toggle */}
             <button
+              aria-label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
               className="hidden lg:flex p-2 rounded-lg text-slate-400 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
               onClick={() => setSidebarCollapsed(c => !c)}
-              title={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
             >
               <IcSidebarToggle size={18} />
             </button>
@@ -271,7 +272,7 @@ export default function App() {
             {state.page !== 'dashboard' && (
               <>
                 <span className="text-slate-200 text-[13px]">›</span>
-                <span className="text-[13px] font-medium text-[#0d1e3d]">{pageTitle[state.page] ?? 'Dashboard'}</span>
+                <span className="text-[13px] font-medium text-[#0B1829]">{pageTitle[state.page] ?? 'Dashboard'}</span>
               </>
             )}
           </div>
