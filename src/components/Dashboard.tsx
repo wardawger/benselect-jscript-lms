@@ -145,8 +145,8 @@ function TrackCard({ group, progress, onNavigate }: {
           if (target) onNavigate('lesson', target.id)
         }}
         disabled={!hasAccess}
-        className="w-full text-[12px] font-semibold py-2 rounded-lg border transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-80"
-        style={{ color: ts.color, borderColor: `${ts.color}50`, background: 'transparent' }}
+        className="w-full text-[12px] font-semibold py-2.5 rounded-lg transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer hover:scale-[1.02] hover:shadow-sm active:scale-[0.98]"
+        style={{ color: 'white', background: ts.color }}
       >
         {btnLabel}
       </button>
