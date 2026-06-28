@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-28T00:00:00.000Z",
+  "title": "Design System: BenSelect LMS",
+  "extensions": {
+    "colorMeta": {
+      "primary":       { "role": "primary",   "displayName": "Selerix Blue",    "canonical": "#2A6EBB", "tonalRamp": ["#0d2540","#163a62","#1e4f84","#2762a5","#2A6EBB","#4a86cc","#72a4da","#a0c3e8","#cde1f4","#eaf3fb"] },
+      "accent":        { "role": "primary",   "displayName": "Sky Accent",      "canonical": "#4A9FD4", "tonalRamp": ["#0d2e40","#174461","#225e84","#2e78a9","#4A9FD4","#6ab5e0","#90ccea","#b8def3","#dceefa","#eef7fd"] },
+      "pale-blue":     { "role": "secondary", "displayName": "Pale Blue",       "canonical": "#EBF4FB", "tonalRamp": ["#c2dcf0","#cbe2f3","#d5e9f5","#def0f8","#e8f3fa","#EBF4FB","#eff6fc","#f3f9fd","#f7fbfe","#fbfdff"] },
+      "navy":          { "role": "neutral",   "displayName": "Ink Navy",        "canonical": "#0B1829", "tonalRamp": ["#050c16","#0B1829","#112240","#162B45","#1e3a5f","#2b527f","#3d6fa0","#6490bc","#9ab5d4","#cddaec"] },
+      "navy-mid":      { "role": "neutral",   "displayName": "Navy Mid",        "canonical": "#112240", "tonalRamp": ["#070e1e","#0e1a31","#112240","#162B45","#1d3558","#27476e","#3b5e87","#618099","#8fa5be","#bfcfde"] },
+      "navy-card":     { "role": "neutral",   "displayName": "Navy Card",       "canonical": "#162B45", "tonalRamp": ["#080f1a","#0f1d2d","#162B45","#1c3556","#23406a","#2f537f","#4a6e98","#7292b4","#a0b7cf","#cedce9"] },
+      "navy-border":   { "role": "neutral",   "displayName": "Navy Border",     "canonical": "#1E3A5F", "tonalRamp": ["#0a1827","#12253f","#1E3A5F","#264a78","#2d5a94","#4472ac","#6d93c3","#99b6d8","#c3d5e9","#e0eaf4"] },
+      "body-text":     { "role": "neutral",   "displayName": "Body Text",       "canonical": "#3A5068", "tonalRamp": ["#1a2630","#24353f","#2e4350","#3A5068","#4d6880","#6a849a","#8da0b4","#b1bfcc","#d3dae2","#eaedf2"] },
+      "neutral-bg":    { "role": "neutral",   "displayName": "Page Tint",       "canonical": "#F4F7FB", "tonalRamp": ["#c8d5e6","#d5dfec","#e0e9f2","#eaf1f8","#F4F7FB","#f7f9fc","#f9fbfd","#fbfcfe","#fdfeff","#ffffff"] },
+      "surface":       { "role": "neutral",   "displayName": "Surface White",   "canonical": "#FFFFFF", "tonalRamp": ["#d0dce8","#dde6ef","#e8eef6","#f3f7fb","#f9fbfd","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF","#FFFFFF"] },
+      "surface-alt":   { "role": "neutral",   "displayName": "Surface Alt",     "canonical": "#F8FAFC", "tonalRamp": ["#cbd6e2","#d7e0ea","#e2eaf2","#edf2f8","#F8FAFC","#fafbfd","#fcfdfe","#fdfdff","#fefeff","#ffffff"] },
+      "muted-ink":     { "role": "neutral",   "displayName": "Muted Slate",     "canonical": "#7A9BB8", "tonalRamp": ["#2a3c4d","#3b5368","#4e6b83","#638299","#7A9BB8","#97b1c7","#b3c8d8","#ccdae6","#e3ecf2","#f1f5f9"] },
+      "border":        { "role": "neutral",   "displayName": "Border Ice",      "canonical": "#E2ECF5", "tonalRamp": ["#9bb5cc","#afc5d8","#c3d5e4","#d5e4ef","#E2ECF5","#eaf2f8","#f0f6fb","#f5f9fd","#f9fbfe","#fcfdff"] },
+      "border-light":  { "role": "neutral",   "displayName": "Border Light",    "canonical": "#E8F0F8", "tonalRamp": ["#a0b5cb","#b3c5d8","#c6d5e5","#d7e4f0","#E8F0F8","#eef4fa","#f3f8fc","#f7fafe","#fafcfe","#fdfeff"] },
+      "border-input":  { "role": "neutral",   "displayName": "Border Input",    "canonical": "#D0DEF0", "tonalRamp": ["#8da6c6","#9db3cf","#afc3da","#bed3e8","#D0DEF0","#dce8f4","#e6eff8","#eef5fb","#f5f9fd","#fafcfe"] },
+      "success":       { "role": "semantic",  "displayName": "Success",         "canonical": "#28A87C", "tonalRamp": ["#0d3a29","#13523b","#1b7153","#22906a","#28A87C","#44bb8f","#6bcea8","#97dfc2","#c1eddb","#e3f7ef"] },
+      "warning":       { "role": "semantic",  "displayName": "Warning",         "canonical": "#F5A623", "tonalRamp": ["#5a3a00","#7c5200","#a36c00","#cc8800","#F5A623","#f7b84e","#f9ca7a","#fbdba6","#fdecd2","#fef6e9"] },
+      "danger":        { "role": "semantic",  "displayName": "Danger",          "canonical": "#E84C4C", "tonalRamp": ["#5a0d0d","#7c1515","#a01f1f","#c42d2d","#E84C4C","#ed6f6f","#f29595","#f6b8b8","#fadbdb","#fdeded"] },
+      "track-1":       { "role": "track",     "displayName": "Track 1 Blue",    "canonical": "#007AFF", "tonalRamp": ["#002e6a","#003f90","#0052b5","#0066da","#007AFF","#3394ff","#66acff","#99c5ff","#ccdfff","#e5efff"] },
+      "track-1-pale":  { "role": "track",     "displayName": "Track 1 Pale",    "canonical": "#E1F0FF", "tonalRamp": ["#9dc4f2","#b1cff5","#c4dbf8","#d5e8fb","#E1F0FF","#e8f4ff","#eef7ff","#f3faff","#f8fcff","#fcfeff"] },
+      "track-2":       { "role": "track",     "displayName": "Track 2 Amber",   "canonical": "#F59E0B", "tonalRamp": ["#5a3700","#7c4d00","#a36500","#cc7e00","#F59E0B","#f7b033","#f9c35f","#fbd68c","#fde9ba","#fef4dd"] },
+      "track-3":       { "role": "track",     "displayName": "Track 3 Emerald", "canonical": "#10B981", "tonalRamp": ["#053d2a","#08553a","#0b6e4d","#0e8861","#10B981","#3ecb9c","#6ed9b7","#9de7d1","#ccf3e8","#e5f9f4"] },
+      "exam":          { "role": "track",     "displayName": "Exam Red",        "canonical": "#EF4444", "tonalRamp": ["#5a0d0d","#7c1515","#a01f1f","#c42d2d","#EF4444","#f36e6e","#f79898","#fbbfbf","#fddfdf","#feefef"] }
+    },
+    "typographyMeta": {
+      "display":  { "displayName": "Display",  "purpose": "Module titles in navy header cards only. White text on dark background." },
+      "headline": { "displayName": "Headline", "purpose": "Section card headings. Ink Navy on white." },
+      "title":    { "displayName": "Title",    "purpose": "Card headers, sidebar module names, quiz question text." },
+      "body":     { "displayName": "Body",     "purpose": "All prose and lesson explanations. Body Text (#3A5068) on white." },
+      "label":    { "displayName": "Label",    "purpose": "Status badges, section tags, track labels. Uppercase only at this size." },
+      "mono":     { "displayName": "Mono",     "purpose": "Code blocks, inline code, IntelliSense, history modal labels." }
+    },
+    "shadows": [
+      { "name": "modal-overlay", "value": "0 8px 32px rgba(11,24,41,0.18)", "purpose": "Modals, IntelliSense dropdown, history modal. The only permitted shadow in the system." }
+    ],
+    "motion": [
+      { "name": "ease-standard",  "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "All UI state transitions — sidebar slide, collapse panels, button hover." },
+      { "name": "ease-out-quart", "value": "cubic-bezier(0, 0, 0.2, 1)",   "purpose": "Sidebar translate animation (0.28s)." },
+      { "name": "duration-fast",  "value": "0.15s", "purpose": "Micro-interactions: button hover, icon transitions." },
+      { "name": "duration-base",  "value": "0.25s", "purpose": "Panel fades, collapse animations." },
+      { "name": "duration-slow",  "value": "0.35s", "purpose": "AnimatedCollapse max-height transitions." }
+    ],
+    "breakpoints": [
+      { "name": "sm",  "value": "640px"  },
+      { "name": "md",  "value": "768px"  },
+      { "name": "lg",  "value": "1024px" },
+      { "name": "xl",  "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Core action — start module, submit quiz, check answer.",
+      "html": "<button class=\"ds-btn-primary\">Start Module</button>",
+      "css": ".ds-btn-primary { background: #2A6EBB; color: #fff; padding: 10px 20px; font-size: 13px; font-weight: 500; font-family: Roboto, system-ui, sans-serif; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s ease; } .ds-btn-primary:hover { background: #1e5a9e; } .ds-btn-primary:focus-visible { outline: 2px solid #4A9FD4; outline-offset: 2px; border-radius: 8px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Supplementary actions — view solution, reset, cancel.",
+      "html": "<button class=\"ds-btn-secondary\">View Solution</button>",
+      "css": ".ds-btn-secondary { background: #EBF4FB; color: #2A6EBB; padding: 10px 20px; font-size: 13px; font-weight: 500; font-family: Roboto, system-ui, sans-serif; border: none; border-radius: 8px; cursor: pointer; transition: background 0.15s ease; } .ds-btn-secondary:hover { background: #d9ecf7; } .ds-btn-secondary:focus-visible { outline: 2px solid #4A9FD4; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "description": "Tertiary actions — inline text-style links that behave as buttons.",
+      "html": "<button class=\"ds-btn-ghost\">Reset &amp; Try Again</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #3A5068; padding: 6px 12px; font-size: 12px; font-family: Roboto, system-ui, sans-serif; border: 1px solid #D0DEF0; border-radius: 8px; cursor: pointer; transition: background 0.15s ease; } .ds-btn-ghost:hover { background: #F4F7FB; } .ds-btn-ghost:focus-visible { outline: 2px solid #4A9FD4; outline-offset: 2px; }"
+    },
+    {
+      "name": "Content Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Standard white content card on page tint.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\">Section Title</div><div class=\"ds-card-body\">Card content goes here with body text styling.</div></div>",
+      "css": ".ds-card { background: #fff; border: 1px solid #E2ECF5; border-radius: 12px; overflow: hidden; font-family: Roboto, system-ui, sans-serif; } .ds-card-header { background: #F8FAFC; border-bottom: 1px solid #E8F0F8; padding: 12px 16px; font-size: 13px; font-weight: 600; color: #0B1829; } .ds-card-body { padding: 16px; font-size: 14px; color: #3A5068; line-height: 1.6; }"
+    },
+    {
+      "name": "Code Block",
+      "kind": "custom",
+      "refersTo": "code-block",
+      "description": "Dark navy code display — a first-class visual element in this teaching context.",
+      "html": "<div class=\"ds-code-block\"><span class=\"ds-code-comment\">// EventType: OnEligible</span>\n<span class=\"ds-code-keyword\">var</span> field = Event.Employee.CustomFields[<span class=\"ds-code-string\">\"Name\"</span>];</div>",
+      "css": ".ds-code-block { background: #0B1829; color: #B8D4EC; font-family: 'Roboto Mono', ui-monospace, monospace; font-size: 13px; line-height: 1.75; padding: 16px 20px; border-radius: 12px; white-space: pre; overflow-x: auto; position: relative; } .ds-code-comment { color: #4A6880; font-style: italic; } .ds-code-keyword { color: #7EB3F7; } .ds-code-string { color: #9ECBFF; }"
+    },
+    {
+      "name": "Sidebar Nav Item — Active",
+      "kind": "nav",
+      "refersTo": "nav-item-active",
+      "description": "Currently selected page or lesson in the sidebar.",
+      "html": "<button class=\"ds-nav-item ds-nav-item--active\"><span class=\"ds-nav-icon\">◉</span> Dashboard</button>",
+      "css": ".ds-nav-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 12px; border: none; border-radius: 8px; font-family: Roboto, system-ui, sans-serif; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s; } .ds-nav-item--active { background: #2A6EBB; color: #fff; font-weight: 500; } .ds-nav-icon { font-size: 14px; width: 16px; text-align: center; }"
+    },
+    {
+      "name": "Sidebar Nav Item — Default",
+      "kind": "nav",
+      "refersTo": "nav-item-default",
+      "description": "Inactive sidebar link on navy background.",
+      "html": "<button class=\"ds-nav-item ds-nav-item--default\"><span class=\"ds-nav-icon\">›</span> 2. Language Fundamentals in JScript</button>",
+      "css": ".ds-nav-item { display: flex; align-items: flex-start; gap: 10px; width: 100%; padding: 8px 12px; border: none; border-radius: 8px; font-family: Roboto, system-ui, sans-serif; font-size: 12px; cursor: pointer; text-align: left; transition: background 0.15s, color 0.15s; line-height: 1.4; } .ds-nav-item--default { background: transparent; color: rgba(255,255,255,0.7); } .ds-nav-item--default:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,1); }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "description": "Module completion state chip — Available, Done, Locked.",
+      "html": "<span class=\"ds-badge ds-badge--available\">Available</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; font-family: Roboto, system-ui, sans-serif; padding: 2px 8px; border-radius: 9999px; border: 1px solid transparent; } .ds-badge--available { background: #EBF4FB; color: #2A6EBB; border-color: rgba(42,110,187,0.2); } .ds-badge--done { background: #f0fdf4; color: #16a34a; border-color: #dcfce7; } .ds-badge--locked { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; }"
+    },
+    {
+      "name": "Form Input",
+      "kind": "input",
+      "description": "Text input — used in login modal.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Your name…\" />",
+      "css": ".ds-input { width: 100%; border: 1.5px solid #D0DEF0; border-radius: 12px; padding: 12px 16px; font-size: 14px; font-family: Roboto, system-ui, sans-serif; color: #0B1829; background: #fff; outline: none; transition: border-color 0.15s, box-shadow 0.15s; } .ds-input:focus { border-color: #4A9FD4; box-shadow: 0 0 0 3px rgba(74,159,212,0.12); } .ds-input::placeholder { color: #7A9BB8; }"
+    },
+    {
+      "name": "Warn Callout",
+      "kind": "custom",
+      "description": "Lesson warning box — amber gradient with floated icon.",
+      "html": "<div class=\"ds-callout ds-callout--warn\"><svg class=\"ds-callout-icon\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\"><path d=\"M10 2L2 17h16L10 2z\" stroke=\"#d97706\" stroke-width=\"1.5\" fill=\"none\"/><line x1=\"10\" y1=\"9\" x2=\"10\" y2=\"13\" stroke=\"#d97706\" stroke-width=\"1.5\" stroke-linecap=\"round\"/><circle cx=\"10\" cy=\"15.5\" r=\"0.75\" fill=\"#d97706\"/></svg><p><strong>Note:</strong> Always check for null before using a nullable DateTime.</p></div>",
+      "css": ".ds-callout { padding: 14px 16px; border-radius: 10px; font-family: Roboto, system-ui, sans-serif; font-size: 13.5px; line-height: 1.6; overflow: hidden; } .ds-callout-icon { float: left; margin: 2px 10px 4px 0; flex-shrink: 0; } .ds-callout--warn { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 3px solid #f59e0b; color: #7A5200; } .ds-callout p { margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Certification Track",
+    "overview": "This is a professional learning tool built for consultants who need to move fast and leave with real skills. The visual system is guided, encouraging, and milestone-focused — warm enough to feel human, precise enough to feel like a serious product. Every screen should communicate: you are making progress, this is well-organized, and the next step is clear.\n\nThe palette pairs a cool navy sidebar (the structure that holds everything) with a bright, confident blue accent (the signal that marks progress and action) against a whisper-tinted neutral background. White content cards float on that background, separating concern without using shadows. Color is the primary depth signal; shadows are reserved for modals and overlays.\n\nTypography is single-family (Roboto), differentiated by weight and size. Roboto Mono carries all code — it is treated as a first-class visual element, not an afterthought. Code blocks get full dark backgrounds and comfortable line-height because reading code in this course is a primary task.",
+    "keyCharacteristics": [
+      "Tonal layering without shadows — depth through background color, not elevation",
+      "Track colors as a navigation signal — four module tracks each have a named accent",
+      "Code as a first-class surface — dark code blocks with generous spacing and monospace hierarchy",
+      "Progress as ambient information — completion rings, progress bars, and scores are always visible but never demanding",
+      "Sidebar as the backbone — the deep navy sidebar is persistent, confident, and never cluttered"
+    ],
+    "rules": [
+      { "name": "The One Blue Rule",        "body": "The primary blue (#2A6EBB) is the only color that marks an actionable or selected state. Sky Accent (#4A9FD4) is informational and focus-ring only. Never use track colors for interactive states outside their own track header.", "section": "colors" },
+      { "name": "The Track Fence Rule",     "body": "Track colors (#007AFF, #F59E0B, #10B981, #EF4444) are used exclusively for module-track identification surfaces. They must not appear on buttons, navigation pills, or progress indicators that apply globally across all tracks.", "section": "colors" },
+      { "name": "The Border Ladder Rule",   "body": "#E2ECF5 for card/container edges, #E8F0F8 for dividers inside cards, #D0DEF0 for form input strokes. Do not introduce a fourth border color.", "section": "colors" },
+      { "name": "The Code-First Rule",      "body": "Code blocks receive full dark-background treatment at all sizes — never inline styled as prose. Roboto Mono must always be used for code; system monospace is an unacceptable fallback in the rendered UI.", "section": "typography" },
+      { "name": "The Uppercase Ceiling",    "body": "Uppercase text is permitted only for Label-role elements (badges, breakdown titles, track labels). Never use uppercase for headings, body copy, or button labels.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. The single permitted shadow (0 8px 32px rgba(11,24,41,0.18)) is only for elements that genuinely float above the content layer (dropdowns, modals, tooltips). Using shadows on cards or section dividers is prohibited.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use #2A6EBB (Selerix Blue) as the sole signal for actionable and selected states globally.",
+      "Do use #3A5068 (Body Text) for all prose on white backgrounds. Reserve #0B1829 for structural elements.",
+      "Do keep all code in Roboto Mono with full dark-background treatment — never styled as prose.",
+      "Do use the Page Tint (#F4F7FB) as the canvas and white as the content surface. Flat layering only.",
+      "Do use Surface Alt (#F8FAFC) for section headers and table rows inside cards — not as a card background.",
+      "Do follow the Border Ladder: #E2ECF5 for card edges, #E8F0F8 for intra-card dividers, #D0DEF0 for input strokes.",
+      "Do keep track colors confined to module-track identification surfaces only.",
+      "Do respect prefers-reduced-motion — every transition must have a zero-duration fallback.",
+      "Do use line-clamp-2 on sidebar module titles — never hard character truncation."
+    ],
+    "donts": [
+      "Don't use box-shadow on cards, section dividers, or content surfaces. Shadows are reserved for floating UI only.",
+      "Don't use gradient text (background-clip: text). Single solid colors only.",
+      "Don't apply border-left greater than 1px as a decorative stripe on cards or list items.",
+      "Don't design anything that resembles a corporate training portal (Cornerstone, SAP SuccessFactors).",
+      "Don't design anything that resembles a heavy academic LMS (Canvas, Blackboard).",
+      "Don't use uppercase text outside Label-role elements.",
+      "Don't use border-radius above 16px on cards or containers.",
+      "Don't use track colors on interactive elements outside their own module track header context.",
+      "Don't add decorative SVG patterns, gradients, or illustration to any surface other than the module header card.",
+      "Don't use #7A9BB8 (Muted Slate) for body prose — use #3A5068 (Body Text) instead."
+    ]
+  }
+}
