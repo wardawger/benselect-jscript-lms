@@ -129,17 +129,21 @@ body {
   border: 1px solid rgba(245,166,35,0.3); border-left: 3px solid var(--bs-warning);
   border-radius: 0 0.5rem 0.5rem 0; padding: 0.75rem 1rem; margin: 0.875rem 0;
   font-size: 0.8125rem; color: #7A5200; line-height: 1.6;
-  display: flex; gap: 0.5rem; align-items: flex-start;
+  display: block; overflow: hidden;
 }
-.lesson-content .warn-box svg { flex-shrink: 0; margin-top: 1px; }
+.lesson-content .warn-box svg {
+  float: left; margin-right: 0.5rem; margin-top: 2px; flex-shrink: 0;
+}
 .lesson-content .info-box {
   background: linear-gradient(135deg,#EBF4FB,#E0EEF8);
   border: 1px solid rgba(74,159,212,0.25); border-left: 3px solid var(--bs-blue-light);
   border-radius: 0 0.5rem 0.5rem 0; padding: 0.75rem 1rem; margin: 0.875rem 0;
   font-size: 0.8125rem; color: var(--bs-blue); line-height: 1.6;
-  display: flex; gap: 0.5rem; align-items: flex-start;
+  display: block; overflow: hidden;
 }
-.lesson-content .info-box svg { flex-shrink: 0; margin-top: 1px; }
+.lesson-content .info-box svg {
+  float: left; margin-right: 0.5rem; margin-top: 2px; flex-shrink: 0;
+}
 
 .lesson-content .code-block {
   background: var(--bs-navy); border-radius: 0.75rem;
@@ -175,6 +179,12 @@ body {
 }
 .lesson-content .breakdown-text { color: #3A5068; line-height: 1.6; }
 .lesson-content .breakdown-text strong { color: var(--bs-navy); }
+
+/* On narrow screens, stack the label above the text */
+@media (max-width: 480px) {
+  .lesson-content .breakdown-row { flex-direction: column; gap: 0.25rem; }
+  .lesson-content .breakdown-line { min-width: unset; white-space: normal; }
+}
 
 .lesson-content .outcome-box {
   background: linear-gradient(135deg,#EBF8F2,#E0F4EC);
