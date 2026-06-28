@@ -252,6 +252,38 @@ body {
 }
 .lesson-content .outcome-text { font-size: 0.8125rem; color: #1A6B4A; line-height: 1.7; }
 
+/* ── CODE COPY BUTTON ───────────────────────────────────────────── */
+.code-copy-btn {
+  position: absolute;
+  top: 0.625rem;
+  right: 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  padding: 0.25rem 0.625rem;
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: rgba(184, 212, 236, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+  line-height: 1;
+  white-space: nowrap;
+}
+.code-copy-btn:hover {
+  color: #B8D4EC;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.code-copy-btn--copied {
+  color: var(--bs-success) !important;
+  border-color: rgba(40, 168, 124, 0.35) !important;
+  background: rgba(40, 168, 124, 0.1) !important;
+}
+
 .lesson-content .lesson-video-wrap {
   background: var(--bs-navy); border-radius: 0.75rem; overflow: hidden; margin-bottom: 1.5rem;
 }

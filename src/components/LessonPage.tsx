@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useEffect } from 'react'
 import { MODULES } from '@/data/modules'
 import { LESSONS } from '@/data/lessons'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
@@ -159,6 +159,46 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
   // Separate the preamble (video) from the named content sections
   const preamble  = sections[0]?.heading === null ? sections[0] : null
   const contentSections = sections.filter(s => s.heading !== null)
+
+  // Inject Copy Code buttons into all .code-block elements after render
+  useEffect(() => {
+    const blocks = document.querySelectorAll<HTMLElement>('.lesson-content .code-block:not([data-copy])')
+    blocks.forEach(block => {
+      block.setAttribute('data-copy', '1')
+
+      const btn = document.createElement('button')
+      btn.className = 'code-copy-btn'
+      btn.setAttribute('aria-label', 'Copy code')
+      btn.innerHTML =
+        `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
+        `<rect x="5" y="5" width="9" height="9" rx="1.5"/>` +
+        `<path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/>` +
+        `</svg>Copy Code`
+
+      btn.addEventListener('click', e => {
+        e.stopPropagation()
+        const text = block.innerText.replace(/^Copy Code\n?/, '')
+        navigator.clipboard.writeText(text).then(() => {
+          btn.innerHTML =
+            `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
+            `<polyline points="2 8 6 12 14 4"/>` +
+            `</svg>Copied!`
+          btn.classList.add('code-copy-btn--copied')
+          setTimeout(() => {
+            btn.innerHTML =
+              `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
+              `<rect x="5" y="5" width="9" height="9" rx="1.5"/>` +
+              `<path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/>` +
+              `</svg>Copy Code`
+            btn.classList.remove('code-copy-btn--copied')
+          }, 2000)
+        })
+      })
+
+      block.style.position = 'relative'
+      block.appendChild(btn)
+    })
+  }, [moduleId])
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full">
