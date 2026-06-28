@@ -154,12 +154,12 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
 
           {/* Video preamble (full-width, no card border — it has its own dark shell) */}
           {preamble && (
-            <div className="lesson-content rounded-xl overflow-hidden" dangerouslySetInnerHTML={{ __html: preamble.body }} />
+            <div id="section-video" className="lesson-content rounded-xl overflow-hidden scroll-mt-20" dangerouslySetInnerHTML={{ __html: preamble.body }} />
           )}
 
           {/* Content section cards */}
           {contentSections.map((section, idx) => (
-            <div key={idx} className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden">
+            <div key={idx} id={`section-${idx}`} className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden scroll-mt-20">
               {/* Section header */}
               <div className="flex items-center gap-3 px-5 py-4 border-b border-[#e2e8f0]" style={{ background: '#f8fafc' }}>
                 <span
@@ -181,7 +181,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
 
           {/* Practice coding exercise */}
           {QUIZ_EXERCISES[moduleId] && (
-            <div className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden">
+            <div id="section-exercise" className="bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden scroll-mt-20">
               <div className="flex items-center gap-2.5 px-5 py-3.5 border-b border-[#e2e8f0]" style={{ background: '#f8fafc' }}>
                 <span
                   className="text-[10px] font-bold px-2.5 py-1 rounded-full text-white"
@@ -223,13 +223,20 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
             </div>
             <nav className="p-2">
               {preamble && (
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500">
+                <a
+                  href="#section-video"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
+                >
                   <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-slate-300" />
                   Video Overview
-                </div>
+                </a>
               )}
               {contentSections.map((s, idx) => (
-                <div key={idx} className="flex items-start gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 transition-colors">
+                <a
+                  key={idx}
+                  href={`#section-${idx}`}
+                  className="flex items-start gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
+                >
                   <span
                     className="w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold text-white shrink-0 mt-px"
                     style={{ background: trackColor }}
@@ -237,13 +244,16 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
                     {idx + 1}
                   </span>
                   <span className="leading-snug" dangerouslySetInnerHTML={{ __html: s.heading! }} />
-                </div>
+                </a>
               ))}
               {QUIZ_EXERCISES[moduleId] && (
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500">
+                <a
+                  href="#section-exercise"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-[11px] text-slate-500 hover:bg-slate-50 hover:text-[#007aff] transition-colors"
+                >
                   <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#007aff' }} />
                   Practice Exercise
-                </div>
+                </a>
               )}
             </nav>
           </div>
