@@ -141,10 +141,14 @@ export function CodeEditor({ value, onChange, rows = 10, placeholder, disabled, 
     el.focus()
   }
 
-  // close on outside click
+  // close on outside click — but not when clicking inside the dropdown itself
+  const dropdownRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     function handler(e: MouseEvent) {
-      if (taRef.current && !taRef.current.contains(e.target as Node)) closeDropdown()
+      const target = e.target as Node
+      const insideTextarea = taRef.current?.contains(target)
+      const insideDropdown = dropdownRef.current?.contains(target)
+      if (!insideTextarea && !insideDropdown) closeDropdown()
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
@@ -171,9 +175,9 @@ export function CodeEditor({ value, onChange, rows = 10, placeholder, disabled, 
       {/* IntelliSense dropdown */}
       {open && (
         <div
+          ref={dropdownRef}
           className="is-dropdown is-visible"
           style={{ top: pos.top, left: pos.left }}
-          onMouseDown={e => e.preventDefault()}
         >
           {matches.map((item, idx) => {
             const word = taRef.current ? getWord(taRef.current) : ''
@@ -185,7 +189,7 @@ export function CodeEditor({ value, onChange, rows = 10, placeholder, disabled, 
                 key={item.label}
                 className={`is-item${idx === activeIdx ? ' is-active' : ''}`}
                 onMouseEnter={() => setActiveIdx(idx)}
-                onClick={() => pickItem(item)}
+                onMouseDown={e => { e.preventDefault(); pickItem(item) }}
               >
                 <span className={`is-icon ${ICON_CLS[item.icon] ?? 'is-icon-prop'}`}>
                   {ICON_LABELS[item.icon] ?? 'P'}
