@@ -231,7 +231,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-60px)]" style={{ background: '#EEF3F8' }}>
-      <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full pb-28">
+      <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full" style={{ paddingBottom: '8rem' }}>
 
         {/* ── Breadcrumb ──────────────────────────────────────────────────── */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[12px] text-slate-500 mb-5">
