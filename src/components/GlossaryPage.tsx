@@ -134,7 +134,7 @@ export function GlossaryPage() {
           )}
         </button>
 
-        <div className="w-px h-5 bg-[#E2ECF5] mx-1 hidden sm:block" />
+        <div className="w-px h-5 bg-[#D0DEF0] mx-1" />
 
         {GLOSS_CATS.map(cat => {
           const col = CAT_COLORS[cat] ?? { bg: '#F0F4F8', text: '#3A5068' }
@@ -177,9 +177,10 @@ export function GlossaryPage() {
           return (
             <div
               key={item.term}
-              className="bg-white border border-[#E2ECF5] rounded-xl p-5 hover:border-[#B8D0E8] transition-colors group"
+              className="bg-white border border-[#E2ECF5] rounded-xl p-5 hover:border-[#B8D0E8] transition-colors group relative overflow-hidden"
               style={{ boxShadow: '0 1px 3px rgba(4,41,74,0.04)' }}
             >
+              <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl" style={{ background: col.text }} />
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   {/* Term name + category badge */}
