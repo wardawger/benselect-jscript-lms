@@ -1,118 +1,282 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { GLOSSARY_ITEMS, GLOSS_CATS } from '@/data/glossary'
-import { cn } from '@/lib/utils'
 import { IcSearch } from './Icons'
+import { cn } from '@/lib/utils'
 
-const CAT_COLORS: Record<string, string> = {
-  'BenSelect Core': 'bg-blue-50 text-blue-700',
-  'Enrollment Timing': 'bg-amber-50 text-amber-700',
-  'GI & Underwriting': 'bg-purple-50 text-purple-700',
-  'Event Types': 'bg-emerald-50 text-emerald-700',
-  'Event Object': 'bg-sky-50 text-sky-700',
-  'JScript.NET Language': 'bg-indigo-50 text-indigo-700',
-  'System.DateTime': 'bg-rose-50 text-rose-700',
-  'String Methods': 'bg-orange-50 text-orange-700',
-  'Custom Fields': 'bg-yellow-50 text-yellow-700',
-  'Scripting Patterns': 'bg-teal-50 text-teal-700',
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+
+const CAT_COLORS: Record<string, { bg: string; text: string }> = {
+  'BenSelect Core':      { bg: '#EBF4FB', text: '#2A6EBB' },
+  'Enrollment Timing':   { bg: '#FFF2E6', text: '#CC6A00' },
+  'GI & Underwriting':   { bg: '#F3EEFF', text: '#6B3FA0' },
+  'Event Types':         { bg: '#E6F7F1', text: '#1A7A5C' },
+  'Event Object':        { bg: '#E0F5FF', text: '#0076A8' },
+  'JScript.NET Language':{ bg: '#EEF2FF', text: '#3B4FC4' },
+  'System.DateTime':     { bg: '#FFF0F3', text: '#C0254B' },
+  'String Methods':      { bg: '#FFF3E6', text: '#B85000' },
+  'Custom Fields':       { bg: '#FEFCE6', text: '#8A6800' },
+  'Scripting Patterns':  { bg: '#E6FAF8', text: '#1A7A73' },
+}
+
+function BookmarkIcon({ filled }: { filled: boolean }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill={filled ? '#2A6EBB' : 'none'}
+      stroke={filled ? '#2A6EBB' : '#C8D9EE'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 2h10v13l-5-3-5 3V2z"/>
+    </svg>
+  )
+}
+
+const STORAGE_KEY = 'bs_lms_glossary_bookmarks'
+
+function loadBookmarks(): Set<string> {
+  try { return new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')) }
+  catch { return new Set() }
 }
 
 export function GlossaryPage() {
-  const [search, setSearch] = useState('')
-  const [activecat, setActivecat] = useState<string | null>(null)
+  const [search, setSearch]         = useState('')
+  const [activeLetter, setActiveLetter] = useState<string | null>(null)
+  const [activeCat, setActiveCat]   = useState<string | null>(null)
+  const [showBookmarks, setShowBookmarks] = useState(false)
+  const [bookmarks, setBookmarks]   = useState<Set<string>>(loadBookmarks)
+  const [visibleCount, setVisibleCount] = useState(20)
 
-  const catCounts = useMemo(() => {
-    const counts: Record<string, number> = { All: GLOSSARY_ITEMS.length }
-    GLOSS_CATS.forEach(c => { counts[c] = GLOSSARY_ITEMS.filter(i => i.cat === c).length })
-    return counts
-  }, [])
+  // Persist bookmarks
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...bookmarks]))
+  }, [bookmarks])
+
+  function toggleBookmark(term: string) {
+    setBookmarks(prev => {
+      const next = new Set(prev)
+      next.has(term) ? next.delete(term) : next.add(term)
+      return next
+    })
+  }
+
+  // Which letters actually have items (for the alpha bar)
+  const availableLetters = useMemo(() =>
+    new Set(GLOSSARY_ITEMS.map(i => i.term[0].toUpperCase())), [])
 
   const filtered = useMemo(() => {
     return GLOSSARY_ITEMS.filter(item => {
-      const matchesCat = !activecat || item.cat === activecat
       const q = search.toLowerCase()
-      const matchesSearch = !q || item.term.toLowerCase().includes(q) || item.def.toLowerCase().includes(q) || (item.ex && item.ex.toLowerCase().includes(q)) || item.cat.toLowerCase().includes(q)
-      return matchesCat && matchesSearch
+      const matchesSearch = !q ||
+        item.term.toLowerCase().includes(q) ||
+        item.def.toLowerCase().includes(q) ||
+        (item.ex && item.ex.toLowerCase().includes(q)) ||
+        item.cat.toLowerCase().includes(q)
+      const matchesCat    = !activeCat || item.cat === activeCat
+      const matchesLetter = !activeLetter || item.term[0].toUpperCase() === activeLetter
+      const matchesBookmark = !showBookmarks || bookmarks.has(item.term)
+      return matchesSearch && matchesCat && matchesLetter && matchesBookmark
     })
-  }, [search, activecat])
+  }, [search, activeCat, activeLetter, showBookmarks, bookmarks])
 
-  const grouped = useMemo(() => {
-    const cats = [...new Set(filtered.map(i => i.cat))]
-    return cats.map(cat => ({ cat, items: filtered.filter(i => i.cat === cat) }))
-  }, [filtered])
+  const visible = filtered.slice(0, visibleCount)
+
+  // Reset visible count when filters change
+  useEffect(() => setVisibleCount(20), [search, activeCat, activeLetter, showBookmarks])
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full">
+    <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full">
+
+      {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="mb-6">
-        <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Reference</div>
-        <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight">Glossary & Index</h1>
-        <p className="text-[13px] text-bs-body mt-1.5">{GLOSSARY_ITEMS.length} terms across {GLOSS_CATS.length} categories</p>
+        <div className="flex items-center gap-2 mb-2">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#2A6EBB" strokeWidth="1.6" strokeLinecap="round">
+            <rect x="1" y="3" width="14" height="10" rx="1.5"/>
+            <line x1="4" y1="6" x2="12" y2="6"/><line x1="4" y1="9" x2="9" y2="9"/>
+          </svg>
+          <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#2A6EBB]">Resources</span>
+        </div>
+        <h1 className="text-[28px] font-bold text-[#0B1829] leading-tight"
+          style={{ fontFamily: 'var(--font-display)' }}>Glossary & Index</h1>
+        <p className="text-[13px] text-[#3A5068] mt-1.5 max-w-[560px] leading-relaxed">
+          A comprehensive technical reference for BenSelect JScript scripting. Master core concepts, architecture
+          patterns, and event-object terminology through clear definitions.
+        </p>
       </div>
 
-      {/* Search */}
+      {/* ── Search ──────────────────────────────────────────────────────── */}
       <div className="relative mb-4">
-        <IcSearch size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A9BB8]" />
+        <IcSearch size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A9BB8]" />
         <input
           type="text"
-          placeholder="Search terms, definitions, code examples…"
+          placeholder="Search for terms, concepts, or patterns…"
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 border-[1.5px] border-[#D0DEF0] rounded-xl bg-white text-[14px] text-[#0B1829] outline-none focus:border-[#4A9FD4] focus:ring-2 focus:ring-[rgba(74,159,212,0.1)] transition-all shadow-sm"
+          className="w-full pl-11 pr-4 py-3.5 border border-[#D0DEF0] rounded-xl bg-white text-[14px] text-[#0B1829] outline-none focus:border-[#2A6EBB] focus:ring-2 focus:ring-[rgba(42,110,187,0.1)] transition-all"
+          style={{ boxShadow: '0 1px 4px rgba(4,41,74,0.06)' }}
         />
       </div>
 
-      {/* Category filters with counts */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        <button
-          onClick={() => setActivecat(null)}
-          className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border-[1.5px] transition-all',
-            !activecat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-bs-body bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
-        >
-          All <span className="opacity-60">({catCounts['All']})</span>
-        </button>
-        {GLOSS_CATS.map(cat => (
-          <button
-            key={cat}
-            onClick={() => setActivecat(activecat === cat ? null : cat)}
-            className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border-[1.5px] transition-all',
-              activecat === cat ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]' : 'border-[#D0DEF0] text-bs-body bg-white hover:border-[#4A9FD4] hover:text-[#2A6EBB]')}
-          >
-            {cat} <span className="opacity-60">({catCounts[cat]})</span>
-          </button>
-        ))}
+      {/* ── A–Z alpha bar ───────────────────────────────────────────────── */}
+      <div className="bg-white border border-[#E2ECF5] rounded-xl px-4 py-3 mb-4 flex items-center gap-0.5 flex-wrap"
+        style={{ boxShadow: '0 1px 4px rgba(4,41,74,0.04)' }}>
+        {ALPHABET.map(letter => {
+          const hasItems = availableLetters.has(letter)
+          const isActive = activeLetter === letter
+          return (
+            <button
+              key={letter}
+              onClick={() => hasItems && setActiveLetter(isActive ? null : letter)}
+              disabled={!hasItems}
+              className={cn(
+                'w-8 h-8 rounded-lg text-[12px] font-semibold transition-all cursor-pointer',
+                isActive
+                  ? 'text-white'
+                  : hasItems
+                  ? 'text-[#3A5068] hover:bg-[#F4F7FB] hover:text-[#2A6EBB]'
+                  : 'text-[#C8D9EE] cursor-not-allowed'
+              )}
+              style={isActive ? { background: '#2A6EBB' } : undefined}
+            >
+              {letter}
+            </button>
+          )
+        })}
       </div>
 
+      {/* ── Category filter + bookmark toggle ───────────────────────────── */}
+      <div className="flex flex-wrap items-center gap-2 mb-6">
+        <button
+          onClick={() => setActiveCat(null)}
+          className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border transition-all cursor-pointer',
+            !activeCat && !showBookmarks
+              ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]'
+              : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#2A6EBB] hover:text-[#2A6EBB]')}
+          onClick={() => { setActiveCat(null); setShowBookmarks(false) }}
+        >
+          All <span className="opacity-60">({GLOSSARY_ITEMS.length})</span>
+        </button>
+
+        {/* Bookmark filter */}
+        <button
+          onClick={() => { setShowBookmarks(b => !b); setActiveCat(null) }}
+          className={cn(
+            'flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12px] font-medium border transition-all cursor-pointer',
+            showBookmarks
+              ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]'
+              : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#2A6EBB] hover:text-[#2A6EBB]'
+          )}
+        >
+          <BookmarkIcon filled={showBookmarks} />
+          Bookmarks
+          {bookmarks.size > 0 && (
+            <span className={cn('text-[10px] font-bold px-1.5 py-0.5 rounded-full ml-0.5',
+              showBookmarks ? 'bg-white/25 text-white' : 'bg-[#EBF4FB] text-[#2A6EBB]')}>
+              {bookmarks.size}
+            </span>
+          )}
+        </button>
+
+        <div className="w-px h-5 bg-[#E2ECF5] mx-1 hidden sm:block" />
+
+        {GLOSS_CATS.map(cat => {
+          const col = CAT_COLORS[cat] ?? { bg: '#F0F4F8', text: '#3A5068' }
+          const isActive = activeCat === cat
+          return (
+            <button
+              key={cat}
+              onClick={() => { setActiveCat(isActive ? null : cat); setShowBookmarks(false) }}
+              className="px-3.5 py-1.5 rounded-full text-[12px] font-medium border transition-all cursor-pointer"
+              style={isActive
+                ? { background: col.text, color: '#fff', borderColor: col.text }
+                : { background: col.bg, color: col.text, borderColor: 'transparent' }}
+            >
+              {cat}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* ── Empty state ─────────────────────────────────────────────────── */}
       {filtered.length === 0 && (
-        <div className="text-center py-16 text-[#7A9BB8]">
-          <div className="text-3xl mb-3">🔍</div>
-          <div className="text-[14px]">No terms match "{search}"</div>
+        <div className="text-center py-20 text-[#7A9BB8]">
+          <div className="text-4xl mb-4">{showBookmarks ? '🔖' : '🔍'}</div>
+          <div className="text-[15px] font-semibold text-[#0B1829] mb-1">
+            {showBookmarks ? 'No bookmarks yet' : `No results for "${search}"`}
+          </div>
+          <div className="text-[13px] text-[#7A9BB8]">
+            {showBookmarks
+              ? 'Click the bookmark icon on any term to save it here.'
+              : 'Try a different term or clear your filters.'}
+          </div>
         </div>
       )}
 
-      {grouped.map(({ cat, items }) => (
-        <div key={cat} className="mb-8">
-          <div className="flex items-center gap-3 mb-3">
-            <h2 className="text-[11px] font-semibold text-[#7A9BB8] uppercase tracking-wider whitespace-nowrap">{cat}</h2>
-            <span className="text-[10px] bg-[#EBF4FB] text-[#2A6EBB] px-2 py-0.5 rounded-full font-medium">{items.length}</span>
-            <div className="flex-1 h-px bg-[#E8F0F8]" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {items.map(item => (
-              <div key={item.term} className="bg-white border border-[#E8F0F8] rounded-xl p-4 shadow-sm hover:border-[#4A9FD4] transition-colors">
-                <span className={cn('text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded mb-2 inline-block', CAT_COLORS[item.cat] ?? 'bg-gray-100 text-gray-600')}>
-                  {item.cat}
-                </span>
-                <div className="font-mono text-[12.5px] font-semibold text-[#0B1829] mb-1.5 break-all">{item.term}</div>
-                <div className="text-[12.5px] text-bs-body leading-relaxed break-words">{item.def}</div>
-                {item.ex && (
-                  <code className="block font-mono text-[11px] text-[#2A6EBB] bg-[#EBF4FB] px-2.5 py-1.5 rounded-lg mt-2 overflow-x-auto whitespace-pre-wrap break-all">
-                    {item.ex}
-                  </code>
-                )}
+      {/* ── Term list ───────────────────────────────────────────────────── */}
+      <div className="space-y-3">
+        {visible.map(item => {
+          const col = CAT_COLORS[item.cat] ?? { bg: '#F0F4F8', text: '#3A5068' }
+          const isBookmarked = bookmarks.has(item.term)
+          return (
+            <div
+              key={item.term}
+              className="bg-white border border-[#E2ECF5] rounded-xl p-5 hover:border-[#B8D0E8] transition-colors group"
+              style={{ boxShadow: '0 1px 3px rgba(4,41,74,0.04)' }}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  {/* Term name + category badge */}
+                  <div className="flex items-center gap-2.5 flex-wrap mb-2">
+                    <span className="text-[15px] font-bold text-[#0B1829]">{item.term}</span>
+                    <span
+                      className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                      style={{ background: col.bg, color: col.text }}
+                    >
+                      {item.cat}
+                    </span>
+                  </div>
+
+                  {/* Definition */}
+                  <p className="text-[13px] text-[#3A5068] leading-relaxed mb-2">{item.def}</p>
+
+                  {/* Code example */}
+                  {item.ex && (
+                    <code className="block font-mono text-[11.5px] text-[#2A6EBB] bg-[#EBF4FB] border border-[#D0DEF0] px-3 py-2 rounded-lg mt-2 overflow-x-auto whitespace-pre-wrap break-all">
+                      {item.ex}
+                    </code>
+                  )}
+
+                  {/* Reference code footer */}
+                  <p className="text-[11px] text-[#A8BED4] mt-2.5">Reference: {item.cat}</p>
+                </div>
+
+                {/* Bookmark button */}
+                <button
+                  onClick={() => toggleBookmark(item.term)}
+                  className={cn(
+                    'shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all cursor-pointer mt-0.5',
+                    isBookmarked
+                      ? 'bg-[#EBF4FB]'
+                      : 'opacity-0 group-hover:opacity-100 hover:bg-[#F4F7FB]'
+                  )}
+                  aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark this term'}
+                  title={isBookmarked ? 'Remove bookmark' : 'Bookmark this term'}
+                >
+                  <BookmarkIcon filled={isBookmarked} />
+                </button>
               </div>
-            ))}
-          </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* ── Load more ───────────────────────────────────────────────────── */}
+      {visibleCount < filtered.length && (
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => setVisibleCount(n => n + 20)}
+            className="px-8 py-2.5 rounded-xl border border-[#D0DEF0] text-[13px] font-semibold text-[#3A5068] bg-white hover:bg-[#F4F7FB] hover:border-[#2A6EBB] hover:text-[#2A6EBB] transition-all cursor-pointer"
+          >
+            Load More Definitions
+            <span className="ml-2 text-[#7A9BB8] font-normal">({filtered.length - visibleCount} remaining)</span>
+          </button>
         </div>
-      ))}
+      )}
     </div>
   )
 }
