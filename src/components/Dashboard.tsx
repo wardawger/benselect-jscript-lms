@@ -13,7 +13,7 @@ interface DashboardProps {
 const TRACK_STYLE: Record<string, { color: string; pale: string; label: string }> = {
   'Track 1':       { color: '#3FA9F5', pale: '#EBF6FE', label: 'Track 1' },
   'Track 2':       { color: '#FF8300', pale: '#FFF2E6', label: 'Track 2' },
-  'Track 3':       { color: '#00B4D8', pale: '#E0F8FF', label: 'Track 3' },
+  'Track 3':       { color: '#28A87C', pale: '#E6F7F1', label: 'Track 3' },
   'Certification': { color: '#DA291C', pale: '#FFE8E7', label: 'Exam' },
 }
 
