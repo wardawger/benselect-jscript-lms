@@ -219,6 +219,15 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
     const blocks = document.querySelectorAll<HTMLElement>('.lesson-content .code-block:not([data-copy])')
     blocks.forEach(block => {
       block.setAttribute('data-copy', '1')
+
+      // Wrap the code-block in a position:relative container so the button is
+      // anchored to the visible edge, not the scrollable content right edge.
+      const wrapper = document.createElement('div')
+      wrapper.style.cssText = 'position:relative;margin:0.875rem 0'
+      block.style.margin = '0'
+      block.parentNode!.insertBefore(wrapper, block)
+      wrapper.appendChild(block)
+
       const btn = document.createElement('button')
       btn.className = 'code-copy-btn'
       btn.setAttribute('aria-label', 'Copy code')
@@ -246,8 +255,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
           }, 2000)
         })
       })
-      block.style.position = 'relative'
-      block.appendChild(btn)
+      wrapper.appendChild(btn)
     })
   }, [currentStep, moduleId])
 
