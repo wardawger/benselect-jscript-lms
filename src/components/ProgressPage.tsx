@@ -1,8 +1,48 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { MODULES, TRACK_GROUPS } from '@/data/modules'
 import type { AppState } from '@/store/progress'
 import { getCompletedCount, getOverallScore } from '@/store/progress'
 import { IcAward, IcCheck, IcLock, IcChevronRight } from './Icons'
+
+function useCountUp(target: number, duration = 900, triggered = false) {
+  const [value, setValue] = useState(0)
+  useEffect(() => {
+    if (!triggered) return
+    let start: number | null = null
+    const step = (ts: number) => {
+      if (!start) start = ts
+      const progress = Math.min((ts - start) / duration, 1)
+      const eased = 1 - Math.pow(1 - progress, 4)
+      setValue(Math.round(eased * target))
+      if (progress < 1) requestAnimationFrame(step)
+    }
+    requestAnimationFrame(step)
+  }, [triggered, target, duration])
+  return value
+}
+
+function AnimatedKPI({ value, suffix = '', color }: { value: number; suffix?: string; color: string }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [triggered, setTriggered] = useState(false)
+  const count = useCountUp(value, 900, triggered)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setTriggered(true); observer.disconnect() } },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className="text-[28px] font-bold tracking-tight tabular-nums" style={{ color, fontFamily: 'var(--font-display)' }}>
+      {count}{suffix}
+    </div>
+  )
+}
 
 interface ProgressPageProps {
   state: AppState
@@ -32,7 +72,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         {/* Completion */}
         <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
-          <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{pct}%</div>
+          <AnimatedKPI value={pct} suffix="%" color="#2A6EBB" />
           <div className="text-[11px] text-[#5A7890] font-medium mt-1">Overall completion</div>
           <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
             <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#2A6EBB' }} />
@@ -42,7 +82,10 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
 
         {/* Avg quiz score */}
         <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
-          <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{avgScore ? `${avgScore}%` : '—'}</div>
+          {avgScore > 0
+            ? <AnimatedKPI value={avgScore} suffix="%" color={avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C'} />
+            : <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">—</div>
+          }
           <div className="text-[11px] text-[#5A7890] font-medium mt-1">Average quiz score</div>
           {avgScore > 0 && (
             <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
@@ -62,7 +105,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
               <IcAward size={22} />
             </div>
           ) : (
-            <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{14 - completed}</div>
+            <AnimatedKPI value={14 - completed} color="#0B1829" />
           )}
           <div className="text-[11px] text-[#5A7890] font-medium mt-1">
             {completed === 14 ? 'Certified!' : 'Modules remaining'}
