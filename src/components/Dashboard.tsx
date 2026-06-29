@@ -386,8 +386,21 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
     <div className="p-4 sm:p-6 lg:p-8 w-full space-y-6">
 
       {/* ── Hero card ─────────────────────────────────────────────────────── */}
-      <div className="bg-white border border-[#E2ECF5] rounded-2xl p-6 sm:p-8 flex items-center gap-8">
-        <div className="flex-1 min-w-0">
+      <div className="relative border border-[#C8D9EE] rounded-2xl p-6 sm:p-8 flex items-center gap-8 overflow-hidden"
+        style={{ background: '#f0f6fc' }}>
+        {/* Code background image with blue overlay */}
+        <div className="absolute inset-0 rounded-2xl"
+          style={{
+            backgroundImage: 'url(/hero-code-bg.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: 0.18,
+          }}
+        />
+        <div className="absolute inset-0 rounded-2xl"
+          style={{ background: 'linear-gradient(135deg, rgba(42,110,187,0.18) 0%, rgba(11,24,41,0.10) 100%)' }}
+        />
+        <div className="relative z-10 flex-1 min-w-0">
           <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#2A6EBB] mb-1">Welcome back</p>
           <h1 className="text-[24px] sm:text-[28px] font-bold leading-tight mb-2"
             style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', color: '#2A6EBB' }}>
@@ -421,7 +434,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         </div>
 
         {/* Radial progress */}
-        <div className="shrink-0 relative hidden sm:flex items-center justify-center">
+        <div className="relative z-10 shrink-0 hidden sm:flex items-center justify-center">
           <RadialProgress pct={pct} size={124}/>
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
             <span className="text-[22px] font-bold text-[#0B1829] leading-none"
