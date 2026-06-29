@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState, useRef } from 'react'
+import { useMemo, useEffect, useState, useRef, Fragment } from 'react'
 import { MODULES } from '@/data/modules'
 import { LESSONS } from '@/data/lessons'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
@@ -17,6 +17,75 @@ interface LessonPageProps {
 interface LessonSection {
   heading: string | null
   body: string
+}
+
+// ── Copy button rendered as a real React component ──────────────────────────
+const COPY_ICON = (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+    <rect x="5" y="5" width="9" height="9" rx="1.5"/>
+    <path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/>
+  </svg>
+)
+const CHECK_ICON = (
+  <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+    <polyline points="2 8 6 12 14 4"/>
+  </svg>
+)
+
+function CopyBlock({ code }: { code: string }) {
+  const [copied, setCopied] = useState(false)
+  function handleCopy() {
+    const tmp = document.createElement('div')
+    tmp.innerHTML = code
+    navigator.clipboard.writeText(tmp.innerText).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+  return (
+    <div style={{ margin: '0.875rem 0' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+        background: '#162437', borderRadius: '0.75rem 0.75rem 0 0',
+        padding: '0.3rem 0.625rem', borderBottom: '1px solid rgba(255,255,255,0.06)',
+      }}>
+        <button
+          className={`code-copy-btn${copied ? ' code-copy-btn--copied' : ''}`}
+          onClick={handleCopy}
+          aria-label="Copy code"
+        >
+          {copied ? <>{CHECK_ICON}Copied!</> : <>{COPY_ICON}Copy Code</>}
+        </button>
+      </div>
+      <div
+        className="code-block"
+        style={{ margin: 0, borderRadius: '0 0 0.75rem 0.75rem' }}
+        dangerouslySetInnerHTML={{ __html: code }}
+      />
+    </div>
+  )
+}
+
+// Split HTML at code-block boundaries and render copy buttons as React components
+function LessonBody({ html }: { html: string }) {
+  const parts = html.split('<div class="code-block">')
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (i === 0) return <div key={i} dangerouslySetInnerHTML={{ __html: part }} />
+        const end = part.indexOf('</div>')
+        if (end === -1) return <div key={i} dangerouslySetInnerHTML={{ __html: part }} />
+        const code = part.slice(0, end)
+        const rest = part.slice(end + 6)
+        return (
+          <Fragment key={i}>
+            <CopyBlock code={code} />
+            {rest && <div dangerouslySetInnerHTML={{ __html: rest }} />}
+          </Fragment>
+        )
+      })}
+    </>
+  )
 }
 
 function parseSections(html: string): LessonSection[] {
@@ -214,52 +283,6 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
     if (currentStep > 0) goTo(currentStep - 1)
   }
 
-  // Inject a header bar with a copy button above each code block.
-  // Uses a normal-flow header div — no position:absolute, no z-index, no overflow issues.
-  useEffect(() => {
-    const blocks = document.querySelectorAll<HTMLElement>('.lesson-content .code-block:not([data-copy])')
-    blocks.forEach(block => {
-      block.setAttribute('data-copy', '1')
-
-      // Header bar sits above the code block
-      const header = document.createElement('div')
-      header.style.cssText = [
-        'display:flex', 'align-items:center', 'justify-content:flex-end',
-        'background:#162437', 'border-radius:0.75rem 0.75rem 0 0',
-        'padding:0.3rem 0.625rem',
-        'border-bottom:1px solid rgba(255,255,255,0.06)',
-        'margin:0.875rem 0 0',
-      ].join(';')
-
-      // Remove top margin/radius from code block so it joins the header seamlessly
-      block.style.marginTop = '0'
-      block.style.marginBottom = '0.875rem'
-      block.style.borderRadius = '0 0 0.75rem 0.75rem'
-
-      const copyIcon = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/></svg>`
-      const checkIcon = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="2 8 6 12 14 4"/></svg>`
-
-      const btn = document.createElement('button')
-      btn.className = 'code-copy-btn'
-      btn.setAttribute('aria-label', 'Copy code')
-      btn.innerHTML = `${copyIcon}Copy Code`
-
-      btn.addEventListener('click', e => {
-        e.stopPropagation()
-        navigator.clipboard.writeText(block.innerText).then(() => {
-          btn.innerHTML = `${checkIcon}Copied!`
-          btn.classList.add('code-copy-btn--copied')
-          setTimeout(() => {
-            btn.innerHTML = `${copyIcon}Copy Code`
-            btn.classList.remove('code-copy-btn--copied')
-          }, 2000)
-        })
-      })
-
-      header.appendChild(btn)
-      if (block.parentNode) block.parentNode.insertBefore(header, block)
-    })
-  }, [currentStep, moduleId])
 
   // Reset step when module changes
   useEffect(() => { setCurrentStep(0) }, [moduleId])
@@ -377,8 +400,9 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
 
             {/* Step: Video preamble */}
             {step.kind === 'preamble' && (
-              <div className="lesson-content rounded-xl overflow-hidden"
-                dangerouslySetInnerHTML={{ __html: step.section.body }} />
+              <div className="lesson-content rounded-xl overflow-hidden">
+                <LessonBody html={step.section.body} />
+              </div>
             )}
 
             {/* Step: Content section */}
@@ -392,8 +416,9 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
                   <h2 className="text-[14px] font-semibold text-[#0B1829] leading-snug"
                     dangerouslySetInnerHTML={{ __html: step.section.heading! }} />
                 </div>
-                <div className="p-5 sm:p-6 lesson-content lesson-section-body"
-                  dangerouslySetInnerHTML={{ __html: step.section.body }} />
+                <div className="p-5 sm:p-6 lesson-content lesson-section-body">
+                  <LessonBody html={step.section.body} />
+                </div>
               </div>
             )}
 
