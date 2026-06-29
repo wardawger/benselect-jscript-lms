@@ -394,7 +394,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
             backgroundImage: 'url(/hero-code-bg.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            opacity: 0.18,
+            opacity: 0.08,
           }}
         />
         <div className="absolute inset-0 rounded-2xl"
