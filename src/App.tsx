@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { IcEdit, IcReset, IcMenu, IcChevronDown, IcSidebarToggle } from './components/Icons'
+import { IcEdit, IcReset, IcMenu, IcChevronDown, IcChevronRight, IcSidebarToggle } from './components/Icons'
 import { Sidebar } from './components/Sidebar'
 import { Dashboard } from './components/Dashboard'
 import { LessonPage } from './components/LessonPage'
@@ -61,7 +61,9 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
           {userName.charAt(0).toUpperCase()}
         </span>
         <span className="max-w-[120px] truncate">{userName}</span>
-        <IcChevronDown size={12} style={{ transition: 'transform 0.22s cubic-bezier(0.4,0,0.2,1)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+        <span style={{ display: 'flex', transition: 'transform 0.22s cubic-bezier(0.4,0,0.2,1)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+          <IcChevronDown size={12} />
+        </span>
       </button>
       {/* Always rendered — animated with opacity + transform */}
       <div
