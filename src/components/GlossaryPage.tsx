@@ -142,12 +142,11 @@ export function GlossaryPage() {
       {/* ── Category filter + bookmark toggle ───────────────────────────── */}
       <div className="flex flex-wrap items-center gap-2 mb-6">
         <button
-          onClick={() => setActiveCat(null)}
+          onClick={() => { setActiveCat(null); setShowBookmarks(false) }}
           className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border transition-all cursor-pointer',
             !activeCat && !showBookmarks
               ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]'
               : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#2A6EBB] hover:text-[#2A6EBB]')}
-          onClick={() => { setActiveCat(null); setShowBookmarks(false) }}
         >
           All <span className="opacity-60">({GLOSSARY_ITEMS.length})</span>
         </button>
