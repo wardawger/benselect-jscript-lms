@@ -110,17 +110,35 @@ function TrackIcon({ trackLabel, color, size = 20 }: { trackLabel: string; color
 
 // ── Radial progress ring ──────────────────────────────────────────────────────
 function RadialProgress({ pct, size = 120 }: { pct: number; size?: number }) {
+  const [animPct, setAnimPct] = useState(0)
+  const displayCount = useCountUp(pct, 1100, animPct > 0 || pct === 0)
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setAnimPct(pct))
+    return () => cancelAnimationFrame(id)
+  }, [pct])
+
   const r = (size - 14) / 2
   const circ = 2 * Math.PI * r
-  const dash = (pct / 100) * circ
+  const dash = (animPct / 100) * circ
+
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
-      className="rotate-[-90deg]" role="img" aria-label={`${pct}% course complete`}>
-      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#E2ECF5" strokeWidth={9}/>
-      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#2A6EBB" strokeWidth={9}
-        strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
-        style={{ transition: 'stroke-dasharray 0.6s ease' }}/>
-    </svg>
+    <div className="relative flex items-center justify-center">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}
+        className="rotate-[-90deg]" role="img" aria-label={`${pct}% course complete`}>
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#E2ECF5" strokeWidth={9}/>
+        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#2A6EBB" strokeWidth={9}
+          strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
+          style={{ transition: 'stroke-dasharray 1.1s cubic-bezier(0.16, 1, 0.3, 1)' }}/>
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+        <span className="text-[22px] font-bold text-[#0B1829] leading-none tabular-nums"
+          style={{ fontFamily: 'var(--font-display)' }}>
+          {displayCount}%
+        </span>
+        <span className="text-[8.5px] font-semibold uppercase tracking-widest text-[#7A9BB8] mt-1">complete</span>
+      </div>
+    </div>
   )
 }
 
@@ -477,15 +495,8 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         </div>
 
         {/* Radial progress */}
-        <div className="shrink-0 hidden sm:flex items-center justify-center relative">
+        <div className="shrink-0 hidden sm:block">
           <RadialProgress pct={pct} size={124}/>
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-[22px] font-bold text-[#0B1829] leading-none"
-              style={{ fontFamily: 'var(--font-display)' }}>
-              {pct}%
-            </span>
-            <span className="text-[8.5px] font-semibold uppercase tracking-widest text-[#7A9BB8] mt-1">complete</span>
-          </div>
         </div>
       </div>
 
