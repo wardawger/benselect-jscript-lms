@@ -421,7 +421,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         </div>
 
         {/* Radial progress */}
-        <div className="shrink-0 hidden sm:flex items-center justify-center">
+        <div className="shrink-0 hidden sm:flex items-center justify-center relative">
           <RadialProgress pct={pct} size={124}/>
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
             <span className="text-[22px] font-bold text-[#0B1829] leading-none"
