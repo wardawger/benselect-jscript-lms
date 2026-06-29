@@ -55,33 +55,47 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-2 text-[13px] font-medium text-slate-700 bg-slate-50 hover:bg-slate-100 border border-[#e2e8f0] px-3 py-1.5 rounded-lg transition-colors"
+        className="flex items-center gap-2 text-[13px] font-medium text-[#3A5068] bg-white hover:bg-[#F4F7FB] border border-[#D0DEF0] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
       >
         <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0" style={{ background: '#2A6EBB' }}>
           {userName.charAt(0).toUpperCase()}
         </span>
         <span className="max-w-[120px] truncate">{userName}</span>
-        <IcChevronDown size={12} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+        <IcChevronDown size={12} style={{ transition: 'transform 0.22s cubic-bezier(0.4,0,0.2,1)', transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
       </button>
-      {open && (
-        <div className="absolute right-0 top-full mt-1.5 w-44 bg-white rounded-xl shadow-lg border border-[#E2ECF5] overflow-hidden z-50">
+      {/* Always rendered — animated with opacity + transform */}
+      <div
+        className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl border border-[#E2ECF5] overflow-hidden z-50"
+        style={{
+          boxShadow: '0 8px 24px rgba(4,41,74,0.12)',
+          opacity: open ? 1 : 0,
+          transform: open ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.97)',
+          transition: 'opacity 0.22s cubic-bezier(0.4,0,0.2,1), transform 0.22s cubic-bezier(0.4,0,0.2,1)',
+          pointerEvents: open ? 'auto' : 'none',
+        }}
+      >
+        <div className="px-4 py-2.5 border-b border-[#E8F0F8]">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-[#7A9BB8]">Account</p>
+          <p className="text-[13px] font-medium text-[#0B1829] mt-0.5 truncate">{userName}</p>
+        </div>
+        <div className="p-1">
           <button
             onClick={() => { onRename(); setOpen(false) }}
-            className="w-full text-left px-4 py-2.5 text-[13px] text-[#3A5068] hover:bg-[#F4F7FB] flex items-center gap-2.5"
+            className="w-full text-left px-3 py-2.5 text-[13px] text-[#3A5068] hover:bg-[#F4F7FB] hover:text-[#0B1829] rounded-lg flex items-center gap-2.5 transition-colors cursor-pointer"
           >
             <IcEdit size={14} />
             Change Name
           </button>
-          <div className="h-px bg-[#E8F0F8]" />
+          <div className="h-px bg-[#E8F0F8] my-1" />
           <button
             onClick={() => { if (confirm('Reset all progress? This cannot be undone.')) { onReset(); setOpen(false) } }}
-            className="w-full text-left px-4 py-2.5 text-[13px] text-[#E84C4C] hover:bg-red-50 flex items-center gap-2.5"
+            className="w-full text-left px-3 py-2.5 text-[13px] text-[#E84C4C] hover:bg-red-50 rounded-lg flex items-center gap-2.5 transition-colors cursor-pointer"
           >
             <IcReset size={14} />
             Reset Progress
           </button>
         </div>
-      )}
+      </div>
     </div>
   )
 }
@@ -245,12 +259,12 @@ export default function App() {
       {/* Main content — margin-left syncs with sidebar slide */}
       <div className={`flex-1 flex flex-col min-h-screen sidebar-push ${sidebarCollapsed ? 'sidebar-push--collapsed' : ''}`}>
         {/* Top bar */}
-        <header className="bg-white border-b border-[#e2e8f0] px-4 h-[60px] flex items-center justify-between sticky top-0 z-20 shadow-sm">
-          <div className="flex items-center gap-2">
+        <header className="bg-white border-b border-[#D0DEF0] px-4 h-[60px] flex items-center justify-between sticky top-0 z-20" style={{ boxShadow: '0 1px 4px rgba(4,41,74,0.06)' }}>
+          <div className="flex items-center gap-1.5">
             {/* Mobile hamburger */}
             <button
               aria-label="Open navigation menu"
-              className="lg:hidden p-2 rounded-lg text-slate-400 hover:bg-slate-50 transition-colors"
+              className="lg:hidden p-2 rounded-lg text-[#7A9BB8] hover:bg-[#F4F7FB] hover:text-[#0B1829] transition-colors cursor-pointer"
               onClick={() => setMobileNavOpen(true)}
             >
               <IcMenu size={20} />
@@ -258,26 +272,28 @@ export default function App() {
             {/* Desktop sidebar toggle */}
             <button
               aria-label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
-              className="hidden lg:flex p-2 rounded-lg text-slate-400 hover:bg-slate-50 hover:text-bs-blue transition-colors"
+              className="hidden lg:flex p-2 rounded-lg text-[#7A9BB8] hover:bg-[#F4F7FB] hover:text-[#2A6EBB] transition-colors cursor-pointer"
               onClick={() => setSidebarCollapsed(c => !c)}
             >
               <IcSidebarToggle size={18} />
             </button>
+            {/* Brand + breadcrumb */}
             <button
               onClick={() => navigate('dashboard')}
-              className="text-[13px] text-slate-400 hover:text-bs-blue transition-colors"
+              className="text-[14px] font-semibold text-[#0B1829] hover:text-[#2A6EBB] transition-colors cursor-pointer"
+              style={{ fontFamily: 'var(--font-display)' }}
             >
               BenSelect LMS
             </button>
             {state.page !== 'dashboard' && (
               <>
-                <span className="text-slate-200 text-[13px]">›</span>
-                <span className="text-[13px] font-medium text-[#0B1829]">{pageTitle[state.page] ?? 'Dashboard'}</span>
+                <IcChevronRight size={12} className="text-[#C8D9EE] mx-0.5" />
+                <span className="text-[13px] font-medium text-[#3A5068]">{pageTitle[state.page] ?? 'Dashboard'}</span>
               </>
             )}
           </div>
           <div className="flex items-center gap-3">
-            <span className="hidden sm:inline text-[11px] font-mono px-3 py-1 rounded-full font-semibold" style={{ background: '#EBF4FB', color: '#2A6EBB' }}>
+            <span className="hidden sm:inline text-[11px] font-semibold px-3 py-1.5 rounded-full" style={{ background: '#EBF4FB', color: '#2A6EBB' }}>
               {Object.values(state.progress).filter(p => p.status === 'complete').length}/14 Complete
             </span>
             {state.userName && (

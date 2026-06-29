@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect, useState, useRef } from 'react'
 import { MODULES } from '@/data/modules'
 import { LESSONS } from '@/data/lessons'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
@@ -160,9 +160,13 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
   }, [preamble, contentSections, hasExercise])
 
   const [currentStep, setCurrentStep] = useState(0)
+  const [animState, setAnimState] = useState<'idle' | 'exit' | 'enter'>('idle')
+  const [direction, setDirection] = useState<'forward' | 'back'>('forward')
+  const pendingStep = useRef<number | null>(null)
+
   const total = steps.length
   const isLast = currentStep === total - 1
-  const completedStepsCount = currentStep // steps before current are "done"
+  const completedStepsCount = currentStep
   const pctComplete = Math.round((completedStepsCount / total) * 100)
 
   // Step label for bottom bar
@@ -174,9 +178,31 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
   }
 
   function goTo(idx: number) {
-    setCurrentStep(idx)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (idx === currentStep) return
+    const dir = idx > currentStep ? 'forward' : 'back'
+    setDirection(dir)
+    setAnimState('exit')
+    pendingStep.current = idx
   }
+
+  // Drive the exit → enter sequence
+  useEffect(() => {
+    if (animState === 'exit') {
+      const t = setTimeout(() => {
+        if (pendingStep.current !== null) {
+          setCurrentStep(pendingStep.current)
+          pendingStep.current = null
+        }
+        setAnimState('enter')
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 180)
+      return () => clearTimeout(t)
+    }
+    if (animState === 'enter') {
+      const t = setTimeout(() => setAnimState('idle'), 220)
+      return () => clearTimeout(t)
+    }
+  }, [animState])
 
   function goNext() {
     if (isLast) { onStartQuiz(moduleId); return }
@@ -302,7 +328,20 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
         <div className="flex gap-6 items-start">
 
           {/* ── Main content ─────────────────────────────────────────────── */}
-          <div className="flex-1 min-w-0">
+          <div
+            className="flex-1 min-w-0"
+            style={{
+              opacity: animState === 'exit' ? 0 : 1,
+              transform: animState === 'exit'
+                ? `translateX(${direction === 'forward' ? '-18px' : '18px'})`
+                : animState === 'enter'
+                ? `translateX(${direction === 'forward' ? '18px' : '-18px'})`
+                : 'translateX(0)',
+              transition: animState === 'idle'
+                ? 'none'
+                : 'opacity 0.18s cubic-bezier(0.4,0,0.2,1), transform 0.18s cubic-bezier(0.4,0,0.2,1)',
+            }}
+          >
 
             {/* Step: Learning Objectives */}
             {step.kind === 'objectives' && (
