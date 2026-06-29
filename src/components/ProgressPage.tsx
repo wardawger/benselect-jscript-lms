@@ -21,7 +21,12 @@ function useCountUp(target: number, duration = 900, triggered = false) {
   return value
 }
 
-function AnimatedKPI({ value, suffix = '', color }: { value: number; suffix?: string; color: string }) {
+function KPICard({
+  value, suffix = '', color, trackColor, label, sub, showBar = true,
+}: {
+  value: number; suffix?: string; color: string; trackColor: string
+  label: string; sub: string; showBar?: boolean
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const [triggered, setTriggered] = useState(false)
   const count = useCountUp(value, 900, triggered)
@@ -31,15 +36,31 @@ function AnimatedKPI({ value, suffix = '', color }: { value: number; suffix?: st
     if (!el) return
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setTriggered(true); observer.disconnect() } },
-      { threshold: 0.5 }
+      { threshold: 0.4 }
     )
     observer.observe(el)
     return () => observer.disconnect()
   }, [])
 
   return (
-    <div ref={ref} className="text-[28px] font-bold tracking-tight tabular-nums" style={{ color, fontFamily: 'var(--font-display)' }}>
-      {count}{suffix}
+    <div ref={ref} className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
+      <div className="text-[28px] font-bold tracking-tight tabular-nums" style={{ color, fontFamily: 'var(--font-display)' }}>
+        {count}{suffix}
+      </div>
+      <div className="text-[11px] text-[#5A7890] font-medium mt-1">{label}</div>
+      {showBar && (
+        <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: triggered ? `${value}%` : '0%',
+              background: trackColor,
+              transition: triggered ? 'width 0.9s cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+            }}
+          />
+        </div>
+      )}
+      <div className="text-[12px] text-bs-body mt-2">{sub}</div>
     </div>
   )
 }
@@ -70,50 +91,48 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
 
       {/* Summary stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        {/* Completion */}
-        <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
-          <AnimatedKPI value={pct} suffix="%" color="#2A6EBB" />
-          <div className="text-[11px] text-[#5A7890] font-medium mt-1">Overall completion</div>
-          <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
-            <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#2A6EBB' }} />
+        <KPICard
+          value={pct}
+          suffix="%"
+          color="#2A6EBB"
+          trackColor="#2A6EBB"
+          label="Overall completion"
+          sub={`${completed} of 14 modules done`}
+        />
+        {avgScore > 0 ? (
+          <KPICard
+            value={avgScore}
+            suffix="%"
+            color={avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C'}
+            trackColor={avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C'}
+            label="Average quiz score"
+            sub={`${scores.length} modules scored`}
+          />
+        ) : (
+          <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
+            <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">—</div>
+            <div className="text-[11px] text-[#5A7890] font-medium mt-1">Average quiz score</div>
+            <div className="text-[12px] text-bs-body mt-2">No quizzes taken yet</div>
           </div>
-          <div className="text-[12px] text-bs-body mt-2">{completed} of 14 modules done</div>
-        </div>
-
-        {/* Avg quiz score */}
-        <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
-          {avgScore > 0
-            ? <AnimatedKPI value={avgScore} suffix="%" color={avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C'} />
-            : <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">—</div>
-          }
-          <div className="text-[11px] text-[#5A7890] font-medium mt-1">Average quiz score</div>
-          {avgScore > 0 && (
-            <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all"
-                style={{ width: `${avgScore}%`, background: avgScore >= 80 ? '#28A87C' : avgScore >= 60 ? '#F5A623' : '#E84C4C' }}
-              />
-            </div>
-          )}
-          <div className="text-[12px] text-bs-body mt-2">{scores.length} modules scored</div>
-        </div>
-
-        {/* Certification */}
-        <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
-          {completed === 14 ? (
+        )}
+        {completed === 14 ? (
+          <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
             <div className="w-10 h-10 rounded-lg bg-[#EBF4FB] flex items-center justify-center mb-2 text-[#2A6EBB]">
               <IcAward size={22} />
             </div>
-          ) : (
-            <AnimatedKPI value={14 - completed} color="#0B1829" />
-          )}
-          <div className="text-[11px] text-[#5A7890] font-medium mt-1">
-            {completed === 14 ? 'Certified!' : 'Modules remaining'}
+            <div className="text-[11px] text-[#5A7890] font-medium mt-1">Certified!</div>
+            <div className="text-[12px] text-bs-body mt-4">All modules complete. Certificate earned!</div>
           </div>
-          <div className="text-[12px] text-bs-body mt-4">
-            {completed === 14 ? 'All modules complete. Certificate earned!' : 'Keep going to earn your certification'}
-          </div>
-        </div>
+        ) : (
+          <KPICard
+            value={14 - completed}
+            color="#0B1829"
+            trackColor="#0B1829"
+            label="Modules remaining"
+            sub="Keep going to earn your certification"
+            showBar={false}
+          />
+        )}
       </div>
 
       {/* Track progress */}
