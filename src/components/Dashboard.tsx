@@ -389,8 +389,8 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
       <div className="bg-white border border-[#E2ECF5] rounded-2xl p-6 sm:p-8 flex items-center gap-8">
         <div className="flex-1 min-w-0">
           <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#2A6EBB] mb-1">Welcome back</p>
-          <h1 className="text-[24px] sm:text-[28px] font-bold text-[#0B1829] leading-tight mb-2"
-            style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em' }}>
+          <h1 className="text-[24px] sm:text-[28px] font-bold leading-tight mb-2"
+            style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', color: '#2A6EBB' }}>
             {state.userName || 'Hello'}!
           </h1>
           <p className="text-[13px] text-[#3A5068] leading-relaxed mb-5 max-w-[380px]">
