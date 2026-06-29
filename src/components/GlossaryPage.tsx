@@ -80,13 +80,6 @@ export function GlossaryPage() {
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#2A6EBB" strokeWidth="1.6" strokeLinecap="round">
-            <rect x="1" y="3" width="14" height="10" rx="1.5"/>
-            <line x1="4" y1="6" x2="12" y2="6"/><line x1="4" y1="9" x2="9" y2="9"/>
-          </svg>
-          <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#2A6EBB]">Resources</span>
-        </div>
         <h1 className="text-[28px] font-bold text-[#0B1829] leading-tight"
           style={{ fontFamily: 'var(--font-display)' }}>Glossary & Index</h1>
         <p className="text-[13px] text-[#3A5068] mt-1.5 max-w-[560px] leading-relaxed">
@@ -97,7 +90,7 @@ export function GlossaryPage() {
 
       {/* ── Search ──────────────────────────────────────────────────────── */}
       <div className="relative mb-4">
-        <IcSearch size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A9BB8]" />
+        <IcSearch size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#5A7890]" />
         <input
           type="text"
           placeholder="Search for terms, concepts, or patterns…"
@@ -163,12 +156,12 @@ export function GlossaryPage() {
 
       {/* ── Empty state ─────────────────────────────────────────────────── */}
       {filtered.length === 0 && (
-        <div className="text-center py-20 text-[#7A9BB8]">
+        <div className="text-center py-20 text-[#5A7890]">
           <div className="text-4xl mb-4">{showBookmarks ? '🔖' : '🔍'}</div>
           <div className="text-[15px] font-semibold text-[#0B1829] mb-1">
             {showBookmarks ? 'No bookmarks yet' : `No results for "${search}"`}
           </div>
-          <div className="text-[13px] text-[#7A9BB8]">
+          <div className="text-[13px] text-[#5A7890]">
             {showBookmarks
               ? 'Click the bookmark icon on any term to save it here.'
               : 'Try a different term or clear your filters.'}
@@ -193,7 +186,7 @@ export function GlossaryPage() {
                   <div className="flex items-center gap-2.5 flex-wrap mb-2">
                     <span className="text-[15px] font-bold text-[#0B1829]">{item.term}</span>
                     <span
-                      className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+                      className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full"
                       style={{ background: col.bg, color: col.text }}
                     >
                       {item.cat}
@@ -242,7 +235,7 @@ export function GlossaryPage() {
             className="px-8 py-2.5 rounded-xl border border-[#D0DEF0] text-[13px] font-semibold text-[#3A5068] bg-white hover:bg-[#F4F7FB] hover:border-[#2A6EBB] hover:text-[#2A6EBB] transition-all cursor-pointer"
           >
             Load More Definitions
-            <span className="ml-2 text-[#7A9BB8] font-normal">({filtered.length - visibleCount} remaining)</span>
+            <span className="ml-2 text-[#5A7890] font-normal">({filtered.length - visibleCount} remaining)</span>
           </button>
         </div>
       )}

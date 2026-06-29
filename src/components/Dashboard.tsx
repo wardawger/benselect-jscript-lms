@@ -53,7 +53,7 @@ function StatCard({ label, num, suffix, color }: {
           style={{ fontFamily: 'var(--font-display)' }}>
           {count}{suffix}
         </div>
-        <div className="text-[10.5px] font-medium text-[#7A9BB8] uppercase tracking-wider mt-1">{label}</div>
+        <div className="text-[11px] font-medium text-[#5A7890] mt-1">{label}</div>
       </div>
     </div>
   )
@@ -136,7 +136,7 @@ function RadialProgress({ pct, size = 120 }: { pct: number; size?: number }) {
           style={{ fontFamily: 'var(--font-display)' }}>
           {displayCount}%
         </span>
-        <span className="text-[8.5px] font-semibold uppercase tracking-widest text-[#7A9BB8] mt-1">complete</span>
+        <span className="text-[10px] text-[#5A7890] mt-1">done</span>
       </div>
     </div>
   )
@@ -196,14 +196,14 @@ function TrackCard({ group, progress, onNavigate }: {
           style={{ fontFamily: 'var(--font-display)' }}>
           {subtitle}
         </div>
-        <div className="text-[11.5px] text-[#7A9BB8] leading-relaxed line-clamp-2">{group.desc}</div>
+        <div className="text-[11.5px] text-[#5A7890] leading-relaxed line-clamp-2">{group.desc}</div>
       </div>
 
       {/* Progress bar */}
       <div>
         <div className="flex items-center justify-between text-[11px] mb-1.5">
           <span className="font-semibold text-[#3A5068]">{pct}%</span>
-          <span className="text-[#7A9BB8]">{done}/{total} modules</span>
+          <span className="text-[#5A7890]">{done}/{total} modules</span>
         </div>
         <div className="h-1.5 rounded-full bg-[#F0F4F8] overflow-hidden">
           <div className="h-full rounded-full transition-all duration-500"
@@ -251,7 +251,7 @@ function RecentActivity({ progress, onNavigate }: {
       {recent.length === 0 ? (
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-2 min-h-[200px]">
           <div className="text-3xl opacity-40">📋</div>
-          <p className="text-[12px] text-[#7A9BB8]">Complete your first module to see activity here.</p>
+          <p className="text-[12px] text-[#5A7890]">Complete your first module to see activity here.</p>
         </div>
       ) : (
         <div className="divide-y divide-[#E8F0F8]">
@@ -270,7 +270,7 @@ function RecentActivity({ progress, onNavigate }: {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-[12.5px] font-medium text-[#0B1829] truncate">{mod.title}</div>
-                  <div className="text-[11px] text-[#7A9BB8] mt-0.5">Completed · {mod.track}</div>
+                  <div className="text-[11px] text-[#5A7890] mt-0.5">Completed · {mod.track}</div>
                 </div>
                 {p.score !== undefined && (
                   <span className="text-[11px] font-bold shrink-0"
@@ -304,7 +304,7 @@ function NextUpCard({ state, onNavigate }: { state: AppState; onNavigate: Dashbo
       <div className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-2 min-h-[200px]">
         <div className="text-3xl">🎓</div>
         <div className="text-[14px] font-semibold text-[#0B1829]">All Modules Complete!</div>
-        <div className="text-[12px] text-[#7A9BB8]">You've earned your BenSelect JScript certificate.</div>
+        <div className="text-[12px] text-[#5A7890]">You've earned your BenSelect JScript certificate.</div>
       </div>
     </div>
   )
@@ -346,8 +346,8 @@ function NextUpCard({ state, onNavigate }: { state: AppState; onNavigate: Dashbo
             </div>
           </div>
           <div className="flex items-center gap-1.5 mt-3">
-            <IcClock size={10} className="text-[#7A9BB8]"/>
-            <span className="text-[10px] text-[#7A9BB8]">{nextModule.time}</span>
+            <IcClock size={10} className="text-[#5A7890]"/>
+            <span className="text-[10px] text-[#5A7890]">{nextModule.time}</span>
           </div>
         </div>
         {/* CTA */}
@@ -378,7 +378,6 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
     return (
       <div className="p-4 sm:p-6 lg:p-8 w-full space-y-8">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] mb-1" style={{ color: '#2A6EBB' }}>Course</p>
           <h1 className="text-[26px] font-bold tracking-tight text-[#0B1829]"
             style={{ fontFamily: 'var(--font-display)' }}>All Modules</h1>
           <p className="text-slate-500 text-[13px] mt-1">Browse all 14 modules. Complete each in order to unlock the next.</p>
@@ -462,7 +461,6 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
       {/* ── Hero card ─────────────────────────────────────────────────────── */}
       <div className="bg-white border border-[#E2ECF5] rounded-2xl p-6 sm:p-8 flex items-center gap-8">
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#2A6EBB] mb-1">Welcome back</p>
           <h1 className="text-[24px] sm:text-[28px] font-bold leading-tight mb-2"
             style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', color: '#2A6EBB' }}>
             {state.userName || 'Hello'}!

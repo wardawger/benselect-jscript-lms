@@ -55,7 +55,7 @@ function ScoreRing({ score, passed }: { score: number; passed: boolean }) {
       {/* Center content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <div className="text-[32px] font-bold leading-none tracking-tight" style={{ color }}>{score}%</div>
-        <div className="text-[12px] text-[#7A9BB8] mt-1 font-medium">{passed ? 'Passed' : 'Failed'}</div>
+        <div className="text-[12px] text-[#5A7890] mt-1 font-medium">{passed ? 'Passed' : 'Failed'}</div>
       </div>
     </div>
   )
@@ -115,16 +115,16 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
             {/* Stats mini-grid */}
             <div className={`grid gap-3 mb-5 text-left ${exerciseBonus > 0 ? 'grid-cols-3' : 'grid-cols-2'}`}>
               <div className="bg-[#F8FAFC] rounded-xl p-3 border border-[#E8F0F8]">
-                <div className="text-[10px] text-[#7A9BB8] uppercase tracking-wider font-medium mb-1">Correct</div>
-                <div className="text-[22px] font-bold text-[#0B1829]">{correctCount}<span className="text-[13px] text-[#7A9BB8] font-normal">/{questions.length}</span></div>
+                <div className="text-[11px] text-[#5A7890] font-medium mb-1">Correct</div>
+                <div className="text-[22px] font-bold text-[#0B1829]">{correctCount}<span className="text-[13px] text-[#5A7890] font-normal">/{questions.length}</span></div>
               </div>
               <div className="bg-[#F8FAFC] rounded-xl p-3 border border-[#E8F0F8]">
-                <div className="text-[10px] text-[#7A9BB8] uppercase tracking-wider font-medium mb-1">Score</div>
-                <div className="text-[22px] font-bold" style={{ color: passed ? '#28A87C' : '#E84C4C' }}>{score}<span className="text-[13px] font-normal text-[#7A9BB8]">%</span></div>
+                <div className="text-[11px] text-[#5A7890] font-medium mb-1">Score</div>
+                <div className="text-[22px] font-bold" style={{ color: passed ? '#28A87C' : '#E84C4C' }}>{score}<span className="text-[13px] font-normal text-[#5A7890]">%</span></div>
               </div>
               {exerciseBonus > 0 && (
                 <div className="bg-emerald-50 rounded-xl p-3 border border-emerald-200">
-                  <div className="text-[10px] text-emerald-600 uppercase tracking-wider font-medium mb-1">Coding Bonus</div>
+                  <div className="text-[11px] text-emerald-600 font-medium mb-1">Coding Bonus</div>
                   <div className="text-[22px] font-bold text-emerald-700">+{exerciseBonus}<span className="text-[13px] font-normal text-emerald-500">pts</span></div>
                 </div>
               )}
@@ -191,7 +191,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
                 onMouseLeave={() => setHoveredQ(null)}
               >
                 <div className="flex items-center gap-2 mb-1.5">
-                  <span className="text-[10px] font-mono text-[#4A9FD4] uppercase tracking-wider">Q{qi + 1}</span>
+                  <span className="text-[10px] font-mono text-[#4A9FD4]">Q{qi + 1}</span>
                   <span className={cn('flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full', ans.state === 'correct' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700')}>
                     {ans.state === 'correct' ? <><IcCheck size={9} /> Correct</> : <><IcX size={9} /> Incorrect</>}
                   </span>
@@ -203,7 +203,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
                       'text-[13px] p-3 rounded-lg border transition-colors',
                       oi === q.a ? 'border-emerald-300 bg-emerald-50 text-emerald-800 font-medium' :
                       oi === ans.selected && ans.state === 'wrong' ? 'border-red-300 bg-red-50 text-red-800' :
-                      'border-[#E8F0F8] text-[#7A9BB8]'
+                      'border-[#E8F0F8] text-[#5A7890]'
                     )}>
                       {oi === q.a && <IcCheck size={10} className="mr-1 inline-block text-emerald-600" />}{opt}
                     </div>
@@ -227,7 +227,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <button onClick={onBack} className="text-[12px] text-[#7A9BB8] hover:text-[#2A6EBB] transition-colors">← Back to Lesson</button>
+          <button onClick={onBack} className="text-[12px] text-[#5A7890] hover:text-[#2A6EBB] transition-colors">← Back to Lesson</button>
         </div>
         <h1 className="text-[22px] font-bold text-[#0B1829] tracking-tight">Module {moduleId} Quiz</h1>
         <p className="text-[13px] text-bs-body mt-1">{questions.length} questions · 60% required to pass</p>
@@ -241,7 +241,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
             onMouseEnter={() => setHoveredQ(qi)}
             onMouseLeave={() => setHoveredQ(null)}
           >
-            <div className="text-[11px] font-mono text-[#4A9FD4] uppercase tracking-wider mb-1.5">Question {qi + 1}</div>
+            <div className="text-[11px] font-mono text-[#4A9FD4] mb-1.5">Question {qi + 1}</div>
             <div className="text-[14px] font-semibold text-[#0B1829] mb-3 leading-snug">{q.q}</div>
             <div className="space-y-2">
               {q.opts.map((opt, oi) => {
@@ -287,7 +287,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
           </div>
         )}
         <div className="flex items-center justify-between">
-          <span className="text-[13px] text-[#7A9BB8]">
+          <span className="text-[13px] text-[#5A7890]">
             {answers.filter(a => a.selected !== null).length} of {questions.length} answered
           </span>
           <button

@@ -16,9 +16,11 @@ function LoginModal({ onSubmit }: { onSubmit: (name: string) => void }) {
       <div className="bg-white rounded-2xl p-8 w-full max-w-sm mx-4 border border-[#E2ECF5]">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg mb-5" style={{ background: '#2A6EBB' }}>BS</div>
         <h2 className="text-[20px] font-bold text-[#0B1829] mb-1.5">Welcome to BenSelect LMS</h2>
-        <p className="text-[13px] text-[#3A5068] mb-6">What's your name? We'll use it to personalize your progress.</p>
+        <p className="text-[13px] text-[#3A5068] mb-5">We'll use your name to personalize your progress.</p>
         <form onSubmit={e => { e.preventDefault(); if (name.trim()) onSubmit(name.trim()) }}>
+          <label htmlFor="user-name" className="block text-[12px] font-medium text-[#3A5068] mb-1.5">Your name</label>
           <input
+            id="user-name"
             autoFocus
             type="text"
             placeholder="Your name…"
@@ -41,6 +43,7 @@ function LoginModal({ onSubmit }: { onSubmit: (name: string) => void }) {
 
 function UserDropdown({ userName, onRename, onReset }: { userName: string; onRename: () => void; onReset: () => void }) {
   const [open, setOpen] = useState(false)
+  const [confirmReset, setConfirmReset] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -55,6 +58,8 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
     <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        aria-haspopup="true"
         className="flex items-center gap-2 text-[13px] font-medium text-[#3A5068] bg-white hover:bg-[#F4F7FB] border border-[#D0DEF0] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
       >
         <span className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold shrink-0" style={{ background: '#2A6EBB' }}>
@@ -65,9 +70,9 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
           <IcChevronDown size={12} />
         </span>
       </button>
-      {/* Always rendered — animated with opacity + transform */}
       <div
         className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl border border-[#E2ECF5] overflow-hidden z-50"
+        aria-hidden={!open}
         style={{
           boxShadow: '0 8px 24px rgba(4,41,74,0.12)',
           opacity: open ? 1 : 0,
@@ -77,8 +82,8 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
         }}
       >
         <div className="px-4 py-2.5 border-b border-[#E8F0F8]">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-[#7A9BB8]">Account</p>
-          <p className="text-[13px] font-medium text-[#0B1829] mt-0.5 truncate">{userName}</p>
+          <p className="text-[13px] font-medium text-[#0B1829] truncate">{userName}</p>
+          <p className="text-[11px] text-[#5A7890] mt-0.5">BenSelect LMS</p>
         </div>
         <div className="p-1">
           <button
@@ -89,13 +94,23 @@ function UserDropdown({ userName, onRename, onReset }: { userName: string; onRen
             Change Name
           </button>
           <div className="h-px bg-[#E8F0F8] my-1" />
+          {confirmReset ? (
+            <div className="px-3 py-2.5">
+              <p className="text-[12px] text-[#0B1829] mb-2">Remove all progress?</p>
+              <div className="flex gap-2">
+                <button onClick={() => { onReset(); setOpen(false); setConfirmReset(false) }} className="text-[11px] text-white bg-[#E84C4C] px-2.5 py-1 rounded-md hover:opacity-90">Yes, reset</button>
+                <button onClick={() => setConfirmReset(false)} className="text-[11px] text-[#3A5068] hover:underline">Cancel</button>
+              </div>
+            </div>
+          ) : (
           <button
-            onClick={() => { if (confirm('Reset all progress? This cannot be undone.')) { onReset(); setOpen(false) } }}
+            onClick={() => setConfirmReset(true)}
             className="w-full text-left px-3 py-2.5 text-[13px] text-[#E84C4C] hover:bg-red-50 rounded-lg flex items-center gap-2.5 transition-colors cursor-pointer"
           >
             <IcReset size={14} />
             Reset Progress
           </button>
+          )}
         </div>
       </div>
     </div>
@@ -228,6 +243,7 @@ export default function App() {
         style={{
           transform: sidebarCollapsed ? 'translateX(-240px)' : 'translateX(0)',
           transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+          willChange: 'transform',
         }}
       >
         <Sidebar state={state} onNavigate={navigate} />

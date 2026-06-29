@@ -478,7 +478,7 @@ function EditorModal({ eventType, code, onChange, onSave, onCancel, history, onR
               style={{ opacity: linksCollapsed ? 0 : 1, transition: 'opacity 0.15s ease', pointerEvents: linksCollapsed ? 'none' : 'auto' }}
             >
               <div className="py-3 px-3">
-                <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#999] mb-2 whitespace-nowrap">
+                <div className="text-[11px] font-semibold text-[#999] mb-2 whitespace-nowrap">
                   API Reference
                 </div>
                 <ul className="space-y-1.5">
@@ -650,8 +650,8 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
   const totalCount = ex?.keywords.length ?? 0
 
   const headerLabel = mode === 'quiz'
-    ? <span className="text-[10px] font-mono font-bold text-[#2A6EBB] bg-[#EBF4FB] px-2 py-0.5 rounded uppercase tracking-wider">Coding Challenge · +0–2 bonus pts</span>
-    : <span className="text-[10px] font-mono font-bold text-[#28A87C] bg-emerald-50 px-2 py-0.5 rounded uppercase tracking-wider">Practice Exercise · no grade</span>
+    ? <span className="text-[10px] font-mono font-bold text-[#2A6EBB] bg-[#EBF4FB] px-2 py-0.5 rounded">Coding Challenge · +0–2 bonus pts</span>
+    : <span className="text-[10px] font-mono font-bold text-[#28A87C] bg-emerald-50 px-2 py-0.5 rounded">Practice Exercise · no grade</span>
 
   return (
     <div className={`mt-8 border border-[#D4D4D4] rounded bg-white shadow-sm overflow-hidden`}>
@@ -666,7 +666,7 @@ export function BenSelectScriptEditor({ moduleId, mode, onScore }: BenSelectScri
         <div className="px-4 py-3 border-b border-[#E8EEF4] bg-white">
           <p className="text-[13px] text-bs-body mb-2">{ex.intro}</p>
           <div className={`rounded-lg p-3 border ${mode === 'quiz' ? 'bg-[#EBF4FB] border-[rgba(42,110,187,0.2)]' : 'bg-emerald-50 border-emerald-200'}`}>
-            <div className={`text-[10px] font-mono font-bold uppercase tracking-wider mb-1 ${mode === 'quiz' ? 'text-[#2A6EBB]' : 'text-emerald-700'}`}>Task</div>
+            <div className={`text-[11px] font-mono font-bold mb-1 ${mode === 'quiz' ? 'text-[#2A6EBB]' : 'text-emerald-700'}`}>Task</div>
             <p className={`text-[12.5px] leading-relaxed ${mode === 'quiz' ? 'text-[#0B1829]' : 'text-emerald-900'}`}>{ex.task}</p>
           </div>
 

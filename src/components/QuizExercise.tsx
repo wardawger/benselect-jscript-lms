@@ -49,15 +49,15 @@ export function QuizExercise({ moduleId, onScore }: QuizExerciseProps) {
     <div className="mt-8 border-t border-[#E8F0F8] pt-8">
       {/* Header */}
       <div className="flex items-center gap-2 mb-1">
-        <span className="text-[10px] font-mono font-bold text-[#2A6EBB] bg-[#EBF4FB] px-2 py-0.5 rounded uppercase tracking-wider">Coding Challenge</span>
-        <span className="text-[10px] font-mono text-[#7A9BB8]">+0–2 bonus points</span>
+        <span className="text-[10px] font-mono font-bold text-[#2A6EBB] bg-[#EBF4FB] px-2 py-0.5 rounded">Coding Challenge</span>
+        <span className="text-[10px] font-mono text-[#5A7890]">+0–2 bonus points</span>
       </div>
       <h3 className="text-[15px] font-bold text-[#0B1829] mb-1">{ex.title}</h3>
       <p className="text-[13px] text-bs-body mb-3">{ex.intro}</p>
 
       {/* Task box */}
       <div className="bg-[#EBF4FB] border border-[rgba(42,110,187,0.2)] rounded-xl p-4 mb-4">
-        <div className="text-[10px] font-mono font-bold text-[#2A6EBB] uppercase tracking-wider mb-1">Task</div>
+        <div className="text-[11px] font-mono font-bold text-[#2A6EBB] mb-1">Task</div>
         <p className="text-[13px] text-[#0B1829] leading-relaxed">{ex.task}</p>
       </div>
 
@@ -106,7 +106,7 @@ export function QuizExercise({ moduleId, onScore }: QuizExerciseProps) {
               <div className="text-[14px] font-bold" style={{ color: bonus === 2 ? '#28A87C' : bonus === 1 ? '#D4820A' : '#E84C4C' }}>
                 {bonus === 2 ? '🏆 Full bonus! +2 pts' : bonus === 1 ? '⚡ Partial bonus +1 pt' : '✗ No bonus this time'}
               </div>
-              <div className="text-[12px] text-[#7A9BB8]">{earnedCount}/{totalCount} criteria met</div>
+              <div className="text-[12px] text-[#5A7890]">{earnedCount}/{totalCount} criteria met</div>
             </div>
             <div className="space-y-1.5">
               {results.map((r, i) => (

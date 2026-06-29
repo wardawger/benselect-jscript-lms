@@ -443,7 +443,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
           <aside className="hidden lg:block w-52 xl:w-60 shrink-0 sticky top-[76px]" aria-label="Module sections">
             <div className="bg-white rounded-xl border border-[#E2ECF5] overflow-hidden">
               <div className="px-4 py-3 border-b border-[#E2ECF5]" style={{ background: '#F8FAFC' }}>
-                <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-[#7A9BB8]">In this module</span>
+                <span className="text-[12px] font-semibold text-[#0B1829]">Sections</span>
               </div>
               <nav className="p-2 space-y-0.5">
                 {steps.map((s, idx) => {
@@ -460,13 +460,13 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
                           ? 'text-white'
                           : isDone
                           ? 'text-[#3A5068] hover:bg-[#F4F7FB]'
-                          : 'text-[#7A9BB8] hover:bg-[#F4F7FB]',
+                          : 'text-[#5A7890] hover:bg-[#F4F7FB]',
                       ].join(' ')}
                       style={isCurrent ? { background: trackColor } : undefined}
                     >
                       <span className={[
                         'w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-px text-[9px] font-bold transition-all',
-                        isCurrent ? 'bg-white/25 text-white' : isDone ? 'bg-emerald-100 text-emerald-600' : 'bg-[#EEF3F8] text-[#7A9BB8]',
+                        isCurrent ? 'bg-white/25 text-white' : isDone ? 'bg-emerald-100 text-emerald-600' : 'bg-[#EEF3F8] text-[#5A7890]',
                       ].join(' ')}>
                         {isDone ? <IcCheck size={9} /> : idx + 1}
                       </span>
@@ -474,11 +474,6 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
                         <div className={`text-[11.5px] font-medium leading-snug truncate ${isCurrent ? 'text-white' : ''}`}>
                           {label}
                         </div>
-                        {isCurrent && (
-                          <div className="text-[10px] mt-0.5 font-semibold uppercase tracking-wider text-white/70">
-                            Current
-                          </div>
-                        )}
                         {isDone && !isCurrent && (
                           <div className="text-[10px] mt-0.5 text-emerald-500 font-medium">Done</div>
                         )}
@@ -503,7 +498,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
                       <div className="text-[11.5px] font-semibold text-[#0B1829] group-hover:text-[#2A6EBB] transition-colors">
                         {p.status === 'complete' ? 'Retake Quiz' : 'Module Quiz'}
                       </div>
-                      <div className="text-[10px] text-[#7A9BB8] mt-0.5">60% to pass</div>
+                      <div className="text-[10px] text-[#5A7890] mt-0.5">60% to pass</div>
                     </div>
                   </button>
                 </div>
@@ -522,7 +517,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
           <button
             onClick={goPrev}
             disabled={currentStep === 0}
-            className="flex items-center gap-1.5 text-[13px] font-medium text-[#3A5068] hover:text-[#0B1829] disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 text-[13px] font-medium text-[#3A5068] hover:text-[#0B1829] disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer shrink-0 min-h-[44px] px-1"
           >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <path d="M11 7H3M6 4L3 7l3 3"/>
@@ -532,7 +527,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
 
           {/* Progress */}
           <div className="flex-1 flex flex-col gap-1 min-w-0">
-            <div className="flex items-center justify-between text-[11px] text-[#7A9BB8]">
+            <div className="flex items-center justify-between text-[11px] text-[#5A7890]">
               <span className="font-medium truncate hidden sm:block">
                 {stepLabel(step)}
               </span>
@@ -550,7 +545,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
           {/* Next / Quiz */}
           <button
             onClick={goNext}
-            className="flex items-center gap-2 text-[13px] font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90 cursor-pointer shrink-0"
+            className="flex items-center gap-2 text-[13px] font-semibold text-white px-5 rounded-xl transition-opacity hover:opacity-90 cursor-pointer shrink-0 min-h-[44px]"
             style={{ background: isLast ? '#2A6EBB' : trackColor }}
           >
             {isLast

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { MODULES, TRACK_GROUPS } from '@/data/modules'
 import type { AppState } from '@/store/progress'
 import { getCompletedCount, getOverallScore } from '@/store/progress'
@@ -14,6 +15,8 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
   const avgScore  = getOverallScore(state.progress)
   const pct       = Math.round((completed / 14) * 100)
 
+  const [confirmReset, setConfirmReset] = useState(false)
+
   const scores = Object.entries(state.progress)
     .filter(([, p]) => p.score !== undefined)
     .map(([id, p]) => ({ id: Number(id), score: p.score!, mod: MODULES.find(m => m.id === Number(id))! }))
@@ -21,7 +24,6 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto w-full">
       <div className="mb-6">
-        <div className="text-[11px] font-medium text-[#4A9FD4] uppercase tracking-widest mb-1.5">Analytics</div>
         <h1 className="text-[26px] font-bold text-[#0B1829] tracking-tight">My Progress</h1>
         <p className="text-[13px] text-bs-body mt-1.5">Track your completion and quiz performance across all modules.</p>
       </div>
@@ -31,7 +33,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
         {/* Completion */}
         <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
           <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{pct}%</div>
-          <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">Overall completion</div>
+          <div className="text-[11px] text-[#5A7890] font-medium mt-1">Overall completion</div>
           <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
             <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: '#2A6EBB' }} />
           </div>
@@ -41,7 +43,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
         {/* Avg quiz score */}
         <div className="bg-white rounded-xl p-5 border border-[#E8F0F8]">
           <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{avgScore ? `${avgScore}%` : '—'}</div>
-          <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">Average quiz score</div>
+          <div className="text-[11px] text-[#5A7890] font-medium mt-1">Average quiz score</div>
           {avgScore > 0 && (
             <div className="mt-3 h-2 bg-[#EBF4FB] rounded-full overflow-hidden">
               <div
@@ -62,7 +64,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
           ) : (
             <div className="text-[28px] font-bold text-[#0B1829] tracking-tight">{14 - completed}</div>
           )}
-          <div className="text-[11px] text-[#7A9BB8] font-medium uppercase tracking-wider mt-1">
+          <div className="text-[11px] text-[#5A7890] font-medium mt-1">
             {completed === 14 ? 'Certified!' : 'Modules remaining'}
           </div>
           <div className="text-[12px] text-bs-body mt-4">
@@ -81,11 +83,11 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
             <div className="px-5 py-4 border-b border-[#E8F0F8] flex items-center justify-between">
               <div>
                 <div className="text-[14px] font-semibold text-[#0B1829]">{track.label}</div>
-                <div className="text-[12px] text-[#7A9BB8] mt-0.5">{track.desc}</div>
+                <div className="text-[12px] text-[#5A7890] mt-0.5">{track.desc}</div>
               </div>
               <div className="text-right">
                 <div className="text-[13px] font-mono font-medium text-bs-body">{trackDone}/{trackMods.length}</div>
-                <div className="text-[11px] text-[#7A9BB8]">{trackPct}%</div>
+                <div className="text-[11px] text-[#5A7890]">{trackPct}%</div>
               </div>
             </div>
             <div className="divide-y divide-[#F4F7FB]">
@@ -105,7 +107,7 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
                     <div className="text-[13px] font-medium text-[#0B1829] truncate">
                       {mod.id}. {mod.title}
                     </div>
-                    <div className="text-[11px] text-[#7A9BB8] mt-0.5">{mod.time}</div>
+                    <div className="text-[11px] text-[#5A7890] mt-0.5">{mod.time}</div>
                   </div>
                   {p.status === 'complete' && (
                     <span className="flex items-center gap-1 text-[11px] text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full font-medium shrink-0">
@@ -133,12 +135,30 @@ export function ProgressPage({ state, onNavigate, onReset }: ProgressPageProps) 
 
       {/* Reset */}
       <div className="mt-8 pt-6 border-t border-[#E8F0F8]">
-        <button
-          onClick={() => { if (confirm('Reset all progress? This cannot be undone.')) onReset() }}
-          className="text-[12px] text-[#E84C4C] hover:underline"
-        >
-          Reset all progress
-        </button>
+        {confirmReset ? (
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-[12px] text-[#0B1829]">Remove all progress permanently?</span>
+            <button
+              onClick={() => { onReset(); setConfirmReset(false) }}
+              className="text-[12px] text-white bg-[#E84C4C] px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
+            >
+              Yes, reset
+            </button>
+            <button
+              onClick={() => setConfirmReset(false)}
+              className="text-[12px] text-[#3A5068] hover:underline"
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => setConfirmReset(true)}
+            className="text-[12px] text-[#E84C4C] hover:underline"
+          >
+            Reset all progress
+          </button>
+        )}
       </div>
     </div>
   )

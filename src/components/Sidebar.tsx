@@ -55,7 +55,6 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
 
         {/* Primary nav */}
         <div>
-          <div className="text-[9px] font-semibold text-white/50 uppercase tracking-[0.12em] px-5 mb-2">Navigation</div>
           <ul className="space-y-0.5 px-2">
             {NAV_ITEMS.map(({ id, label, Icon }) => {
               const isActive = state.page === id && !state.activeModule
@@ -84,7 +83,7 @@ export function Sidebar({ state, onNavigate, onClose }: SidebarProps) {
         {/* Module tracks */}
         {TRACK_GROUPS.map(track => (
           <div key={track.label}>
-            <div className="text-[9px] font-semibold text-white/50 uppercase tracking-[0.12em] px-5 mb-2 truncate">
+            <div className="text-[11px] font-medium text-white/35 px-5 mb-1.5 truncate">
               {track.label.split(' — ')[0]}
             </div>
             <ul className="space-y-0.5 px-2">

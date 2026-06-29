@@ -40,15 +40,15 @@ export function LessonChallenge({ moduleId }: LessonChallengeProps) {
     <div className="mt-10 bg-white rounded-2xl shadow-sm border border-[#E8F0F8] p-6">
       {/* Header */}
       <div className="flex items-center gap-2 mb-1">
-        <span className="text-[10px] font-mono font-bold text-[#28A87C] bg-emerald-50 px-2 py-0.5 rounded uppercase tracking-wider">Practice Exercise</span>
-        <span className="text-[10px] font-mono text-[#7A9BB8]">no grade · builds skills</span>
+        <span className="text-[10px] font-mono font-bold text-[#28A87C] bg-emerald-50 px-2 py-0.5 rounded">Practice Exercise</span>
+        <span className="text-[10px] font-mono text-[#5A7890]">no grade · builds skills</span>
       </div>
       <h3 className="text-[15px] font-bold text-[#0B1829] mb-1">{ex.title}</h3>
       <p className="text-[13px] text-bs-body mb-3">{ex.intro}</p>
 
       {/* Task box */}
       <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 mb-4">
-        <div className="text-[10px] font-mono font-bold text-emerald-700 uppercase tracking-wider mb-1">Task</div>
+        <div className="text-[11px] font-mono font-bold text-emerald-700 mb-1">Task</div>
         <p className="text-[13px] text-emerald-900 leading-relaxed">{ex.task}</p>
       </div>
 
