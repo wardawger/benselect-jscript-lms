@@ -68,12 +68,12 @@ export function GlossaryPage() {
       const matchesBookmark = !showBookmarks || bookmarks.has(item.term)
       return matchesSearch && matchesCat && matchesBookmark
     })
-  }, [search, activeCat, activeLetter, showBookmarks, bookmarks])
+  }, [search, activeCat, showBookmarks, bookmarks])
 
   const visible = filtered.slice(0, visibleCount)
 
   // Reset visible count when filters change
-  useEffect(() => setVisibleCount(20), [search, activeCat, activeLetter, showBookmarks])
+  useEffect(() => setVisibleCount(20), [search, activeCat, showBookmarks])
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto w-full">
