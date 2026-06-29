@@ -257,7 +257,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
       })
 
       header.appendChild(btn)
-      block.parentNode!.insertBefore(header, block)
+      if (block.parentNode) block.parentNode.insertBefore(header, block)
     })
   }, [currentStep, moduleId])
 
