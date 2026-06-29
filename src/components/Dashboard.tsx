@@ -389,7 +389,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
           const done = track.ids.filter(id => state.progress[id]?.status === 'complete').length
           return (
             <section key={track.label}>
-              <div className="sticky top-[60px] z-10 bg-white/80 backdrop-blur-sm border-b border-[#e2e8f0] mb-4 pb-3 flex items-center justify-between">
+              <div className="sticky top-[60px] z-10 bg-white/80 backdrop-blur-sm border-b border-[#e2e8f0] mb-4 pb-3 px-1 flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: ts.color }}/>
                   <span className="text-[13px] font-bold text-[#0B1829]">
