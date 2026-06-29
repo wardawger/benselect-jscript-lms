@@ -15,6 +15,7 @@ const CAT_COLORS: Record<string, { bg: string; text: string }> = {
   'String Methods':      { bg: '#FFF3E6', text: '#B85000' },
   'Custom Fields':       { bg: '#FEFCE6', text: '#8A6800' },
   'Scripting Patterns':  { bg: '#E6FAF8', text: '#1A7A73' },
+  'System.Decimal':      { bg: '#F3FBF0', text: '#286C3A' },
 }
 
 function BookmarkIcon({ filled }: { filled: boolean }) {
