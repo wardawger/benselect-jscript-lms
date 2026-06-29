@@ -386,62 +386,105 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         {TRACK_GROUPS.map(track => {
           const ts = getTS(track.label)
           const done = track.ids.filter(id => state.progress[id]?.status === 'complete').length
+          const total = track.ids.length
+          const pct = total ? Math.round((done / total) * 100) : 0
+          const subtitle = track.label.includes(' — ') ? track.label.split(' — ')[1] : track.label
+          const isAllDone = done === total
           return (
-            <section key={track.label}>
-              <div className="sticky top-[60px] z-10 bg-white/80 backdrop-blur-sm border-b border-[#e2e8f0] mb-4 pb-3 px-1 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: ts.color }}/>
-                  <span className="text-[13px] font-bold text-[#0B1829]">
-                    {track.label.split(' — ')[0]}
-                  </span>
-                  {track.label.includes(' — ') && (
-                    <>
-                      <span className="text-slate-400 text-[13px]">—</span>
-                      <span className="text-slate-500 text-[12px]">{track.label.split(' — ')[1]}</span>
-                    </>
-                  )}
+            <section key={track.label} className="rounded-2xl overflow-hidden border border-[#E2ECF5]" style={{ boxShadow: '0 1px 4px rgba(4,41,74,0.05)' }}>
+
+              {/* ── Track header ── */}
+              <div className="flex items-center gap-4 px-5 py-4 sm:py-5 border-b border-[#E2ECF5]"
+                style={{ background: ts.pale }}>
+
+                {/* Icon */}
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: 'rgba(255,255,255,0.65)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+                  <TrackIcon trackLabel={track.label} color={ts.color} size={20}/>
                 </div>
-                <span className="text-[11px] font-mono text-slate-400">{done}/{track.ids.length} done</span>
+
+                {/* Name + desc */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                      style={{ background: 'rgba(255,255,255,0.7)', color: ts.color }}>
+                      {ts.label}
+                    </span>
+                  </div>
+                  <div className="text-[14px] font-bold text-[#0B1829] leading-snug"
+                    style={{ fontFamily: 'var(--font-display)' }}>
+                    {subtitle}
+                  </div>
+                  <div className="text-[12px] text-[#3A5068] mt-0.5 leading-snug">{track.desc}</div>
+                </div>
+
+                {/* Progress */}
+                <div className="shrink-0 text-right hidden sm:block">
+                  <div className="text-[18px] font-bold text-[#0B1829] leading-none tabular-nums"
+                    style={{ fontFamily: 'var(--font-display)' }}>
+                    {done}<span className="text-[13px] font-normal text-[#5A7890]">/{total}</span>
+                  </div>
+                  <div className="text-[11px] text-[#5A7890] mt-0.5">
+                    {isAllDone ? '✓ Complete' : 'done'}
+                  </div>
+                  <div className="mt-2 w-20 h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.5)' }}>
+                    <div className="h-full rounded-full transition-all duration-500"
+                      style={{ width: `${pct}%`, background: ts.color }}/>
+                  </div>
+                </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {track.ids.map(id => {
-                  const mod    = MODULES.find(m => m.id === id)!
-                  const p      = state.progress[id]
-                  const isLocked = p.status === 'locked'
-                  const isDone   = p.status === 'complete'
-                  return (
-                    <button
-                      key={id}
-                      onClick={() => !isLocked && onNavigate('lesson', id)}
-                      disabled={isLocked}
-                      className={[
-                        'text-left bg-white rounded-xl border border-[#e2e8f0] p-5 flex flex-col gap-3 transition-all relative overflow-hidden group',
-                        isLocked ? 'opacity-50 cursor-not-allowed' : 'hover:shadow-md hover:-translate-y-0.5 cursor-pointer',
-                        isDone ? 'border-emerald-100' : '',
-                      ].join(' ')}
-                    >
-                      {isDone && <div className="absolute top-0 left-0 right-0 h-[3px] bg-emerald-400 rounded-t-xl"/>}
-                      {!isDone && !isLocked && (
-                        <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl scale-x-0 group-hover:scale-x-100 transition-transform origin-left"
-                          style={{ background: ts.color }}/>
-                      )}
-                      <div className="flex items-start justify-between gap-2">
-                        <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded"
-                          style={{ background: '#EBF4FB', color: '#2A6EBB' }}>M{id}</span>
-                        <StatusBadge status={p.status} score={p.score}/>
-                      </div>
-                      <div className="text-[13px] font-semibold leading-snug text-[#0B1829]">{mod.title}</div>
-                      <div className="flex items-center gap-2 mt-auto flex-wrap">
-                        <span className="flex items-center gap-1 text-[11px] text-slate-400">
-                          <IcClock size={10}/> {mod.time}
-                        </span>
-                        {p.needsReview && (
-                          <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">Review</span>
-                        )}
-                      </div>
-                    </button>
-                  )
-                })}
+
+              {/* ── Module grid ── */}
+              <div className="bg-white p-4 sm:p-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                  {track.ids.map(id => {
+                    const mod      = MODULES.find(m => m.id === id)!
+                    const p        = state.progress[id]
+                    const isLocked = p.status === 'locked'
+                    const isDone   = p.status === 'complete'
+                    return (
+                      <button
+                        key={id}
+                        onClick={() => !isLocked && onNavigate('lesson', id)}
+                        disabled={isLocked}
+                        className={[
+                          'text-left bg-white rounded-xl border p-4 flex flex-col gap-3 transition-all relative overflow-hidden group',
+                          isLocked
+                            ? 'opacity-40 cursor-not-allowed border-[#E2ECF5]'
+                            : isDone
+                            ? 'border-emerald-100 hover:shadow-md hover:-translate-y-0.5 cursor-pointer'
+                            : 'border-[#E2ECF5] hover:shadow-md hover:-translate-y-0.5 cursor-pointer',
+                        ].join(' ')}
+                      >
+                        {/* Top color strip */}
+                        {isDone
+                          ? <div className="absolute top-0 left-0 right-0 h-[3px] bg-emerald-400 rounded-t-xl"/>
+                          : !isLocked && (
+                            <div className="absolute top-0 left-0 right-0 h-[3px] rounded-t-xl scale-x-0 group-hover:scale-x-100 transition-transform origin-left"
+                              style={{ background: ts.color }}/>
+                          )
+                        }
+
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-[10px] font-bold font-mono px-1.5 py-0.5 rounded"
+                            style={{ background: ts.pale, color: ts.color }}>M{id}</span>
+                          <StatusBadge status={p.status} score={p.score}/>
+                        </div>
+
+                        <div className="text-[13px] font-semibold leading-snug text-[#0B1829] flex-1">{mod.title}</div>
+
+                        <div className="flex items-center gap-2 mt-auto flex-wrap">
+                          <span className="flex items-center gap-1 text-[11px] text-[#5A7890]">
+                            <IcClock size={10}/> {mod.time}
+                          </span>
+                          {p.needsReview && (
+                            <span className="text-[10px] font-semibold text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">Review</span>
+                          )}
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             </section>
           )
