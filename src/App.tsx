@@ -182,6 +182,7 @@ export default function App() {
             <LessonPage
               moduleId={state.activeModule}
               state={state}
+              sidebarCollapsed={sidebarCollapsed}
               onStartQuiz={startQuiz}
               onBack={() => navigate('dashboard')}
             />

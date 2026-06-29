@@ -9,6 +9,7 @@ import { IcClock, IcCheck, IcChevronRight, IcTarget } from './Icons'
 interface LessonPageProps {
   moduleId: number
   state: AppState
+  sidebarCollapsed?: boolean
   onStartQuiz: (moduleId: number) => void
   onBack: () => void
 }
@@ -137,7 +138,7 @@ type Step =
   | { kind: 'section'; section: LessonSection; index: number }
   | { kind: 'exercise' }
 
-export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageProps) {
+export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onBack }: LessonPageProps) {
   const mod = MODULES.find(m => m.id === moduleId)
   if (!mod) return null
 
@@ -256,7 +257,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
   const step = steps[currentStep]
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-60px)]" style={{ background: '#EEF3F8' }}>
+    <div className="flex flex-col min-h-[calc(100vh-60px)] overflow-x-hidden" style={{ background: '#EEF3F8' }}>
       <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto w-full" style={{ paddingBottom: '8rem' }}>
 
         {/* ── Breadcrumb ──────────────────────────────────────────────────── */}
@@ -282,7 +283,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
                   </span>
                   <span className="text-[12px] font-mono text-white/40">Module {mod.id} of 14</span>
                 </div>
-                <h1 className="text-[22px] sm:text-[26px] font-bold tracking-tight leading-tight mb-3 text-white"
+                <h1 className="text-[22px] sm:text-[26px] font-bold tracking-tight leading-tight mb-3 text-white break-words"
                   style={{ fontFamily: 'var(--font-display)' }}>
                   {mod.title}
                 </h1>
@@ -478,7 +479,7 @@ export function LessonPage({ moduleId, state, onStartQuiz, onBack }: LessonPageP
       </div>
 
       {/* ── Sticky bottom nav bar ────────────────────────────────────────────── */}
-      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[#D0DEF0]"
+      <div className={`fixed bottom-0 right-0 z-30 border-t border-[#D0DEF0] left-0 ${!sidebarCollapsed ? 'lg:left-60' : ''}`}
         style={{ background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(8px)' }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-4">
 
