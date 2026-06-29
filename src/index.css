@@ -255,10 +255,6 @@ body {
 
 /* ── CODE COPY BUTTON ───────────────────────────────────────────── */
 .code-copy-btn {
-  position: absolute;
-  top: 0.625rem;
-  right: 0.625rem;
-  z-index: 1;
   display: inline-flex;
   align-items: center;
   gap: 0.3125rem;

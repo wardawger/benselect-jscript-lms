@@ -214,49 +214,50 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
     if (currentStep > 0) goTo(currentStep - 1)
   }
 
-  // Re-inject copy buttons whenever step changes
+  // Inject a header bar with a copy button above each code block.
+  // Uses a normal-flow header div — no position:absolute, no z-index, no overflow issues.
   useEffect(() => {
     const blocks = document.querySelectorAll<HTMLElement>('.lesson-content .code-block:not([data-copy])')
     blocks.forEach(block => {
       block.setAttribute('data-copy', '1')
 
-      // Move all code content into a scrollable inner div so the code block
-      // itself is no longer the scroll container. The button can then be
-      // position:absolute on .code-block without being scrolled off-screen.
-      const inner = document.createElement('div')
-      inner.style.cssText = 'overflow-x:auto;white-space:pre'
-      while (block.firstChild) inner.appendChild(block.firstChild)
-      block.style.overflow = 'visible'
-      block.style.position = 'relative'
-      block.appendChild(inner)
+      // Header bar sits above the code block
+      const header = document.createElement('div')
+      header.style.cssText = [
+        'display:flex', 'align-items:center', 'justify-content:flex-end',
+        'background:#162437', 'border-radius:0.75rem 0.75rem 0 0',
+        'padding:0.3rem 0.625rem',
+        'border-bottom:1px solid rgba(255,255,255,0.06)',
+        'margin:0.875rem 0 0',
+      ].join(';')
+
+      // Remove top margin/radius from code block so it joins the header seamlessly
+      block.style.marginTop = '0'
+      block.style.marginBottom = '0.875rem'
+      block.style.borderRadius = '0 0 0.75rem 0.75rem'
+
+      const copyIcon = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/></svg>`
+      const checkIcon = `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><polyline points="2 8 6 12 14 4"/></svg>`
 
       const btn = document.createElement('button')
       btn.className = 'code-copy-btn'
       btn.setAttribute('aria-label', 'Copy code')
-      btn.innerHTML =
-        `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
-        `<rect x="5" y="5" width="9" height="9" rx="1.5"/>` +
-        `<path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/>` +
-        `</svg>Copy Code`
+      btn.innerHTML = `${copyIcon}Copy Code`
+
       btn.addEventListener('click', e => {
         e.stopPropagation()
-        navigator.clipboard.writeText(inner.innerText).then(() => {
-          btn.innerHTML =
-            `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
-            `<polyline points="2 8 6 12 14 4"/>` +
-            `</svg>Copied!`
+        navigator.clipboard.writeText(block.innerText).then(() => {
+          btn.innerHTML = `${checkIcon}Copied!`
           btn.classList.add('code-copy-btn--copied')
           setTimeout(() => {
-            btn.innerHTML =
-              `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
-              `<rect x="5" y="5" width="9" height="9" rx="1.5"/>` +
-              `<path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/>` +
-              `</svg>Copy Code`
+            btn.innerHTML = `${copyIcon}Copy Code`
             btn.classList.remove('code-copy-btn--copied')
           }, 2000)
         })
       })
-      block.appendChild(btn)
+
+      header.appendChild(btn)
+      block.parentNode!.insertBefore(header, block)
     })
   }, [currentStep, moduleId])
 
