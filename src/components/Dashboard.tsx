@@ -1,7 +1,63 @@
+import { useEffect, useRef, useState } from 'react'
 import { MODULES, TRACK_GROUPS } from '@/data/modules'
 import type { AppState } from '@/store/progress'
 import { getCompletedCount, getOverallScore } from '@/store/progress'
 import { IcClock, IcCheck, IcLock, IcChevronRight } from './Icons'
+
+// ── Count-up hook ─────────────────────────────────────────────────────────────
+function useCountUp(target: number, duration = 900, triggered = false) {
+  const [value, setValue] = useState(0)
+  useEffect(() => {
+    if (!triggered) return
+    let start: number | null = null
+    const step = (ts: number) => {
+      if (!start) start = ts
+      const progress = Math.min((ts - start) / duration, 1)
+      // ease-out quart
+      const eased = 1 - Math.pow(1 - progress, 4)
+      setValue(Math.round(eased * target))
+      if (progress < 1) requestAnimationFrame(step)
+    }
+    requestAnimationFrame(step)
+  }, [triggered, target, duration])
+  return value
+}
+
+// ── Animated stat card ────────────────────────────────────────────────────────
+function StatCard({ label, num, suffix, color }: {
+  label: string
+  num: number
+  suffix: string
+  color: string
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [triggered, setTriggered] = useState(false)
+  const count = useCountUp(num, 900, triggered)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setTriggered(true); observer.disconnect() } },
+      { threshold: 0.5 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className="bg-white border border-[#E2ECF5] rounded-xl px-5 py-4 flex items-center gap-3">
+      <div className="w-1.5 h-8 rounded-full shrink-0" style={{ background: color }}/>
+      <div>
+        <div className="text-[18px] font-bold text-[#0B1829] leading-none tabular-nums"
+          style={{ fontFamily: 'var(--font-display)' }}>
+          {count}{suffix}
+        </div>
+        <div className="text-[10.5px] font-medium text-[#7A9BB8] uppercase tracking-wider mt-1">{label}</div>
+      </div>
+    </div>
+  )
+}
 
 interface DashboardProps {
   state: AppState
@@ -465,21 +521,10 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
       {/* ── Stats strip ──────────────────────────────────────────────────── */}
       {completed > 0 && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {[
-            { label: 'Modules Done',   value: `${completed}/14`,              color: '#2A6EBB' },
-            { label: 'Avg Quiz Score', value: avgScore ? `${avgScore}%` : '—', color: '#28A87C' },
-            { label: 'Modules Left',   value: `${14 - completed}`,            color: '#FF8300' },
-            { label: 'Total Content',  value: '20.5h',                        color: '#00B4D8' },
-          ].map(({ label, value, color }) => (
-            <div key={label} className="bg-white border border-[#E2ECF5] rounded-xl px-5 py-4 flex items-center gap-3">
-              <div className="w-1.5 h-8 rounded-full shrink-0" style={{ background: color }}/>
-              <div>
-                <div className="text-[18px] font-bold text-[#0B1829] leading-none"
-                  style={{ fontFamily: 'var(--font-display)' }}>{value}</div>
-                <div className="text-[10.5px] font-medium text-[#7A9BB8] uppercase tracking-wider mt-1">{label}</div>
-              </div>
-            </div>
-          ))}
+          <StatCard label="Modules Done"   num={completed}        suffix={`/14`}  color="#2A6EBB" />
+          <StatCard label="Avg Quiz Score" num={avgScore ?? 0}    suffix="%"      color="#28A87C" />
+          <StatCard label="Modules Left"   num={14 - completed}   suffix=""       color="#FF8300" />
+          <StatCard label="Total Content"  num={20}               suffix=".5h"    color="#00B4D8" />
         </div>
       )}
     </div>
