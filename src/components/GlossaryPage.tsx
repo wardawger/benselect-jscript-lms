@@ -3,7 +3,6 @@ import { GLOSSARY_ITEMS, GLOSS_CATS } from '@/data/glossary'
 import { IcSearch } from './Icons'
 import { cn } from '@/lib/utils'
 
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
 const CAT_COLORS: Record<string, { bg: string; text: string }> = {
   'BenSelect Core':      { bg: '#EBF4FB', text: '#2A6EBB' },
@@ -36,7 +35,7 @@ function loadBookmarks(): Set<string> {
 
 export function GlossaryPage() {
   const [search, setSearch]         = useState('')
-  const [activeLetter, setActiveLetter] = useState<string | null>(null)
+
   const [activeCat, setActiveCat]   = useState<string | null>(null)
   const [showBookmarks, setShowBookmarks] = useState(false)
   const [bookmarks, setBookmarks]   = useState<Set<string>>(loadBookmarks)
@@ -55,9 +54,6 @@ export function GlossaryPage() {
     })
   }
 
-  // Which letters actually have items (for the alpha bar)
-  const availableLetters = useMemo(() =>
-    new Set(GLOSSARY_ITEMS.map(i => i.term[0].toUpperCase())), [])
 
   const filtered = useMemo(() => {
     return GLOSSARY_ITEMS.filter(item => {
@@ -68,9 +64,9 @@ export function GlossaryPage() {
         (item.ex && item.ex.toLowerCase().includes(q)) ||
         item.cat.toLowerCase().includes(q)
       const matchesCat    = !activeCat || item.cat === activeCat
-      const matchesLetter = !activeLetter || item.term[0].toUpperCase() === activeLetter
+
       const matchesBookmark = !showBookmarks || bookmarks.has(item.term)
-      return matchesSearch && matchesCat && matchesLetter && matchesBookmark
+      return matchesSearch && matchesCat && matchesBookmark
     })
   }, [search, activeCat, activeLetter, showBookmarks, bookmarks])
 
@@ -112,32 +108,6 @@ export function GlossaryPage() {
         />
       </div>
 
-      {/* ── A–Z alpha bar ───────────────────────────────────────────────── */}
-      <div className="bg-white border border-[#E2ECF5] rounded-xl px-4 py-3 mb-4 flex items-center gap-0.5 flex-wrap"
-        style={{ boxShadow: '0 1px 4px rgba(4,41,74,0.04)' }}>
-        {ALPHABET.map(letter => {
-          const hasItems = availableLetters.has(letter)
-          const isActive = activeLetter === letter
-          return (
-            <button
-              key={letter}
-              onClick={() => hasItems && setActiveLetter(isActive ? null : letter)}
-              disabled={!hasItems}
-              className={cn(
-                'w-8 h-8 rounded-lg text-[12px] font-semibold transition-all cursor-pointer',
-                isActive
-                  ? 'text-white'
-                  : hasItems
-                  ? 'text-[#3A5068] hover:bg-[#F4F7FB] hover:text-[#2A6EBB]'
-                  : 'text-[#C8D9EE] cursor-not-allowed'
-              )}
-              style={isActive ? { background: '#2A6EBB' } : undefined}
-            >
-              {letter}
-            </button>
-          )
-        })}
-      </div>
 
       {/* ── Category filter + bookmark toggle ───────────────────────────── */}
       <div className="flex flex-wrap items-center gap-2 mb-6">
