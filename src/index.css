@@ -158,7 +158,7 @@ body {
 }
 
 /* ── LESSON CONTENT ─────────────────────────────────────────────── */
-.lesson-content { font-size: 14px; line-height: 1.8; color: var(--bs-body); max-width: 100%; overflow-x: hidden; word-break: break-word; overflow-wrap: break-word; }
+.lesson-content { font-size: 14px; line-height: 1.8; color: var(--bs-body); max-width: 100%; word-break: break-word; overflow-wrap: break-word; }
 /* h2 is now a card header rendered outside lesson-content — keep rule for edge cases */
 .lesson-content h2 {
   font-size: 1rem; font-weight: 700; color: var(--bs-navy);

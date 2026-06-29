@@ -169,6 +169,7 @@ function EditorModal({ eventType, code, onChange, onSave, onCancel, history, onR
   const [saveAll, setSaveAll] = useState(false)
   const [showHistoryModal, setShowHistoryModal] = useState(false)
   const [showSnippets, setShowSnippets] = useState(false)
+  const [linksCollapsed, setLinksCollapsed] = useState(() => window.innerWidth < 768)
 
   // Search state
   const [showSearch, setShowSearch] = useState(false)
@@ -449,23 +450,54 @@ function EditorModal({ eventType, code, onChange, onSave, onCancel, history, onR
             </div>
           </div>
 
-          {/* Right doc panel */}
-          <div className="w-44 shrink-0 border-l border-[#D8D8D8] bg-[#F8F8F8] overflow-y-auto py-4 px-3">
-            <ul className="space-y-1.5">
-              {DOC_LINKS.map(l => (
-                <li key={l.label} className="flex items-start gap-1 text-[12px]">
-                  <span className="text-[#555] mt-0.5">•</span>
-                  <a
-                    href={l.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[#2A6EBB] hover:underline leading-snug"
-                  >
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+          {/* Right doc panel — collapsible */}
+          <div
+            className="shrink-0 border-l border-[#D8D8D8] bg-[#F8F8F8] flex flex-col overflow-hidden"
+            style={{
+              width: linksCollapsed ? 32 : 176,
+              transition: 'width 0.22s cubic-bezier(0.4,0,0.2,1)',
+            }}
+          >
+            {/* Toggle button */}
+            <button
+              onClick={() => setLinksCollapsed(c => !c)}
+              title={linksCollapsed ? 'Expand API reference' : 'Collapse API reference'}
+              className="h-8 shrink-0 flex items-center justify-center border-b border-[#D8D8D8] hover:bg-[#EFEFEF] text-[#888] hover:text-[#444] transition-colors cursor-pointer"
+            >
+              <svg
+                width="12" height="12" viewBox="0 0 12 12" fill="none"
+                stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
+                style={{ transform: linksCollapsed ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.22s cubic-bezier(0.4,0,0.2,1)' }}
+              >
+                <path d="M4 2l4 4-4 4"/>
+              </svg>
+            </button>
+            {/* Panel content */}
+            <div
+              className="flex-1 overflow-y-auto overflow-x-hidden"
+              style={{ opacity: linksCollapsed ? 0 : 1, transition: 'opacity 0.15s ease', pointerEvents: linksCollapsed ? 'none' : 'auto' }}
+            >
+              <div className="py-3 px-3">
+                <div className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#999] mb-2 whitespace-nowrap">
+                  API Reference
+                </div>
+                <ul className="space-y-1.5">
+                  {DOC_LINKS.map(l => (
+                    <li key={l.label} className="flex items-start gap-1 text-[12px]">
+                      <span className="text-[#AAA] mt-0.5 shrink-0">•</span>
+                      <a
+                        href={l.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#2A6EBB] hover:underline leading-snug whitespace-nowrap"
+                      >
+                        {l.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 
