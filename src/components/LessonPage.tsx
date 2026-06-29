@@ -220,13 +220,15 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
     blocks.forEach(block => {
       block.setAttribute('data-copy', '1')
 
-      // Wrap the code-block in a position:relative container so the button is
-      // anchored to the visible edge, not the scrollable content right edge.
-      const wrapper = document.createElement('div')
-      wrapper.style.cssText = 'position:relative;margin:0.875rem 0'
-      block.style.margin = '0'
-      block.parentNode!.insertBefore(wrapper, block)
-      wrapper.appendChild(block)
+      // Move all code content into a scrollable inner div so the code block
+      // itself is no longer the scroll container. The button can then be
+      // position:absolute on .code-block without being scrolled off-screen.
+      const inner = document.createElement('div')
+      inner.style.cssText = 'overflow-x:auto;white-space:pre'
+      while (block.firstChild) inner.appendChild(block.firstChild)
+      block.style.overflow = 'visible'
+      block.style.position = 'relative'
+      block.appendChild(inner)
 
       const btn = document.createElement('button')
       btn.className = 'code-copy-btn'
@@ -238,8 +240,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
         `</svg>Copy Code`
       btn.addEventListener('click', e => {
         e.stopPropagation()
-        const text = block.innerText.replace(/^Copy Code\n?/, '')
-        navigator.clipboard.writeText(text).then(() => {
+        navigator.clipboard.writeText(inner.innerText).then(() => {
           btn.innerHTML =
             `<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">` +
             `<polyline points="2 8 6 12 14 4"/>` +
@@ -255,7 +256,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
           }, 2000)
         })
       })
-      wrapper.appendChild(btn)
+      block.appendChild(btn)
     })
   }, [currentStep, moduleId])
 
