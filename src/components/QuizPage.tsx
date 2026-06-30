@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import confetti from 'canvas-confetti'
 import { IcCheck, IcX } from './Icons'
-import { QUIZ } from '@/data/quizzes'
+import { QUIZ, QUIZ_B } from '@/data/quizzes'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
 import { BenSelectScriptEditor } from './BenSelectScriptEditor'
 import { cn } from '@/lib/utils'
 
 interface QuizPageProps {
   moduleId: number
+  attempts?: number
   onComplete: (moduleId: number, score: number, passed: boolean) => void
   onBack: () => void
 }
@@ -15,8 +16,23 @@ interface QuizPageProps {
 type AnswerState = 'unanswered' | 'correct' | 'wrong'
 
 interface Answer {
-  selected: number | null
+  /** Selected option indices — single-element for radio, multi for checkboxes */
+  selected: number[]
   state: AnswerState
+}
+
+function isMulti(a: number | number[]): a is number[] {
+  return Array.isArray(a)
+}
+
+function gradeAnswer(selected: number[], a: number | number[]): AnswerState {
+  if (selected.length === 0) return 'unanswered'
+  if (isMulti(a)) {
+    const correct = [...a].sort()
+    const given = [...selected].sort()
+    return correct.length === given.length && correct.every((v, i) => v === given[i]) ? 'correct' : 'wrong'
+  }
+  return selected[0] === a ? 'correct' : 'wrong'
 }
 
 // Animated score ring using SVG
@@ -62,9 +78,10 @@ function ScoreRing({ score, passed }: { score: number; passed: boolean }) {
   )
 }
 
-export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
-  const questions = QUIZ[moduleId] ?? []
-  const [answers, setAnswers] = useState<Answer[]>(questions.map(() => ({ selected: null, state: 'unanswered' })))
+export function QuizPage({ moduleId, attempts = 0, onComplete, onBack }: QuizPageProps) {
+  const versionB = attempts > 0 && QUIZ_B[moduleId] != null
+  const questions = (versionB ? QUIZ_B[moduleId] : QUIZ[moduleId]) ?? []
+  const [answers, setAnswers] = useState<Answer[]>(questions.map(() => ({ selected: [], state: 'unanswered' })))
   const [submitted, setSubmitted] = useState(false)
   const [showResult, setShowResult] = useState(false)
   const [hoveredQ, setHoveredQ] = useState<number | null>(null)
@@ -78,19 +95,27 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
 
   function selectAnswer(qi: number, oi: number) {
     if (submitted) return
-    setAnswers(prev => prev.map((a, i) => i === qi ? { ...a, selected: oi } : a))
+    const multi = isMulti(questions[qi].a)
+    setAnswers(prev => prev.map((a, i) => {
+      if (i !== qi) return a
+      if (multi) {
+        const already = a.selected.includes(oi)
+        return { ...a, selected: already ? a.selected.filter(x => x !== oi) : [...a.selected, oi] }
+      }
+      return { ...a, selected: [oi] }
+    }))
     setValidationError(false)
   }
 
   function submit() {
-    if (answers.some(a => a.selected === null)) {
+    if (answers.some(a => a.selected.length === 0)) {
       setValidationError(true)
       return
     }
     setValidationError(false)
     const graded = answers.map((a, i) => ({
       ...a,
-      state: (a.selected === questions[i].a ? 'correct' : 'wrong') as AnswerState
+      state: gradeAnswer(a.selected, questions[i].a)
     }))
     setAnswers(graded)
     setSubmitted(true)
@@ -189,7 +214,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
               )}
               {!passed && (
                 <button
-                  onClick={() => { setSubmitted(false); setShowResult(false); setAnswers(questions.map(() => ({ selected: null, state: 'unanswered' }))) }}
+                  onClick={() => { setSubmitted(false); setShowResult(false); setAnswers(questions.map(() => ({ selected: [], state: 'unanswered' }))) }}
                   className="text-white text-[13px] font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
                   style={{ background: '#2A6EBB' }}
                 >
@@ -211,6 +236,8 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
           {questions.map((q, qi) => {
             const ans = answers[qi]
             const isHovered = hoveredQ === qi
+            const correctSet = new Set(isMulti(q.a) ? q.a : [q.a])
+            const multi = isMulti(q.a)
             return (
               <div
                 key={qi}
@@ -220,22 +247,27 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
               >
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="text-[10px] font-mono text-[#4A9FD4]">Q{qi + 1}</span>
+                  {multi && <span className="text-[10px] font-medium text-[#5A7890] bg-[#F4F7FB] px-2 py-0.5 rounded-full">Select all that apply</span>}
                   <span className={cn('flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full', ans.state === 'correct' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700')}>
                     {ans.state === 'correct' ? <><IcCheck size={9} /> Correct</> : <><IcX size={9} /> Incorrect</>}
                   </span>
                 </div>
                 <div className="text-[14px] font-semibold text-[#0B1829] mb-3">{q.q}</div>
                 <div className="space-y-2 mb-3">
-                  {q.opts.map((opt, oi) => (
+                  {q.opts.map((opt, oi) => {
+                    const isCorrectOpt = correctSet.has(oi)
+                    const wasSelected = ans.selected.includes(oi)
+                    const isWrongSelected = wasSelected && !isCorrectOpt
+                    return (
                     <div key={oi} className={cn(
                       'text-[13px] p-3 rounded-lg border transition-colors',
-                      oi === q.a ? 'border-emerald-300 bg-emerald-50 text-emerald-800 font-medium' :
-                      oi === ans.selected && ans.state === 'wrong' ? 'border-red-300 bg-red-50 text-red-800' :
+                      isCorrectOpt ? 'border-emerald-300 bg-emerald-50 text-emerald-800 font-medium' :
+                      isWrongSelected ? 'border-red-300 bg-red-50 text-red-800' :
                       'border-[#E8F0F8] text-[#5A7890]'
                     )}>
-                      {oi === q.a && <IcCheck size={10} className="mr-1 inline-block text-emerald-600" />}{opt}
+                      {isCorrectOpt && <IcCheck size={10} className="mr-1 inline-block text-emerald-600" />}{opt}
                     </div>
-                  ))}
+                  )})}
                 </div>
                 <div className={cn('text-[12.5px] p-3 rounded-lg border-l-[3px]',
                   ans.state === 'correct' ? 'bg-emerald-50 border-l-emerald-500 text-emerald-800' : 'bg-amber-50 border-l-amber-400 text-amber-800'
@@ -257,47 +289,65 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
         <div className="flex items-center gap-2 mb-2">
           <button onClick={onBack} className="text-[12px] text-[#5A7890] hover:text-[#2A6EBB] transition-colors">← Back to Lesson</button>
         </div>
-        <h1 className="text-[22px] font-bold text-[#0B1829] tracking-tight">Module {moduleId} Quiz</h1>
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <h1 className="text-[22px] font-bold text-[#0B1829] tracking-tight">Module {moduleId} Quiz</h1>
+          {versionB && <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full" style={{ background: '#EBF4FB', color: '#2A6EBB' }}>Retake Version</span>}
+        </div>
         <p className="text-[13px] text-bs-body mt-1">{questions.length} questions · 60% required to pass</p>
       </div>
 
       <div className="space-y-5">
-        {questions.map((q, qi) => (
-          <div
-            key={qi}
-            className={cn('bg-white rounded-xl p-5 shadow-sm border transition-all', hoveredQ === qi ? 'border-[#4A9FD4]' : 'border-[#E8F0F8]')}
-            onMouseEnter={() => setHoveredQ(qi)}
-            onMouseLeave={() => setHoveredQ(null)}
-          >
-            <div className="text-[11px] font-mono text-[#4A9FD4] mb-1.5">Question {qi + 1}</div>
-            <div className="text-[14px] font-semibold text-[#0B1829] mb-3 leading-snug">{q.q}</div>
-            <div className="space-y-2">
-              {q.opts.map((opt, oi) => {
-                const isSelected = answers[qi].selected === oi
-                return (
-                  <button
-                    key={oi}
-                    onClick={() => selectAnswer(qi, oi)}
-                    className={cn(
-                      'w-full text-left flex items-start gap-3 p-3 rounded-lg border-[1.5px] text-[13px] transition-all',
-                      isSelected
-                        ? 'border-[#2A6EBB] bg-[#EBF4FB] text-[#0B1829] font-medium'
-                        : 'border-[#D8E8F4] text-bs-body hover:border-[#4A9FD4] hover:bg-[#F4F9FE]'
-                    )}
-                  >
-                    <span className={cn(
-                      'w-4 h-4 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center transition-colors',
-                      isSelected ? 'border-[#2A6EBB] bg-[#2A6EBB]' : 'border-[#C8D8E8] bg-white'
-                    )}>
-                      {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white block" />}
-                    </span>
-                    <span>{opt}</span>
-                  </button>
-                )
-              })}
+        {questions.map((q, qi) => {
+          const multi = isMulti(q.a)
+          return (
+            <div
+              key={qi}
+              className={cn('bg-white rounded-xl p-5 shadow-sm border transition-all', hoveredQ === qi ? 'border-[#4A9FD4]' : 'border-[#E8F0F8]')}
+              onMouseEnter={() => setHoveredQ(qi)}
+              onMouseLeave={() => setHoveredQ(null)}
+            >
+              <div className="flex items-center gap-2 mb-1.5">
+                <div className="text-[11px] font-mono text-[#4A9FD4]">Question {qi + 1}</div>
+                {multi && <span className="text-[10px] font-medium text-[#5A7890] bg-[#F4F7FB] px-2 py-0.5 rounded-full">Select all that apply</span>}
+              </div>
+              <div className="text-[14px] font-semibold text-[#0B1829] mb-3 leading-snug">{q.q}</div>
+              <div className="space-y-2">
+                {q.opts.map((opt, oi) => {
+                  const isSelected = answers[qi].selected.includes(oi)
+                  return (
+                    <button
+                      key={oi}
+                      onClick={() => selectAnswer(qi, oi)}
+                      className={cn(
+                        'w-full text-left flex items-start gap-3 p-3 rounded-lg border-[1.5px] text-[13px] transition-all cursor-pointer',
+                        isSelected
+                          ? 'border-[#2A6EBB] bg-[#EBF4FB] text-[#0B1829] font-medium'
+                          : 'border-[#D8E8F4] text-bs-body hover:border-[#4A9FD4] hover:bg-[#F4F9FE]'
+                      )}
+                    >
+                      {multi ? (
+                        <span className={cn(
+                          'w-4 h-4 rounded border-2 shrink-0 mt-0.5 flex items-center justify-center transition-colors',
+                          isSelected ? 'border-[#2A6EBB] bg-[#2A6EBB]' : 'border-[#C8D8E8] bg-white'
+                        )}>
+                          {isSelected && <IcCheck size={9} className="text-white" />}
+                        </span>
+                      ) : (
+                        <span className={cn(
+                          'w-4 h-4 rounded-full border-2 shrink-0 mt-0.5 flex items-center justify-center transition-colors',
+                          isSelected ? 'border-[#2A6EBB] bg-[#2A6EBB]' : 'border-[#C8D8E8] bg-white'
+                        )}>
+                          {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white block" />}
+                        </span>
+                      )}
+                      <span>{opt}</span>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Coding exercise (graded — bonus pts) — Selerix-style plan JScript editor */}
@@ -316,7 +366,7 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
         )}
         <div className="flex items-center justify-between">
           <span className="text-[13px] text-[#5A7890]">
-            {answers.filter(a => a.selected !== null).length} of {questions.length} answered
+            {answers.filter(a => a.selected.length > 0).length} of {questions.length} answered
           </span>
           <button
             onClick={submit}

@@ -212,6 +212,7 @@ export default function App() {
           return (
             <QuizPage
               moduleId={state.activeModule}
+              attempts={state.progress[state.activeModule]?.attempts ?? 0}
               onComplete={completeQuiz}
               onBack={() => navigate('lesson', state.activeModule ?? 1)}
             />
