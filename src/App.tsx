@@ -156,12 +156,14 @@ export default function App() {
     setState(prev => {
       const progress = { ...prev.progress }
       const current = { ...progress[moduleId] }
+      const wasAlreadyComplete = current.status === 'complete'
       current.score = score
       current.attempts = (current.attempts ?? 0) + 1
       if (passed) {
         current.status = 'complete'
         current.needsReview = false
-        if (moduleId < 14 && progress[moduleId + 1]) {
+        // Only unlock next module if still locked — never downgrade a completed module
+        if (moduleId < 14 && progress[moduleId + 1]?.status === 'locked') {
           progress[moduleId + 1] = { ...progress[moduleId + 1], status: 'available' }
         }
       } else {
@@ -172,7 +174,8 @@ export default function App() {
         ...prev,
         progress,
         page: 'lesson',
-        activeModule: passed && moduleId < 14 ? moduleId + 1 : moduleId,
+        // First-time pass advances to next module; retake stays on current module
+        activeModule: passed && moduleId < 14 && !wasAlreadyComplete ? moduleId + 1 : moduleId,
         quizMode: false,
       }
     })
