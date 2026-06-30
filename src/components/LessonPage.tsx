@@ -295,7 +295,7 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
 
         {/* ── Breadcrumb ──────────────────────────────────────────────────── */}
         <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-[12px] text-slate-500 mb-5">
-          <button onClick={onBack} className="hover:text-[#2A6EBB] transition-colors">Dashboard</button>
+          <button onClick={onBack} className="hover:text-[#2A6EBB] transition-colors cursor-pointer">Dashboard</button>
           <IcChevronRight size={10} />
           <span>{mod.track}</span>
           <IcChevronRight size={10} />
