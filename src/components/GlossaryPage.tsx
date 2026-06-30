@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { GLOSSARY_ITEMS, GLOSS_CATS } from '@/data/glossary'
 import { IcSearch } from './Icons'
 import { cn } from '@/lib/utils'
@@ -36,11 +36,22 @@ function loadBookmarks(): Set<string> {
 
 export function GlossaryPage() {
   const [search, setSearch]         = useState('')
-
   const [activeCat, setActiveCat]   = useState<string | null>(null)
+  const [catDropdownOpen, setCatDropdownOpen] = useState(false)
   const [showBookmarks, setShowBookmarks] = useState(false)
   const [bookmarks, setBookmarks]   = useState<Set<string>>(loadBookmarks)
   const [visibleCount, setVisibleCount] = useState(20)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setCatDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   // Persist bookmarks
   useEffect(() => {
@@ -103,8 +114,9 @@ export function GlossaryPage() {
       </div>
 
 
-      {/* ── Category filter + bookmark toggle ───────────────────────────── */}
+      {/* ── Filters row ─────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-center gap-2 mb-6">
+        {/* All */}
         <button
           onClick={() => { setActiveCat(null); setShowBookmarks(false) }}
           className={cn('px-3.5 py-1.5 rounded-full text-[12px] font-medium border transition-all cursor-pointer',
@@ -115,7 +127,7 @@ export function GlossaryPage() {
           All <span className="opacity-60">({GLOSSARY_ITEMS.length})</span>
         </button>
 
-        {/* Bookmark filter */}
+        {/* Bookmarks */}
         <button
           onClick={() => { setShowBookmarks(b => !b); setActiveCat(null) }}
           className={cn(
@@ -137,22 +149,89 @@ export function GlossaryPage() {
 
         <div className="w-px h-5 bg-[#D0DEF0] mx-1" />
 
-        {GLOSS_CATS.map(cat => {
-          const col = CAT_COLORS[cat] ?? { bg: '#F0F4F8', text: '#3A5068' }
-          const isActive = activeCat === cat
-          return (
-            <button
-              key={cat}
-              onClick={() => { setActiveCat(isActive ? null : cat); setShowBookmarks(false) }}
-              className="px-3.5 py-1.5 rounded-full text-[12px] font-medium border transition-all cursor-pointer"
-              style={isActive
-                ? { background: col.text, color: '#fff', borderColor: col.text }
-                : { background: col.bg, color: col.text, borderColor: 'transparent' }}
+        {/* Category dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <button
+            onClick={() => setCatDropdownOpen(o => !o)}
+            className={cn(
+              'flex items-center gap-2 pl-3.5 pr-3 py-1.5 rounded-full text-[12px] font-medium border transition-all cursor-pointer',
+              activeCat
+                ? 'bg-[#2A6EBB] text-white border-[#2A6EBB]'
+                : 'border-[#D0DEF0] text-[#3A5068] bg-white hover:border-[#2A6EBB] hover:text-[#2A6EBB]'
+            )}
+          >
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+              <line x1="2" y1="4" x2="14" y2="4"/><line x1="4" y1="8" x2="12" y2="8"/><line x1="6" y1="12" x2="10" y2="12"/>
+            </svg>
+            {activeCat ? activeCat : 'Filter by Category'}
+            {activeCat && (
+              <span
+                role="button"
+                onClick={e => { e.stopPropagation(); setActiveCat(null) }}
+                className="ml-0.5 w-4 h-4 rounded-full bg-white/25 flex items-center justify-center hover:bg-white/40 transition-colors cursor-pointer"
+                aria-label="Clear category filter"
+              >
+                <svg width="8" height="8" viewBox="0 0 8 8" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <line x1="1.5" y1="1.5" x2="6.5" y2="6.5"/><line x1="6.5" y1="1.5" x2="1.5" y2="6.5"/>
+                </svg>
+              </span>
+            )}
+            <svg
+              width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+              style={{ transform: catDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.18s ease' }}
             >
-              {cat}
-            </button>
+              <polyline points="2,4 6,8 10,4"/>
+            </svg>
+          </button>
+
+          {/* Dropdown panel */}
+          <div
+            className="absolute left-0 top-full mt-2 z-30 bg-white rounded-xl border border-[#E2ECF5] overflow-hidden"
+            style={{
+              minWidth: '220px',
+              boxShadow: '0 8px 24px rgba(4,41,74,0.12)',
+              opacity: catDropdownOpen ? 1 : 0,
+              transform: catDropdownOpen ? 'translateY(0) scale(1)' : 'translateY(-6px) scale(0.97)',
+              transition: 'opacity 0.18s ease, transform 0.18s ease',
+              pointerEvents: catDropdownOpen ? 'auto' : 'none',
+            }}
+          >
+            <div className="p-1.5">
+              {GLOSS_CATS.map(cat => {
+                const col = CAT_COLORS[cat] ?? { bg: '#F0F4F8', text: '#3A5068' }
+                const isActive = activeCat === cat
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => { setActiveCat(isActive ? null : cat); setShowBookmarks(false); setCatDropdownOpen(false) }}
+                    className={cn(
+                      'w-full text-left flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12.5px] font-medium transition-colors cursor-pointer',
+                      isActive ? 'bg-[#EBF4FB] text-[#2A6EBB]' : 'text-[#0B1829] hover:bg-[#F4F7FB]'
+                    )}
+                  >
+                    <span className="w-2 h-2 rounded-full shrink-0" style={{ background: col.text }} />
+                    {cat}
+                    {isActive && (
+                      <svg className="ml-auto" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#2A6EBB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="1.5,6 4.5,9 10.5,3"/>
+                      </svg>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Active category pill (shows after selecting) */}
+        {activeCat && (() => {
+          const col = CAT_COLORS[activeCat] ?? { bg: '#F0F4F8', text: '#3A5068' }
+          return (
+            <span className="text-[11px] font-medium px-2.5 py-1 rounded-full" style={{ background: col.bg, color: col.text }}>
+              {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+            </span>
           )
-        })}
+        })()}
       </div>
 
       {/* ── Empty state ─────────────────────────────────────────────────── */}
