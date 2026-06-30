@@ -262,7 +262,7 @@ function RecentActivity({ progress, onNavigate }: {
               <button
                 key={mod.id}
                 onClick={() => onNavigate('lesson', mod.id)}
-                className="w-full flex items-center gap-3 px-5 py-3.5 hover:bg-[#F8FAFC] transition-colors text-left"
+                className="w-full flex items-center gap-3 px-5 py-3.5 hover:bg-[#F8FAFC] transition-colors text-left cursor-pointer"
               >
                 <div className="w-7 h-7 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -354,7 +354,7 @@ function NextUpCard({ state, onNavigate }: { state: AppState; onNavigate: Dashbo
         {/* CTA */}
         <button
           onClick={() => onNavigate('lesson', nextModule.id)}
-          className="w-full text-[13px] font-semibold text-white py-3 rounded-xl flex items-center justify-center gap-2 transition-opacity hover:opacity-90"
+          className="w-full text-[13px] font-semibold text-white py-3 rounded-xl flex items-center justify-center gap-2 transition-opacity hover:opacity-90 cursor-pointer"
           style={{ background: ts.color }}
         >
           Start Module
@@ -517,7 +517,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
           <div className="flex flex-wrap gap-2.5">
             <button
               onClick={() => onNavigate('modules')}
-              className="text-[13px] font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90"
+              className="text-[13px] font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90 cursor-pointer"
               style={{ background: '#0B1829' }}
             >
               View All Modules
@@ -528,7 +528,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
                   const next = MODULES.find(m => state.progress[m.id]?.status === 'available')
                   if (next) onNavigate('lesson', next.id)
                 }}
-                className="text-[13px] font-semibold text-[#0B1829] px-5 py-2.5 rounded-xl border border-[#D0DEF0] hover:bg-[#F4F7FB] transition-colors"
+                className="text-[13px] font-semibold text-[#0B1829] px-5 py-2.5 rounded-xl border border-[#D0DEF0] hover:bg-[#F4F7FB] transition-colors cursor-pointer"
               >
                 Next Lesson →
               </button>
@@ -549,7 +549,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
             style={{ fontFamily: 'var(--font-display)' }}>Track Overview</h2>
           <button
             onClick={() => onNavigate('modules')}
-            className="text-[12px] font-medium text-[#2A6EBB] hover:underline flex items-center gap-1"
+            className="text-[12px] font-medium text-[#2A6EBB] hover:underline flex items-center gap-1 cursor-pointer"
           >
             View All <IcChevronRight size={12}/>
           </button>
