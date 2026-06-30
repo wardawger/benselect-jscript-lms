@@ -507,9 +507,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         <div className="flex-1 min-w-0">
           <h1 className="text-[24px] sm:text-[28px] font-bold leading-tight mb-2"
             style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', color: '#2A6EBB' }}>
-            <DiaTextReveal text="Hello, " delay={0} />
-            <DiaTextReveal text={state.userName || 'there'} delay={0.15} />
-            {'!'}
+            <DiaTextReveal text={`Hello, ${state.userName || 'there'}!`} />
           </h1>
           <p className="text-[13px] text-[#3A5068] leading-relaxed mb-5 max-w-[380px]">
             {completed === 0
