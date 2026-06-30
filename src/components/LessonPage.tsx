@@ -344,16 +344,6 @@ export function LessonPage({ moduleId, state, sidebarCollapsed, onStartQuiz, onB
                   )}
                 </div>
               </div>
-              <div className="shrink-0">
-                <button
-                  onClick={() => onStartQuiz(moduleId)}
-                  className="flex items-center gap-2 text-[13px] font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90"
-                  style={{ background: trackColor }}
-                >
-                  {p.status === 'complete' ? 'Retake Quiz' : 'Take Quiz'}
-                  <IcChevronRight size={13} />
-                </button>
-              </div>
             </div>
           </div>
         </div>
