@@ -506,7 +506,7 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         <div className="flex-1 min-w-0">
           <h1 className="text-[24px] sm:text-[28px] font-bold leading-tight mb-2"
             style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', color: '#2A6EBB' }}>
-            {state.userName || 'Hello'}!
+            {'Hello' state.userName || 'Hello'}!
           </h1>
           <p className="text-[13px] text-[#3A5068] leading-relaxed mb-5 max-w-[380px]">
             {completed === 0
