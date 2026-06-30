@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import confetti from 'canvas-confetti'
 import { IcCheck, IcX } from './Icons'
 import { QUIZ } from '@/data/quizzes'
 import { QUIZ_EXERCISES } from '@/data/quizExercises'
@@ -101,9 +102,36 @@ export function QuizPage({ moduleId, onComplete, onBack }: QuizPageProps) {
   const score = Math.min(100, mcScore + exerciseBonus)
   const passed = score >= 60
 
+  // Fire confetti when quiz is passed
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const confettiRef = useRef<confetti.CreateTypes | null>(null)
+  useEffect(() => {
+    if (!showResult || !passed) return
+    const canvas = canvasRef.current
+    if (!canvas) return
+    if (!confettiRef.current) {
+      confettiRef.current = confetti.create(canvas, { resize: true, useWorker: true })
+    }
+    const fire = confettiRef.current
+    const burst = (origin: { x: number; y: number }, angle: number) =>
+      fire({ particleCount: 60, spread: 70, angle, origin, colors: ['#2A6EBB', '#4A9FD4', '#28A87C', '#F5A623', '#E84C4C', '#ffffff'] })
+    burst({ x: 0.2, y: 0.6 }, 60)
+    burst({ x: 0.8, y: 0.6 }, 120)
+    const t = setTimeout(() => {
+      burst({ x: 0.5, y: 0.5 }, 90)
+    }, 350)
+    return () => clearTimeout(t)
+  }, [showResult, passed])
+
   if (showResult) {
     return (
       <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto w-full">
+        {/* Full-viewport confetti canvas (pointer-events:none so it doesn't block clicks) */}
+        <canvas
+          ref={canvasRef}
+          className="fixed inset-0 w-full h-full pointer-events-none z-50"
+          style={{ display: passed ? 'block' : 'none' }}
+        />
         {/* Result card */}
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-[#E8F0F8] mb-6">
           <div className="text-center">
