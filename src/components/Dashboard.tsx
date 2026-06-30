@@ -3,6 +3,7 @@ import { MODULES, TRACK_GROUPS } from '@/data/modules'
 import type { AppState } from '@/store/progress'
 import { getCompletedCount, getOverallScore } from '@/store/progress'
 import { IcClock, IcCheck, IcLock, IcChevronRight } from './Icons'
+import { DiaTextReveal } from './DiaTextReveal'
 
 // ── Count-up hook ─────────────────────────────────────────────────────────────
 function useCountUp(target: number, duration = 900, triggered = false) {
@@ -506,7 +507,9 @@ export function Dashboard({ state, page = 'dashboard', onNavigate }: DashboardPr
         <div className="flex-1 min-w-0">
           <h1 className="text-[24px] sm:text-[28px] font-bold leading-tight mb-2"
             style={{ fontFamily: 'var(--font-display)', letterSpacing: '-0.02em', color: '#2A6EBB' }}>
-            {'Hello, '}{state.userName || 'Hello'}!
+            {'Hello, '}
+            <DiaTextReveal text={state.userName || 'there'} />
+            {'!'}
           </h1>
           <p className="text-[13px] text-[#3A5068] leading-relaxed mb-5 max-w-[380px]">
             {completed === 0
